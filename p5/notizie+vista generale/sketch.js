@@ -36,19 +36,19 @@ let immaginiPrecaricate = {
 
 function preload() {
   // Carica i font
-  fontRubik = loadFont('assets/RubikOne.ttf');
-  fontInconsolata = loadFont('assets/Inconsolata.ttf');
+  fontRubik = loadFont('../../fonts/RubikOne.ttf');
+  fontInconsolata = loadFont('../../fonts/Inconsolata.ttf');
 
   // Carica le immagini principali
-  rocketImg = loadImage('razzino.png', img => {
+  rocketImg = loadImage('../../img/razzino.png', img => {
     let ratio = img.width / img.height;
     rocketWidth = rocketHeight * ratio;
   });
-  terraImg = loadImage('leggereterrasottile.png');
+  terraImg = loadImage('../../img/leggereterrasottile.png');
 
   // Carica i dati CSV
-  table = loadTable("assets/space_decay.csv", "header");
-  notizieTable = loadTable("assets/notizie.csv", "header");
+  table = loadTable("../../space_decay.csv", "header");
+  notizieTable = loadTable("../../notizie.csv", "header");
   
   // Precarica tutte le immagini delle notizie
   for (let nomeImmagine in immaginiPrecaricate) {
