@@ -12,12 +12,12 @@ let terraImg; // Nuova variabile per l'immagine
 
 function preload() {
   // Carica i font
-  inconsolataFont = loadFont('assets/Inconsolata.ttf');
-  rubikOneFont = loadFont('assets/RubikOne.ttf');
-  terraImg = loadImage('assets/terra3.png'); // Carica l'immagine
+  inconsolataFont = loadFont('../../fonts/Inconsolata.ttf');
+  rubikOneFont = loadFont('../../fonts/RubikOne.ttf');
+  terraImg = loadImage('../../img/terra3.png'); // Carica l'immagine
 
   // Carica il CSV
-  satelliteData = loadTable('space_data.csv', 'csv', 'header');
+  satelliteData = loadTable('../../space_data.csv', 'csv', 'header');
 }
 
 function setup() {
