@@ -25,6 +25,20 @@ function setup() {
   angleMode(DEGREES);
   textAlign(CENTER, CENTER);
 
+  let buttonPositions = [
+    { x: width - 540, y: 30 },
+    { x: width - 430, y: 30 },
+    { x: width - 300, y: 30 },
+    { x: width - 115, y: 30 }
+];
+createButtons(buttonPositions);
+// Aggiungi questa riga per rendere i pulsanti fissi
+let buttons = selectAll('button');
+buttons.forEach(button => {
+    button.style('position', 'fixed');
+});
+
+
   // Genera tutti i punti una volta sola
   for (let year = startYear; year <= endYear; year++) {
     generateDotsForYear(year);
@@ -37,9 +51,91 @@ function windowResized() {
   redraw(); 
 }
 
+function createButtons(positions) {
+  let buttonWidth = 100;
+  let buttonHeight = 40;
+  let buttonSpacing = 10;
+  let buttonLabels = ['GRAFICO', 'COSA SONO', 'LEGGERE IL GRAFICO', 'CHI SIAMO'];
+  for (let i = 0; i < buttonLabels.length; i++) {
+      let button = createButton(buttonLabels[i]);
+      let buttonWidth = textWidth(buttonLabels[i]) + 20;
+      button.position(positions[i].x, positions[i].y);
+      button.size(buttonWidth, buttonHeight);
+      button.style('border-radius', '10px');
+      button.style('font-family', 'Inconsolata');
+      button.style('font-weight', 'bold');
+
+      if (buttonLabels[i] === 'GRAFICO') {
+          button.style('background-color', 'black');
+          button.style('color', 'white');
+          button.style('border', '2px solid white');
+      } else {
+          button.style('background-color', 'white');
+          button.style('color', 'black');
+          button.style('border', '2px solid black');
+      }
+      
+      button.mouseOver(() => {
+          if (buttonLabels[i] === 'GRAFICO') {
+              button.style('background-color', 'black');
+              button.style('color', 'white');
+              button.style('border', '2px solid white');
+          } else {
+              button.style('background-color', 'black');
+              button.style('color', 'white');
+              button.style('border', '2px solid white');
+          }
+      });
+      button.mouseOut(() => {
+          if (buttonLabels[i] === 'GRAFICO') {
+              button.style('background-color', 'black');
+              button.style('color', 'white');
+              button.style('border', '2px solid white');
+          } else {
+              button.style('background-color', 'white');
+              button.style('color', 'black');
+              button.style('border', '2px solid black');
+          }
+      });
+      button.mousePressed(() => {
+        console.log(buttonLabels[i] + ' cliccato');
+        if (buttonLabels[i] === 'COSA SONO') {
+            window.location.href = '../cosasono/index.html';
+        } else if (buttonLabels[i] === 'CHI SIAMO') {
+            window.location.href = '../chisiamo/index.html';
+        } else if (buttonLabels[i] === 'LEGGERE IL GRAFICO') {
+            window.location.href = '../leggereilgrafico/index.html';
+          } else if (buttonLabels[i] === 'GRAFICO') {
+              window.location.href = '../notizie+vista generale/index.html';
+}
+    });
+  }
+}
+
 
 function draw() {
   background(240);
+
+  // titolo
+  textSize(23); 
+  stroke(0); 
+  fill(0); 
+  textFont(rubikOneFont);
+  text('RIFIUTI SPAZIALI', 158, 52); 
+  strokeWeight(3); 
+  fill(255); 
+  textFont(rubikOneFont); 
+  text('RIFIUTI SPAZIALI', 160, 50); 
+
+  if (mouseX > 158 && mouseX < 300 && mouseY > 30 && mouseY < 70) {
+    cursor(HAND);
+    if (mouseIsPressed) {
+      window.location.href = '../home/index.html';
+    }
+  } else {
+    cursor(ARROW);
+  }
+
 
   // Titolo "USA" con il font Rubik One e nuovo stile
   strokeWeight(6);
