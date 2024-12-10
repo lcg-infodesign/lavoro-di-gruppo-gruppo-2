@@ -100,7 +100,9 @@ function createButtons(positions) {
               window.location.href = '../chisiamo/index.html';
           } else if (buttonLabels[i] === 'LEGGERE IL GRAFICO') {
               window.location.href = '../leggereilgrafico/index.html';
-          }
+            } else if (buttonLabels[i] === 'GRAFICO') {
+                window.location.href = '../notizie+vista generale/index.html';
+}
       });
     }
 }
