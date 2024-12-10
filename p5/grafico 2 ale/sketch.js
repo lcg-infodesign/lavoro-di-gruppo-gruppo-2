@@ -143,7 +143,7 @@ function draw() {
   fill(255);
   textSize(64);
   textFont(rubikOneFont);
-  text("USA", width / 2, 250);
+  text("STATI UNITI", width / 2, 250);
 
   drawCircleWithRays();
   drawDots();
@@ -173,7 +173,7 @@ function drawCircleWithRays() {
 function generateDotsForYear(year) {
   let centerX = width / 2;
   let centerY = height;
-  let minDistance = 400;
+  let minDistance = 450;
   let maxDistance = min(width, height) * 2.2;
 
   for (let row of satelliteData.rows) {
@@ -317,36 +317,36 @@ function drawSelectedYear() {
 function drawRadialSlider() {
   let centerX = width / 2;
   let centerY = height;
-  let radius = 300;
+  let radius = 320;
   let startAngle = 180;
   let endAngle = 360;
 
   noFill();
   stroke(0);
   strokeWeight(2);
-  arc(centerX, centerY, radius * 2, radius * 2, startAngle, endAngle);
+  arc(centerX, centerY, (radius + 20) * 2, (radius + 20) * 2, startAngle, endAngle);
 
   for (let year = startYear; year <= endYear; year += 10) {
     let angle = map(year, startYear, endYear, startAngle, endAngle);
-    let x1 = centerX + radius * cos(angle);
-    let y1 = centerY + radius * sin(angle);
-    let x2 = centerX + (radius + 20) * cos(angle);
-    let y2 = centerY + (radius + 20) * sin(angle);
+    let x1 = centerX + (radius + 10) * cos(angle);
+    let y1 = centerY + (radius + 10) * sin(angle);
+    let x2 = centerX + (radius + 30) * cos(angle);
+    let y2 = centerY + (radius + 30) * sin(angle);
 
     strokeWeight(1);
     line(x1, y1, x2, y2);
     noStroke();
     fill(0);
-    textSize(14);
+    textSize(25);
     textFont(inconsolataFont);
 
     let textY = centerY + (radius + 40) * sin(angle) - 10;
-    text(year, centerX + (radius + 40) * cos(angle), textY);
+    text(year, centerX + (radius + 60) * cos(angle), textY);
   }
 
   let sliderAngle = map(selectedYear, startYear, endYear, startAngle, endAngle);
-  let sliderX = centerX + radius * cos(sliderAngle);
-  let sliderY = centerY + radius * sin(sliderAngle);
+  let sliderX = centerX + (radius + 20) * cos(sliderAngle);
+  let sliderY = centerY + (radius + 20) * sin(sliderAngle);
 
   fill(255);
   stroke(0);
@@ -357,7 +357,8 @@ function drawRadialSlider() {
     let angle = atan2(mouseY - centerY, mouseX - centerX);
     if (angle < 0) angle += 360;
     if (angle >= startAngle && angle <= endAngle) {
-      selectedYear = floor(map(angle, startAngle, endAngle, startYear, endYear));
+      selectedYear = floor(map(angle, startAngle, endAngle, startYear, endYear + 1));
+      selectedYear = constrain(selectedYear, startYear, endYear);
     }
   }
 }
