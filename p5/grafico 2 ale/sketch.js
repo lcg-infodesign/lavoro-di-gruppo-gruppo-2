@@ -17,7 +17,7 @@ function preload() {
   terraImg = loadImage('../../img/terra3.png'); // Carica l'immagine
 
   // Carica il CSV
-  satelliteData = loadTable('../../space_data.csv', 'csv', 'header');
+  satelliteData = loadTable('../../space_decay.csv', 'csv', 'header');
 }
 
 function setup() {
@@ -75,7 +75,7 @@ function generateDotsForYear(year) {
 
   for (let row of satelliteData.rows) {
     let countryCode = row.get('COUNTRY_CODE');
-    if (countryCode !== 'US') continue;
+    if (countryCode !== 'STATI UNITI') continue;
 
     let launchDate = new Date(row.get('LAUNCH_DATE'));
     let launchYear = launchDate.getFullYear();
