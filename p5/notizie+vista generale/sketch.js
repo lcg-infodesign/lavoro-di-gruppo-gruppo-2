@@ -88,6 +88,12 @@ function setup() {
   generateDots();
 }
 
+function windowResized() {
+  // ridimensiona canvas quando finestra viene ridimensionata
+  resizeCanvas(windowWidth, windowHeight);
+  redraw(); 
+}
+
 function draw() {
   background(240);
   drawHighlightedSector();
@@ -303,6 +309,13 @@ function drawHighlightedSector() {
         textSize(16);
         fill(0);
         text(textToShow, mouseX + offsetX, mouseY + offsetY); // Posiziona il testo vicino al mouse
+
+        // Aggiungi il reindirizzamento se il paese è Stati Uniti
+        if (countryName === "STATI UNITI") { // Assicurati che il codice paese sia corretto
+          if (mouseIsPressed) {
+            window.location.href = '../grafico 2 ale/index.html'; // Reindirizza alla pagina
+          }
+        }
       }
     }
   }

@@ -31,6 +31,13 @@ function setup() {
   }
 }
 
+function windowResized() {
+  // ridimensiona canvas quando finestra viene ridimensionata
+  resizeCanvas(windowWidth, windowHeight);
+  redraw(); 
+}
+
+
 function draw() {
   background(240);
 
