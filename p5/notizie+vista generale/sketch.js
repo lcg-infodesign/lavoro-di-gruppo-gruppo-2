@@ -106,9 +106,9 @@ function draw() {
 function drawSliderTimeline() {
   // Testo sopra lo slider per mostrare l'anno selezionato
   stroke(0);
-  strokeWeight(2);
-  fill(255);
-  textFont(fontRubik);  // Cambio font per l'anno
+  strokeWeight(0);
+  fill(0);
+  textFont(fontInconsolata);  // Cambio font per l'anno
   textSize(20);
   text(selectedYear, width / 2, height - 100);
 
