@@ -67,26 +67,103 @@ function setup() {
   textFont(fontInconsolata);
   textAlign(CENTER, CENTER);
 
-  // Crea lo slider per selezionare l'anno (nascosto)
+  
+
+  // Posizioni pulsanti nella navbar
+  let buttonPositions = [
+    { x: width - 540, y: 30 },
+    { x: width - 430, y: 30 },
+    { x: width - 300, y: 30 },
+    { x: width - 115, y: 30 }
+  ];
+
+  createButtons(buttonPositions);
+
+  // Rendi i pulsanti fissi per il ridimensionamento
+  let buttons = selectAll('button');
+  buttons.forEach(button => {
+    button.style('position', 'fixed');
+  });
+
+  // Inizializza altre funzioni del setup
   slider = createSlider(1960, 2020, 1960, 1);
-  slider.position((width - 700) / 2, height - 60); // Posiziona lo slider al centro in basso
+  slider.position((width - 700) / 2, height - 60);
   slider.style('width', '700px');
-  slider.style('height', '0px');
-  slider.style('border-radius', '0px');
-  slider.style('background', '#ddd');
-  slider.style('outline', 'none');
-  slider.style('box-shadow', '0 0px opx rgba(0, 0, 0, 0)');
-  slider.style('opacity', '0');  // Nasconde il slider tipico
-  
-  // Ottieni i codici paese dal CSV
+  slider.style('opacity', '0');
+
   loadCountryCodes();
-  
-  // Genera associazione settori-codici paese
   generateSectors();
-  
-  // Genera il numero di pallini per ciascun paese
   generateDots();
 }
+
+
+function windowResized() {
+  // ridimensiona canvas quando finestra viene ridimensionata
+  resizeCanvas(windowWidth, windowHeight);
+  redraw(); 
+}
+
+function createButtons(positions) {
+  let buttonWidth = 100;
+  let buttonHeight = 40;
+  let buttonSpacing = 10;
+  let buttonLabels = ['GRAFICO', 'COSA SONO', 'LEGGERE IL GRAFICO', 'CHI SIAMO'];
+  for (let i = 0; i < buttonLabels.length; i++) {
+      let button = createButton(buttonLabels[i]);
+      let buttonWidth = textWidth(buttonLabels[i]) + 20;
+      button.position(positions[i].x, positions[i].y);
+      button.size(buttonWidth, buttonHeight);
+      button.style('border-radius', '10px');
+      button.style('font-family', 'Inconsolata');
+      button.style('font-weight', 'bold');
+
+      if (buttonLabels[i] === 'GRAFICO') {
+          button.style('background-color', 'black');
+          button.style('color', 'white');
+          button.style('border', '2px solid white');
+      } else {
+          button.style('background-color', 'white');
+          button.style('color', 'black');
+          button.style('border', '2px solid black');
+      }
+      
+      button.mouseOver(() => {
+          if (buttonLabels[i] === 'GRAFICO') {
+              button.style('background-color', 'black');
+              button.style('color', 'white');
+              button.style('border', '2px solid white');
+          } else {
+              button.style('background-color', 'black');
+              button.style('color', 'white');
+              button.style('border', '2px solid white');
+          }
+      });
+      button.mouseOut(() => {
+          if (buttonLabels[i] === 'GRAFICO') {
+              button.style('background-color', 'black');
+              button.style('color', 'white');
+              button.style('border', '2px solid white');
+          } else {
+              button.style('background-color', 'white');
+              button.style('color', 'black');
+              button.style('border', '2px solid black');
+          }
+      });
+      button.mousePressed(() => {
+        console.log(buttonLabels[i] + ' cliccato');
+        if (buttonLabels[i] === 'COSA SONO') {
+            window.location.href = '../cosasono/index.html';
+        } else if (buttonLabels[i] === 'CHI SIAMO') {
+            window.location.href = '../chisiamo/index.html';
+        } else if (buttonLabels[i] === 'LEGGERE IL GRAFICO') {
+            window.location.href = '../leggereilgrafico/index.html';
+          } else if (buttonLabels[i] === 'GRAFICO') {
+              window.location.href = '../notizie+vista generale/index.html';
+}
+    });
+  }
+}
+
 
 function windowResized() {
   // ridimensiona canvas quando finestra viene ridimensionata
@@ -96,6 +173,29 @@ function windowResized() {
 
 function draw() {
   background(240);
+
+  // Disegna il titolo
+  textSize(23); 
+  stroke(0); 
+  fill(0); 
+  textFont(fontRubik);  // Usa il font RubikOne
+  text('RIFIUTI SPAZIALI', 158, 52);  // Posizione del titolo
+  strokeWeight(3); 
+  fill(255); 
+  textFont(fontRubik); 
+  text('RIFIUTI SPAZIALI', 160, 50);  // Posizione del titolo sopra
+
+  if (mouseX > 158 && mouseX < 300 && mouseY > 30 && mouseY < 70) {
+    cursor(HAND);
+    if (mouseIsPressed) {
+      window.location.href = '../home/index.html';
+    }
+  } else {
+    cursor(ARROW);
+  }
+
+
+  // Resto del codice di rendering
   drawHighlightedSector();
   drawCircleWithRays();
   drawDots();
@@ -173,19 +273,23 @@ function countCountryEvents() {
 }
 
 function generateSectors() {
+  // Ordina i codici paese in ordine alfabetico
+  countryCodes.sort(); 
+  
+  sectors = []; // Resetta l'array dei settori
   let index = 0;
-  // Associa un codice paese a ciascun settore
-  for (let i = 0; i < 99; i++) {
+
+  for (let i = 0; i < countryCodes.length; i++) {
     let countryCode = countryCodes[index];
     
     // Aggiungi un oggetto settore con il codice paese
     sectors.push({ countryCode });
 
-    // Stampa il codice del paese per ogni settore
+    // Stampa il codice del paese per debug
     console.log(`Settore ${i + 1}: ${countryCode}`);
     
-    // Incrementa l'indice e cicla sui codici paese
-    index = (index + 1) % countryCodes.length; // Se ci sono meno di 99 codici, si ripetono
+    // Incrementa l'indice
+    index++;
   }
 }
 
@@ -301,14 +405,13 @@ function drawHighlightedSector() {
 
         // Mostra il codice paese e il nome del paese associato
         let countryName = sectors[i].countryCode; // Nome del paese
-        let textToShow = `${countryName}`;  // Testo da visualizzare
 
-        // Calcola la posizione per disegnare il nome del paese accanto al mouse
-        let offsetX = 20;  // Offset per separare il nome dal mouse
-        let offsetY = -20;  // Offset verticale
-        textSize(16);
+        // Disegna il nome del paese al centro in alto
+        textSize(20);
+        textStyle(BOLD);
+        textAlign(CENTER, CENTER);
         fill(0);
-        text(textToShow, mouseX + offsetX, mouseY + offsetY); // Posiziona il testo vicino al mouse
+        text(countryName, width / 2, 80); // Posiziona il testo al centro in alto
 
         // Aggiungi il reindirizzamento se il paese è Stati Uniti
         if (countryName === "STATI UNITI") { // Assicurati che il codice paese sia corretto
@@ -450,3 +553,6 @@ function drawRocket(x, y) {
   image(rocketImg, 0, 0, rocketWidth, rocketHeight);
   pop();
 }
+
+
+
