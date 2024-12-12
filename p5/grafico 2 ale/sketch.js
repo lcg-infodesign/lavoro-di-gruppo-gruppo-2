@@ -9,6 +9,8 @@ let satelliteData;
 let hoveredPoint = null;
 let inconsolataFont, rubikOneFont; // Variabili per i font
 let terraImg; // Nuova variabile per l'immagine
+let countries = []; // Array per memorizzare i paesi unici
+let menuOpen = false; // Variabile per tracciare lo stato del menu
 
 function preload() {
   // Carica i font
@@ -17,7 +19,28 @@ function preload() {
   terraImg = loadImage('../../img/terra3.png'); // Carica l'immagine
 
   // Carica il CSV
-  satelliteData = loadTable('../../space_decay.csv', 'csv', 'header');
+  satelliteData = loadTable('../../space_decay.csv', 'csv', 'header', 
+    () => {
+      console.log("CSV caricato con successo");
+      console.log("Numero di righe:", satelliteData.getRowCount()); // Log per il numero di righe
+      console.log("Colonne:", satelliteData.columns); // Log per le colonne
+
+      // Estrai i paesi unici
+      let uniqueCountries = new Set();
+      for (let row of satelliteData.rows) {
+        let country = row.get('COUNTRY_CODE');
+        if (country && country.trim() !== '') {
+          uniqueCountries.add(country);
+          console.log("Aggiunto paese:", country); // Log per ogni paese aggiunto
+        }
+      }
+      countries = Array.from(uniqueCountries).sort();
+      console.log("Lista finale dei paesi:", countries); // Log per la lista finale
+    },
+    (error) => {
+      console.error("Errore nel caricamento del CSV:", error); // Log per eventuali errori
+    }
+  );
 }
 
 function setup() {
@@ -43,6 +66,7 @@ buttons.forEach(button => {
   for (let year = startYear; year <= endYear; year++) {
     generateDotsForYear(year);
   }
+  createHamburgerMenu();
 }
 
 function windowResized() {
@@ -360,5 +384,50 @@ function drawRadialSlider() {
       selectedYear = floor(map(angle, startAngle, endAngle, startYear, endYear + 1));
       selectedYear = constrain(selectedYear, startYear, endYear);
     }
+  }
+}
+
+function createHamburgerMenu() {
+  let menuButton = createDiv('');
+  menuButton.class('hamburger-menu');
+  menuButton.position(50, 80);
+  menuButton.mousePressed(toggleMenu);
+  
+  for (let i = 0; i < 3; i++) {
+    let line = createDiv('');
+    line.parent(menuButton);
+    line.class('menu-line');
+  }
+  
+  let dropdownMenu = createDiv('');
+  dropdownMenu.class('dropdown-menu');
+  dropdownMenu.position(50, 130);
+  dropdownMenu.style('display', 'none');
+  
+  if (countries && countries.length > 0) {
+    countries.forEach(country => {
+      let countryItem = createDiv(country);
+      countryItem.parent(dropdownMenu);
+      countryItem.class('country-item');
+      countryItem.style('color', 'black');
+      console.log("Aggiunto paese al menu:", country); // Log per debug
+       });
+     } else {
+    console.log("Nessun paese disponibile"); // Log se non ci sono paesi
+  }
+}
+
+function toggleMenu() {
+  let dropdown = select('.dropdown-menu');
+  if (dropdown.style('display') === 'none') {
+    dropdown.style('display', 'block');
+    setTimeout(() => {
+      dropdown.addClass('show');
+    }, 10);
+  } else {
+    dropdown.removeClass('show');
+    setTimeout(() => {
+      dropdown.style('display', 'none');
+    }, 300);
   }
 }
