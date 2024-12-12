@@ -217,8 +217,8 @@ function drawSliderTimeline() {
   // Torna a Inconsolata per le etichette
   textFont(fontInconsolata);
   textSize(14);
-  text('1960', (width - 700) / 2 - 30, height - 40);  // Etichetta 1960
-  text('2020', (width + 700) / 2 + 30, height - 40);  // Etichetta 2020
+  text('1960', (width - 700) / 2 - 30, height - 55);  // Etichetta 1960
+  text('2020', (width + 700) / 2 + 30, height - 55);  // Etichetta 2020
 
   // Disegna la linea nera continua
   stroke(0);  // Colore nero
@@ -226,6 +226,20 @@ function drawSliderTimeline() {
   let startX = (width - 700) / 2;
   let endX = startX + 700;
   line(startX, height - 55, endX, height - 55);  // Linea continua
+
+  // Disegna la parte già attraversata dal razzo (pallini neri)
+  fill(0);  // Colore nero
+  let filledWidth = map(selectedYear, 1960, 2020, 0, 700);
+  for (let i = 0; i < filledWidth; i += 10) {
+    ellipse(startX + i, height - 55, 5, 5);
+  }
+
+  // Disegna i pallini neri ai termini dello slider (sollevati)
+  fill(0);
+  // Pallino sinistro
+  ellipse(startX, height - 55, 10, 10); // Distanza sollevata (-70)
+  // Pallino destro
+  ellipse(endX, height - 55, 10, 10); // Distanza sollevata (-70)
 
   // Aggiorna selectedYear solo se il mouse è premuto e si trova sopra lo slider
   if (mouseIsPressed && 
@@ -237,9 +251,22 @@ function drawSliderTimeline() {
     slider.value(selectedYear);
   }
 
-  // Disegna il razzo sulla timeline
+  // Disegna il razzo ruotato di 90 gradi sulla timeline
   let pallinoX = map(selectedYear, 1960, 2020, startX, startX + 700);
-  drawRocket(pallinoX, height - 45);
+
+  // Solo disegnare il razzo se la sua posizione è ancora valida
+  if (pallinoX < startX + 700) {
+    drawRocket(pallinoX, height - 45);
+  }
+}
+
+function drawRocket(x, y) {
+  push();
+  translate(x, y);
+  rotate(90);  // Ruota il razzo di 90°
+  imageMode(CENTER);
+  image(rocketImg, 0, 0, rocketWidth, rocketHeight);
+  pop();
 }
 
 function loadCountryCodes() {
@@ -411,7 +438,7 @@ function drawHighlightedSector() {
         textStyle(BOLD);
         textAlign(CENTER, CENTER);
         fill(0);
-        text(countryName, width / 2, 80); // Posiziona il testo al centro in alto
+        text(countryName, width / 2, 100); // Posiziona il testo al centro in alto
 
         // Aggiungi il reindirizzamento se il paese è Stati Uniti
         if (countryName === "STATI UNITI") { // Assicurati che il codice paese sia corretto
