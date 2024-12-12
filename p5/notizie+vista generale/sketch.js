@@ -444,7 +444,7 @@ function drawInfoBox() {
     let boxWidth = 350;
     let boxHeight = 150;
     let baseX = width - boxWidth - 20;
-    let baseY = 80;
+    let baseY = windowHeight/2 -100;
     let padding = 15;
     let visibleHeight = 5;
     let offsetY = visibleHeight;
