@@ -341,9 +341,9 @@ function drawInfoBox() {
     let boxWidth = 350;
     let boxHeight = 150;
     let baseX = width - boxWidth - 20;
-    let baseY = 20;
+    let baseY = 80;
     let padding = 15;
-    let visibleHeight = 30;
+    let visibleHeight = 5;
     let offsetY = visibleHeight;
     
     let imgSize = 100;
