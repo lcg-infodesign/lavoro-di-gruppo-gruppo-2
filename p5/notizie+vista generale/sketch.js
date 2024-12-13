@@ -446,6 +446,12 @@ function drawHighlightedSector() {
             window.location.href = '../grafico 2 ale/index.html'; // Reindirizza alla pagina
           }
         }
+        // Aggiungi il reindirizzamento se il paese è Stati Uniti
+        if (countryName === "FRANCIA") { // Assicurati che il codice paese sia corretto
+          if (mouseIsPressed) {
+            window.location.href = '../grafico Francia/index.html'; // Reindirizza alla pagina
+          }
+        }
       }
     }
   }
