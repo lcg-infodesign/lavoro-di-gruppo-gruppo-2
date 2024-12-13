@@ -343,6 +343,7 @@ function drawRadialSlider() {
   let radius = 320;
   let startAngle = 180;
   let endAngle = 360;
+  let interactionRadius = 50; // Raggio di interazione per il clic
 
   noFill();
   stroke(0);
@@ -376,12 +377,16 @@ function drawRadialSlider() {
   strokeWeight(2);
   ellipse(sliderX, sliderY, 16, 16);
 
+  // Limita l'interazione solo se il clic è all'interno del raggio di interazione
   if (mouseIsPressed) {
-    let angle = atan2(mouseY - centerY, mouseX - centerX);
-    if (angle < 0) angle += 360;
-    if (angle >= startAngle && angle <= endAngle) {
-      selectedYear = floor(map(angle, startAngle, endAngle, startYear, endYear + 1));
-      selectedYear = constrain(selectedYear, startYear, endYear);
+    let d = dist(mouseX, mouseY, sliderX, sliderY);
+    if (d < interactionRadius) {
+      let angle = atan2(mouseY - centerY, mouseX - centerX);
+      if (angle < 0) angle += 360;
+      if (angle >= startAngle && angle <= endAngle) {
+        selectedYear = floor(map(angle, startAngle, endAngle, startYear, endYear + 1));
+        selectedYear = constrain(selectedYear, startYear, endYear);
+      }
     }
   }
 }
