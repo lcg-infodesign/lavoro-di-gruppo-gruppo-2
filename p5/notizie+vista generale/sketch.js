@@ -228,12 +228,13 @@ function drawSliderTimeline() {
   text('1960', (width - 700) / 2 - 30, height - 55); // Etichetta 1960
   text('2020', (width + 700) / 2 + 30, height - 55); // Etichetta 2020
 
-  // Disegna la linea continua dello slider
-  stroke(0); // Colore nero
+  // Disegna la linea principale dello slider solo a destra del cursore
+  stroke(192); // Colore nero
   strokeWeight(2); // Spessore della linea
   let startX = (width - 700) / 2;
   let endX = startX + 700;
-  line(startX, height - 55, endX, height - 55); // Linea principale
+  let passedX = map(selectedYear, 1960, 2020, startX, endX); // Posizione massima del cursore
+  line(passedX, height - 55, endX, height - 55); // Linea a destra del cursore
 
   // Disegna i pallini di delimitazione
   fill(0); // Colore nero
@@ -243,9 +244,8 @@ function drawSliderTimeline() {
   // Aggiungi fumo cartoon proporzionato lungo lo slider, solo dove il cursore è passato
   let fumoWidth = 30; // Larghezza delle immagini del fumo
   let fumoHeight = fumoWidth / fumoAspectRatio; // Altezza proporzionata
-  let passedX = map(selectedYear, 1960, 2020, startX, endX); // Posizione massima del cursore
 
-  for (let i = 0; i <= 700; i += fumoWidth - 5) {
+  for (let i = 0; i <= passedX - startX; i += fumoWidth - 5) {
     let fumoX = startX + i;
 
     // Disegna le nuvolette solo dove il cursore è passato
