@@ -13,7 +13,7 @@ let notiziaCorrente = null;
 let immaginiNotizie = {};
 let rocketImg;
 let rocketWidth;
-let rocketHeight = 50; // Aumentato da 30 a 50 per un razzo più grande
+let rocketHeight = 40; // Aumentato da 30 a 50 per un razzo più grande
 let terraImg;
 let fontInconsolata;
 let fontRubik;
