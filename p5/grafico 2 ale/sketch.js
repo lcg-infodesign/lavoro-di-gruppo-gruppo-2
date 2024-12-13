@@ -146,7 +146,7 @@ function draw() {
   fill(0); 
   textFont(rubikOneFont);
   text('RIFIUTI SPAZIALI', 158, 52); 
-  strokeWeight(3); 
+  //strokeWeight(3); 
   fill(255); 
   textFont(rubikOneFont); 
   text('RIFIUTI SPAZIALI', 160, 50); 
@@ -160,13 +160,12 @@ function draw() {
     cursor(ARROW);
   }
 
-
+  push();
   // Titolo "USA" con il font Rubik One e nuovo stile
-  strokeWeight(6);
-  stroke(0);
-  fill(255);
-  textSize(64);
+  fill(0);
+  textSize(50);
   textFont(rubikOneFont);
+  strokeWeight(0);
   text("STATI UNITI", width / 2, 250);
 
   drawCircleWithRays();
