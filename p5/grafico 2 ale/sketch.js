@@ -146,7 +146,6 @@ function draw() {
   fill(0); 
   textFont(rubikOneFont);
   text('RIFIUTI SPAZIALI', 158, 52); 
-  //strokeWeight(3); 
   fill(255); 
   textFont(rubikOneFont); 
   text('RIFIUTI SPAZIALI', 160, 50); 
@@ -172,7 +171,13 @@ function draw() {
   drawDots();
   drawSelectedYear();
   drawRadialSlider();
+  
+  // Disegna il tooltip qui, dopo tutti gli altri elementi
+  if (hoveredPoint) {
+    drawTooltip(hoveredPoint);
+  }
 }
+
 
 function drawCircleWithRays() {
   let centerX = width / 2;
@@ -294,6 +299,7 @@ function drawDots() {
   }
 }
 
+// ... existing code ...
 function drawTooltip(point) {
   let tooltipX = mouseX + 20;
   let tooltipY = mouseY;
@@ -303,6 +309,7 @@ function drawTooltip(point) {
   if (tooltipX + tooltipW > width) tooltipX = mouseX - tooltipW - 20;
   if (tooltipY + tooltipH > height) tooltipY = mouseY - tooltipH;
 
+  // Disegna il tooltip
   fill(255);
   stroke(0);
   strokeWeight(1);
@@ -311,18 +318,23 @@ function drawTooltip(point) {
   noStroke();
   fill(0);
   textAlign(LEFT);
-  textSize(12);
+  textSize(14);
+  textFont(inconsolataFont);
+  textStyle(BOLD);
 
-  let padding = 10;
+  let leftPadding = 20;
+  let verticalPadding = 1;
   let lineHeight = 20;
-  text(`Object ID: ${point.objectId}`, tooltipX + padding, tooltipY + padding + lineHeight);
-  text(`Launch Site: ${point.site}`, tooltipX + padding, tooltipY + padding + lineHeight * 2);
-  text(`Type: ${point.objectType}`, tooltipX + padding, tooltipY + padding + lineHeight * 3);
-  text(`Size: ${point.rcsSize}`, tooltipX + padding, tooltipY + padding + lineHeight * 4);
-  text(`Apoapsis: ${Math.round(point.apoapsis)} km`, tooltipX + padding, tooltipY + padding + lineHeight * 5);
+  
+  text(`Object ID: ${point.objectId}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight);
+  text(`Launch Site: ${point.site}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 2);
+  text(`Type: ${point.objectType}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 3);
+  text(`Size: ${point.rcsSize}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 4);
+  text(`Apoapsis: ${Math.round(point.apoapsis)} km`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 5);
 
   textAlign(CENTER, CENTER);
 }
+// ... existing code ...
 
 function drawSelectedYear() {
   let centerX = width / 2;
