@@ -1,3 +1,5 @@
+let fumoImg; // Variabile globale per l'immagine del fumo
+let fumoAspectRatio = 1; // Rapporto larghezza/altezza delle nuvolette
 let slider;
 let selectedYear = 1960;
 let points = [];
@@ -45,6 +47,12 @@ function preload() {
     rocketWidth = rocketHeight * ratio;
   });
   terraImg = loadImage('../../img/leggereterrasottile.png');
+
+  // Carica l'immagine del fumo nella funzione preload
+  fumoImg = loadImage("../../img/fumo.png", () => {
+    // Calcola il rapporto larghezza/altezza una volta caricata l'immagine
+    fumoAspectRatio = fumoImg.width / fumoImg.height;
+  });
 
   // Carica i dati CSV
   table = loadTable("../../space_decay.csv", "header");
@@ -204,59 +212,66 @@ function draw() {
 }
 
 function drawSliderTimeline() {
-  // Testo sopra lo slider per mostrare l'anno selezionato
+  // Mostra l'anno selezionato sopra lo slider
   stroke(0);
   strokeWeight(0);
   fill(0);
-  textFont(fontInconsolata);  // Cambio font per l'anno
+  textFont(fontInconsolata); // Font per l'anno
   textSize(20);
   text(selectedYear, width / 2, height - 100);
 
+  // Disegna le etichette degli anni estremi
   noStroke();
   fill(0);
-  // Torna a Inconsolata per le etichette
   textFont(fontInconsolata);
   textSize(14);
-  text('1960', (width - 700) / 2 - 30, height - 55);  // Etichetta 1960
-  text('2020', (width + 700) / 2 + 30, height - 55);  // Etichetta 2020
+  text('1960', (width - 700) / 2 - 30, height - 55); // Etichetta 1960
+  text('2020', (width + 700) / 2 + 30, height - 55); // Etichetta 2020
 
-  // Disegna la linea nera continua
-  stroke(0);  // Colore nero
-  strokeWeight(2);  // Spessore della linea
+  // Disegna la linea continua dello slider
+  stroke(0); // Colore nero
+  strokeWeight(2); // Spessore della linea
   let startX = (width - 700) / 2;
   let endX = startX + 700;
-  line(startX, height - 55, endX, height - 55);  // Linea continua
+  line(startX, height - 55, endX, height - 55); // Linea principale
 
-  // Disegna la parte già attraversata dal razzo (pallini neri)
-  fill(0);  // Colore nero
-  let filledWidth = map(selectedYear, 1960, 2020, 0, 700);
-  for (let i = 0; i < filledWidth; i += 10) {
-    ellipse(startX + i, height - 55, 5, 5);
+  // Disegna i pallini di delimitazione
+  fill(0); // Colore nero
+  ellipse(startX, height - 55, 10, 10); // Pallino sinistro
+  ellipse(endX, height - 55, 10, 10); // Pallino destro
+
+  // Aggiungi fumo cartoon proporzionato lungo lo slider, solo dove il cursore è passato
+  let fumoWidth = 30; // Larghezza delle immagini del fumo
+  let fumoHeight = fumoWidth / fumoAspectRatio; // Altezza proporzionata
+  let passedX = map(selectedYear, 1960, 2020, startX, endX); // Posizione massima del cursore
+
+  for (let i = 0; i <= 700; i += fumoWidth - 5) {
+    let fumoX = startX + i;
+
+    // Disegna le nuvolette solo dove il cursore è passato
+    if (fumoX <= passedX) {
+      image(fumoImg, fumoX, height - 70, fumoWidth, fumoHeight); // Posiziona e ridimensiona l'immagine
+    }
   }
 
-  // Disegna i pallini neri ai termini dello slider (sollevati)
-  fill(0);
-  // Pallino sinistro
-  ellipse(startX, height - 55, 10, 10); // Distanza sollevata (-70)
-  // Pallino destro
-  ellipse(endX, height - 55, 10, 10); // Distanza sollevata (-70)
-
-  // Aggiorna selectedYear solo se il mouse è premuto e si trova sopra lo slider
-  if (mouseIsPressed && 
-      mouseY > height - 65 && mouseY < height - 45 && 
-      mouseX > startX && mouseX < startX + 700) {
-    let mouseXPosition = constrain(mouseX, startX, startX + 700);
-    let mouseIndex = map(mouseXPosition, startX, startX + 700, 0, 60);
+  // Aggiorna `selectedYear` se il mouse è sopra lo slider e viene premuto
+  if (
+    mouseIsPressed &&
+    mouseY > height - 65 &&
+    mouseY < height - 45 &&
+    mouseX > startX &&
+    mouseX < endX
+  ) {
+    let mouseXPosition = constrain(mouseX, startX, endX);
+    let mouseIndex = map(mouseXPosition, startX, endX, 0, 60);
     selectedYear = int(map(mouseIndex, 0, 60, 1960, 2020));
     slider.value(selectedYear);
   }
 
-  // Disegna il razzo ruotato di 90 gradi sulla timeline
-  let pallinoX = map(selectedYear, 1960, 2020, startX, startX + 700);
-
-  // Solo disegnare il razzo se la sua posizione è ancora valida
-  if (pallinoX < startX + 700) {
-    drawRocket(pallinoX, height - 45);
+  // Disegna il razzo ruotato di 90° sopra lo slider
+  let rocketX = map(selectedYear, 1960, 2020, startX, endX);
+  if (rocketX <= endX) {
+    drawRocket(rocketX, height - 45); // Posizione del razzo
   }
 }
 
