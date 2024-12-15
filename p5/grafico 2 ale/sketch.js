@@ -278,11 +278,6 @@ function drawDots() {
       let alpha = map(abs(point.year - selectedYear), 0, 60, 255, 50);
       alpha = constrain(alpha, 50, 255);
 
-      let col = color(point.color);
-      col.setAlpha(alpha);
-      fill(col);
-      noStroke();
-
       let d = dist(mouseX, mouseY, point.x, point.y);
       if (d < point.size) {
         hoveredPoint = point;
@@ -290,7 +285,15 @@ function drawDots() {
         stroke(0);
       }
 
-      ellipse(point.x, point.y, point.size, point.size);
+      // Sostituisci il cerchio con l'immagine del payload solo se il tipo è 'PAYLOAD'
+      if (point.objectType === 'PAYLOAD') {
+        let enlargedSize = point.size * 2; // Ingrandisci solo l'immagine del payload
+        image(payloadImage, point.x - enlargedSize / 2, point.y - enlargedSize / 2, enlargedSize, enlargedSize); // Usa l'immagine del payload
+      } else {
+        fill(point.color); // Assicurati di riempire con il colore corretto
+        noStroke();
+        ellipse(point.x, point.y, point.size, point.size); // Mantieni il cerchio per gli altri tipi
+      }
     }
   }
 
