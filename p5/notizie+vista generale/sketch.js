@@ -1,6 +1,13 @@
 let fumoImg; // Variabile globale per l'immagine del fumo
 let fumoAspectRatio = 1; // Rapporto larghezza/altezza delle nuvolette
+let fumoData = []; // Array per memorizzare le proprietà fisse delle nuvolette
+let numFumo = 40; // Numero massimo di nuvolette di fumo
 let slider;
+
+let autoScroll = true; // Variabile per abilitare lo scorrimento automatico
+let autoScrollSpeed = 0.5; // Velocità dello scorrimento automatico
+let autoScrollCompleted = false; // Variabile per indicare se l'auto-scroll è completato
+
 let selectedYear = 1960;
 let points = [];
 let countryCodes = []; // Array per i codici paese
@@ -35,6 +42,7 @@ let immaginiPrecaricate = {
   'spirit.png': null,
   'spacex.png': null
 };
+
 
 function preload() {
   // Carica i font
@@ -102,7 +110,10 @@ function setup() {
   loadCountryCodes();
   generateSectors();
   generateDots();
+  // Precalcola i dati del fumo
+  precalculateFumo();
 }
+
 
 
 function windowResized() {
@@ -202,13 +213,42 @@ function draw() {
     cursor(ARROW);
   }
 
+  if (autoScroll) {
+    // Incrementa l'anno automaticamente
+    selectedYear += autoScrollSpeed;
+    if (selectedYear > 2020) {
+      selectedYear = 1960; // Resetta all'inizio quando raggiunge la fine
+      autoScroll = false; // Disabilita l'auto-scroll
+      autoScrollCompleted = true; // Segna l'auto-scroll come completato
+    }
+    slider.value(selectedYear);
+  }
+
+  drawSliderTimeline();
 
   // Resto del codice di rendering
   drawHighlightedSector();
   drawCircleWithRays();
   drawDots();
-  drawSliderTimeline();
+  
   drawInfoBox();
+}
+
+
+
+function precalculateFumo() {
+  let startX = (width - 700) / 2;
+  let endX = startX + 700;
+  let step = (endX - startX) / numFumo;
+
+  for (let i = 0; i < numFumo; i++) {
+    let x = startX + i * step; // Posizione lungo lo slider
+    let randomScale = random(0.8, 1.3); // Scala casuale tra 80% e 120%
+    let randomRotation = random(-30, 30); // Rotazione casuale tra -15° e 15°
+    let randomOffsetY = random(-5, 5); // Traslazione verticale casuale
+
+    fumoData.push({ x, scale: randomScale, rotation: randomRotation, offsetY: randomOffsetY });
+  }
 }
 
 function drawSliderTimeline() {
@@ -229,7 +269,7 @@ function drawSliderTimeline() {
   text('2020', (width + 700) / 2 + 30, height - 55); // Etichetta 2020
 
   // Disegna la linea principale dello slider solo a destra del cursore
-  stroke(192); // Colore nero
+  stroke(192); // Colore grigio
   strokeWeight(2); // Spessore della linea
   let startX = (width - 700) / 2;
   let endX = startX + 700;
@@ -241,27 +281,28 @@ function drawSliderTimeline() {
   ellipse(startX, height - 55, 10, 10); // Pallino sinistro
   ellipse(endX, height - 55, 10, 10); // Pallino destro
 
-  // Aggiungi fumo cartoon proporzionato lungo lo slider, solo dove il cursore è passato
-  let fumoWidth = 30; // Larghezza delle immagini del fumo
-  let fumoHeight = fumoWidth / fumoAspectRatio; // Altezza proporzionata
-
-  for (let i = 0; i <= passedX - startX; i += fumoWidth - 5) {
-    let fumoX = startX + i;
-
-    // Disegna le nuvolette solo dove il cursore è passato
-    if (fumoX <= passedX) {
-      image(fumoImg, fumoX, height - 70, fumoWidth, fumoHeight); // Posiziona e ridimensiona l'immagine
+  // Disegna le nuvolette di fumo, solo dove il cursore è passato
+  for (let fumo of fumoData) {
+    if (fumo.x <= passedX) {
+      push();
+      translate(fumo.x, height - 60 + fumo.offsetY); // Posiziona il fumo con offset
+      rotate(radians(fumo.rotation)); // Applica la rotazione casuale
+      imageMode(CENTER); // Cambia il punto di riferimento dell'immagine
+      image(fumoImg, 0, 0, 30 * fumo.scale, (30 / fumoAspectRatio) * fumo.scale); // Disegna il fumo scalato
+      pop();
     }
   }
 
   // Aggiorna `selectedYear` se il mouse è sopra lo slider e viene premuto
   if (
     mouseIsPressed &&
-    mouseY > height - 65 &&
-    mouseY < height - 45 &&
+    mouseY > height - 80 && // Ampliato il range verticale sopra lo slider
+    mouseY < height - 40 && // Ampliato il range verticale sotto lo slider
     mouseX > startX &&
     mouseX < endX
   ) {
+    autoScrollCompleted = true; // Segna l'auto-scroll come completato
+    autoScroll = false; // Disabilita l'auto-scroll quando l'utente interagisce manualmente
     let mouseXPosition = constrain(mouseX, startX, endX);
     let mouseIndex = map(mouseXPosition, startX, endX, 0, 60);
     selectedYear = int(map(mouseIndex, 0, 60, 1960, 2020));
@@ -274,6 +315,8 @@ function drawSliderTimeline() {
     drawRocket(rocketX, height - 45); // Posizione del razzo
   }
 }
+
+
 
 function drawRocket(x, y) {
   push();
