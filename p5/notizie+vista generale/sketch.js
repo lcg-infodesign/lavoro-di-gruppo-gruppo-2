@@ -312,7 +312,7 @@ function drawSliderTimeline() {
   // Disegna il razzo ruotato di 90° sopra lo slider
   let rocketX = map(selectedYear, 1960, 2020, startX, endX);
   if (rocketX <= endX) {
-    drawRocket(rocketX, height - 45); // Posizione del razzo
+    drawRocket(rocketX, height-55); // Posizione del razzo
   }
 }
 
