@@ -11,6 +11,7 @@ let inconsolataFont, rubikOneFont; // Variabili per i font
 let terraImg; // Nuova variabile per l'immagine
 let countries = []; // Array per memorizzare i paesi unici
 let menuOpen = false; // Variabile per tracciare lo stato del menu
+let rocketBodyImage; // Aggiungi questa riga per la variabile dell'immagine del rocket body
 
 function preload() {
   // Carica i font
@@ -41,6 +42,23 @@ function preload() {
       console.error("Errore nel caricamento del CSV:", error); // Log per eventuali errori
     }
   );
+
+  payloadImage = loadImage('../../img/payload.png', 
+    () => console.log("Immagine payload caricata con successo"), 
+    (error) => console.error("Errore nel caricamento dell'immagine payload:", error)
+  ); // Carica l'immagine del payload
+  debrisImage = loadImage('../../img/debris.png', 
+    () => console.log("Immagine debris caricata con successo"), 
+    (error) => console.error("Errore nel caricamento dell'immagine debris:", error)
+  ); // Carica l'immagine dei debris
+  tbiImage = loadImage('../../img/tbi.png', 
+    () => console.log("Immagine TBI caricata con successo"), 
+    (error) => console.error("Errore nel caricamento dell'immagine TBI:", error)
+  ); // Carica l'immagine TBI
+  rocketBodyImage = loadImage('../../img/rocket body.png', // Assicurati di usare il nome corretto
+    () => console.log("Immagine rocket body caricata con successo"), 
+    (error) => console.error("Errore nel caricamento dell'immagine rocket body:", error)
+  ); // Carica l'immagine del rocket body
 }
 
 function setup() {
@@ -287,9 +305,28 @@ function drawDots() {
 
       // Sostituisci il cerchio con l'immagine del payload solo se il tipo è 'PAYLOAD'
       if (point.objectType === 'PAYLOAD') {
-        let enlargedSize = point.size * 2; // Ingrandisci solo l'immagine del payload
+        let enlargedSize = point.size * 3; // Ingrandisci l'immagine del payload
         image(payloadImage, point.x - enlargedSize / 2, point.y - enlargedSize / 2, enlargedSize, enlargedSize); // Usa l'immagine del payload
-      } else {
+      } 
+      // Sostituisci il cerchio con l'immagine dei debris solo se il tipo è 'DEBRIS'
+      else if (point.objectType === 'DEBRIS') {
+        let enlargedSize = point.size * 3; // Ingrandisci l'immagine dei debris
+        image(debrisImage, point.x - enlargedSize / 2, point.y - enlargedSize / 2, enlargedSize, enlargedSize); // Usa l'immagine dei debris
+      } 
+      // Sostituisci il cerchio con l'immagine TBI solo se il tipo è 'TO BE IDENTIFIED'
+      else if (point.objectType === 'TO BE IDENTIFIED') {
+        let enlargedSize = point.size * 3; // Ingrandisci l'immagine TBI
+        image(tbiImage, point.x - enlargedSize / 2, point.y - enlargedSize / 2, enlargedSize, enlargedSize); // Usa l'immagine TBI
+      } 
+      // Sostituisci il cerchio con l'immagine del rocket body solo se il tipo è 'ROCKET BODY'
+      else if (point.objectType === 'ROCKET BODY') {
+        let enlargedSize = point.size * 3; // Ingrandisci l'immagine del rocket body
+        let aspectRatio = rocketBodyImage.width / rocketBodyImage.height; // Calcola il rapporto di aspetto
+        let imgWidth = enlargedSize; // Larghezza dell'immagine
+        let imgHeight = enlargedSize / aspectRatio; // Calcola l'altezza mantenendo il rapporto di aspetto
+        image(rocketBodyImage, point.x - imgWidth / 2, point.y - imgHeight / 2, imgWidth, imgHeight); // Usa l'immagine del rocket body
+      } 
+      else {
         fill(point.color); // Assicurati di riempire con il colore corretto
         noStroke();
         ellipse(point.x, point.y, point.size, point.size); // Mantieni il cerchio per gli altri tipi
