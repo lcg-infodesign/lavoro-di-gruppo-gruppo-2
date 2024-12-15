@@ -493,6 +493,7 @@ function drawHighlightedSector() {
 
         // Disegna il nome del paese al centro in alto
         textSize(20);
+        textFont(fontRubik)
         textStyle(BOLD);
         textAlign(CENTER, CENTER);
         fill(0);
