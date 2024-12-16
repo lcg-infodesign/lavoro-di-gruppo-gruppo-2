@@ -53,7 +53,7 @@ function setup() {
     });
 
     exploreButton.mousePressed(() => {
-        window.location.href = '../grafico/index.html';
+        window.location.href = '../p5/notizie+vista generale/index.html';
     });
 }
 
