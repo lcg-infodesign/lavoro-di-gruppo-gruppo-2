@@ -49,10 +49,10 @@ function setup() {
   textAlign(CENTER, CENTER);
 
   let buttonPositions = [
-    { x: width - 540, y: 30 },
-    { x: width - 430, y: 30 },
-    { x: width - 300, y: 30 },
-    { x: width - 115, y: 30 }
+    { x: width - 630, y: 30 },
+    { x: width - 510, y: 30 },
+    { x: width - 370, y: 30 },
+    { x: width - 160, y: 30 }
 ];
 createButtons(buttonPositions);
 // Aggiungi questa riga per rendere i pulsanti fissi
@@ -86,8 +86,14 @@ function createButtons(positions) {
       button.position(positions[i].x, positions[i].y);
       button.size(buttonWidth, buttonHeight);
       button.style('border-radius', '10px');
+      button.style('background-color', 'white');
+      button.style('border', '2px solid black');
       button.style('font-family', 'Inconsolata');
       button.style('font-weight', 'bold');
+      button.style('font-size', '16px');
+      button.style('cursor', 'pointer');
+      button.style('width', 'auto');
+      button.style('padding', '10px 20px');
 
       if (buttonLabels[i] === 'GRAFICO') {
           button.style('background-color', 'black');

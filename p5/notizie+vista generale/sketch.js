@@ -28,28 +28,32 @@ let rotationAngle = 0;
 let cardPositions = []; // Array per tenere traccia delle posizioni delle carte
 let cardTargets = [];  // Array per le posizioni target
 let ANIMATION_SPEED = 0.15; // Velocità di animazione (0-1)
-let immaginiPrecaricate = {
-  'apollo11.png': null,
-  'sputnik.png': null,
-  'gagarin.png': null,
-  'apollo13.png': null,
-  'skylab.png': null,
-  'mir.png': null,
-  'challenger.png': null,
-  'hubble.png': null,
-  'iss.png': null,
-  'columbia.png': null,
-  'spirit.png': null,
-  'spacex.png': null
-};
+;
 
 
 function preload() {
   // Carica i font
   fontRubik = loadFont('../../fonts/RubikOne.ttf');
   fontInconsolata = loadFont('../../fonts/Inconsolata.ttf');
+  imgn1 = loadImage('../../img/n1.png');
+  imgn2 = loadImage('../../img/n2.png');
+  imgn3 = loadImage('../../img/n3.png');
+  imgn4 = loadImage('../../img/n4.png');
+  imgn5 = loadImage('../../img/n5.png');
+  imgn6 = loadImage('../../img/n6.png');
+  imgn7 = loadImage('../../img/n7.png');
+  imgn8 = loadImage('../../img/n8.png');
+  imgn9 = loadImage('../../img/n9.png');
+  imgn10 = loadImage('../../img/n10.png');
+  imgn11 = loadImage('../../img/n11.png');
+  imgn12 = loadImage('../../img/n12.png');
+  imgn13 = loadImage('../../img/n13.png');
+  imgn14 = loadImage('../../img/n14.png');
+  imgn15 = loadImage('../../img/n15.png');
+  imgn16 = loadImage('../../img/n16.png');
+  imgn17 = loadImage('../../img/n17.png');
 
-  // Carica le immagini principali
+
   rocketImg = loadImage('../../img/razzino.png', img => {
     let ratio = img.width / img.height;
     rocketWidth = rocketHeight * ratio;
@@ -66,15 +70,6 @@ function preload() {
   table = loadTable("../../space_decay.csv", "header");
   notizieTable = loadTable("../../notizie.csv", "header");
   
-  // Precarica tutte le immagini delle notizie
-  for (let nomeImmagine in immaginiPrecaricate) {
-    immaginiNotizie[nomeImmagine] = loadImage('img/' + nomeImmagine, 
-      // Callback di successo
-      () => console.log("Immagine precaricata con successo:", nomeImmagine),
-      // Callback di errore
-      () => console.error("Errore nel caricamento dell'immagine:", nomeImmagine)
-    );
-  }
 }
 
 function setup() {
@@ -87,10 +82,10 @@ function setup() {
 
   // Posizioni pulsanti nella navbar
   let buttonPositions = [
-    { x: width - 540, y: 30 },
-    { x: width - 430, y: 30 },
-    { x: width - 300, y: 30 },
-    { x: width - 115, y: 30 }
+    { x: width - 630, y: 30 },
+    { x: width - 510, y: 30 },
+    { x: width - 370, y: 30 },
+    { x: width - 160, y: 30 }
   ];
 
   createButtons(buttonPositions);
@@ -133,8 +128,14 @@ function createButtons(positions) {
       button.position(positions[i].x, positions[i].y);
       button.size(buttonWidth, buttonHeight);
       button.style('border-radius', '10px');
+      button.style('background-color', 'white');
+      button.style('border', '2px solid black');
       button.style('font-family', 'Inconsolata');
       button.style('font-weight', 'bold');
+      button.style('font-size', '16px');
+      button.style('cursor', 'pointer');
+      button.style('width', 'auto');
+      button.style('padding', '10px 20px');
 
       if (buttonLabels[i] === 'GRAFICO') {
           button.style('background-color', 'black');
@@ -534,7 +535,7 @@ function drawInfoBox() {
   // Mostra le notizie trovate
   if (notizieDaMostrare.length > 0) {
     let boxWidth = 350;
-    let boxHeight = 150;
+    let boxHeight = 200; // Aumentato per far spazio all'immagine
     let baseX = width - boxWidth - 20;
     let baseY = windowHeight/2 -100;
     let padding = 15;
@@ -586,13 +587,12 @@ function drawInfoBox() {
       let lineHeight = 18;
       
       // Testo della notizia
-      textStyle(BOLD);
-      textSize(14);
+      textSize(16);
       text(notizia.testo, textX, textY, maxWidth);
       
       // Anno
       textStyle(NORMAL);
-      textSize(14);
+      textSize(16);
       let bottomY = boxY + boxHeight - padding - lineHeight * 2;
       text(notizia.anno, textX, bottomY);
       
@@ -601,30 +601,18 @@ function drawInfoBox() {
       stroke(0);
       strokeWeight(1.5);
       textFont(fontRubik);
-      textSize(16);
+      textSize(18);
       text(notizia.paese, textX, bottomY + lineHeight);
+      
+      // Disegna l'immagine corrispondente sotto il paese
+      let imgIndex = i % 16; // Assicurati che ci siano 16 immagini
+      let imgWidth = imgSize; // Larghezza dell'immagine
+      let imgHeight = (imgWidth / eval(`imgn${imgIndex + 1}`).width) * eval(`imgn${imgIndex + 1}`).height; // Altezza calcolata per mantenere le proporzioni
+      image(eval(`imgn${imgIndex + 1}`), boxX + boxWidth - imgWidth - imgPadding, boxY + padding + lineHeight * 2, imgWidth, imgHeight); // Disegna l'immagine sotto il paese
       
       // Ritorna al font Inconsolata
       textFont(fontInconsolata);
       
-      // Posizione dell'immagine
-      let imgX = boxX + boxWidth - imgSize - padding;
-      let imgY = boxY + (boxHeight - imgSize) / 2;
-      
-      if (notizia.immagine && immaginiNotizie[notizia.immagine]) {
-        image(immaginiNotizie[notizia.immagine], imgX, imgY, imgSize, imgSize);
-      } else {
-        stroke(200);
-        strokeWeight(1);
-        fill(240);
-        rect(imgX, imgY, imgSize, imgSize);
-        
-        fill(150);
-        noStroke();
-        textAlign(CENTER, CENTER);
-        textSize(10);
-        text('IMG', imgX + imgSize/2, imgY + imgSize/2);
-      }
     }
     
     textAlign(CENTER, CENTER);

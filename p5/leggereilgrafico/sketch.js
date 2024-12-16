@@ -29,11 +29,11 @@ imgcosa5 = loadImage('../../img/cosa5.png');
 function setup() {
     createCanvas(windowWidth, 2100); 
     let buttonPositions = [
-        { x: width - 540, y: 30 },
-        { x: width - 430, y: 30 },
-        { x: width - 300, y: 30 },
-        { x: width - 115, y: 30 }
-    ];
+        { x: width - 630, y: 30 },
+        { x: width - 510, y: 30 },
+        { x: width - 370, y: 30 },
+        { x: width - 160, y: 30 }
+        ];
     createButtons(buttonPositions);
         // Aggiungi questa riga per rendere i pulsanti fissi
         let buttons = selectAll('button');
@@ -60,9 +60,15 @@ function createButtons(positions) {
         button.position(positions[i].x, positions[i].y);
         button.size(buttonWidth, buttonHeight);
         button.style('border-radius', '10px');
+        button.style('background-color', 'white');
+        button.style('border', '2px solid black');
         button.style('font-family', 'Inconsolata');
         button.style('font-weight', 'bold');
-
+        button.style('font-size', '16px');
+        button.style('cursor', 'pointer');
+        button.style('width', 'auto');
+        button.style('padding', '10px 20px');
+  
         if (buttonLabels[i] === 'LEGGERE IL GRAFICO') {
             button.style('background-color', 'black');
             button.style('color', 'white');
@@ -158,9 +164,9 @@ image(imgLeggere1, 100 + cos(time) * floatAmplitude, 300 + sin(time) * floatAmpl
   text('DA DOVE VENGONO\nI DATI?', width / 2, 450);
   text('QUALI DATI\nSONO RAPPRESENTATI?', width / 2, 1050 ); 
 
-  textSize(14);
+  textSize(16);
   textFont(fontInconsolata); 
-  textLeading(14);
+  textLeading(16);
   noStroke ();
   fill (0);
   text('Il dataset di riferimento è fornito da una API di Space-Track.org basato\nsui dati del United States Space Surveillance Network che rileva,\ntraccia, cataloga e identifica oggetti artificial\nin orbita attorno alla Terra.', width / 2, 580); 
@@ -197,36 +203,41 @@ image(imgLeggere1, 100 + cos(time) * floatAmplitude, 300 + sin(time) * floatAmpl
         'ANNO',
         'PERIGEO'
     ];
-    text(rubikTexts[i], r.x + 30, r.y + 30);
-    
-    textLeading(14);
+
+    if (i === 3) {
+        text(rubikTexts[i], r.x + 30, r.y + 50);
+    } else {
+        text(rubikTexts[i], r.x + 30, r.y + 30);
+    }
+
+    textLeading(16);
     
     // Aggiungi i nuovi testi nel rettangolo 2
     if (i === 1) { // Controlla se siamo nel secondo rettangolo
         // Draw images behind the texts
-        image(imgHome5, r.x + 50 , r.y + 130 + sin(time + 6) * floatAmplitude, imgHome5.width * 0.1, imgHome5.height * 0.1); 
-        image(imgHome3, r.x + 200, r.y + 140 + sin(time + 5) * floatAmplitude, imgHome3.width * 0.15, imgHome3.height * 0.15);
-        image(imgHome4, r.x + 330, r.y + 120 + sin(time + 3) * floatAmplitude, imgHome4.width * 0.08, imgHome4.height * 0.08);
-        image(imgHome2, r.x + 520, r.y + 140 + sin(time + 4) * floatAmplitude, imgHome2.width * 0.08, imgHome2.height * 0.08);
+        image(imgHome5, r.x + 50 , r.y + 110 + sin(time + 6) * floatAmplitude, imgHome5.width * 0.1, imgHome5.height * 0.1); 
+        image(imgHome3, r.x + 200, r.y + 120 + sin(time + 5) * floatAmplitude, imgHome3.width * 0.15, imgHome3.height * 0.15);
+        image(imgHome4, r.x + 330, r.y + 100 + sin(time + 3) * floatAmplitude, imgHome4.width * 0.08, imgHome4.height * 0.08);
+        image(imgHome2, r.x + 520, r.y + 120 + sin(time + 4) * floatAmplitude, imgHome2.width * 0.08, imgHome2.height * 0.08);
 //   image(imgHome3, 410 + cos(time + 1) * floatAmplitude, 390 + sin(time + 1) * floatAmplitude, imgHome3.width * scaleFactor, imgHome3.height * scaleFactor);
 
 textSize(22);
         stroke(0); // Bordo nero
         strokeWeight (3)
         fill(255); // Testo bianco
-        text('payload', r.x + 50, r.y + 180);
-        text('detrito', r.x + 200, r.y + 180);
-        text('rocket body', r.x + 330, r.y + 180);
-        text('tba', r.x + 520, r.y + 180);
+        text('payload', r.x + 50, r.y + 170);
+        text('detrito', r.x + 200, r.y + 170);
+        text('rocket body', r.x + 330, r.y + 170);
+        text('tba', r.x + 520, r.y + 170);
         
-        textSize(14); 
+        textSize(16); 
         fill(0); 
         noStroke ()
         textFont(fontInconsolata);
-        text('elementi del\nveicolo spaziale\nspecificamente\ndedicati alla\nproduzione di\ndati di missione\nealla successiva\ntrasmissione di\ntali dati\nalla Terra.', r.x + 40, r.y + 305);
-        text('scaglie di\nvernici, polveri,\nmaterialeespulso\ndai motori dei\nrazzi, liquido\nrefrigerante ed\naltre piccole\nparticelle.', r.x + 190, r.y + 290);
-        text('struttura che\nrimane in orbita\ndopo aver\ncompletato il\nsuo compito\ndi trasportare il\npayload nello spazio.', r.x + 340, r.y + 280);
-        text('oggetto non\nidentificato.', r.x + 510, r.y + 245);
+        text('elementi del\nveicolo spaziale\nspecificamente\ndedicati alla\nproduzione di\ndati di missione\nealla successiva\ntrasmissione\ndi tali dati\nalla Terra.', r.x + 40, r.y + 290);
+        text('scaglie di\nvernici, polveri,\nmateriale\nespulso\ndai motori\ndei razzi,\nliquido\nrefrigerante ed\naltre piccole\nparticelle.', r.x + 190, r.y + 290);
+        text('struttura che\nrimane in orbita\ndopo aver\ncompletato il\nsuo compito\ndi trasportare\nil payload\nnello spazio.', r.x + 340, r.y + 273);
+        text('oggetto non\nidentificato.', r.x + 500, r.y + 223);
     } else if (i === 2) { // Controlla se siamo nel rettangolo "PAESE"
         stroke(0); // Bordo nero
         strokeWeight(5);
@@ -290,7 +301,8 @@ textSize(22);
     }
 
     // Testo con font Inconsolata
-    textSize(14);
+    textSize(16);
+    textLeading(16);
     noStroke();
     fill(0);
     textFont(fontInconsolata);
@@ -298,10 +310,15 @@ textSize(22);
         'indica il codice di riferimento\ndel detrito.',
         'indica la tipologia di detrito.',
         'responsabile\ndel lancio.',
-        'indica quanto il detrito\nè rilevabile dai radar, maggiore\nè la forza radar, più l’oggetto\nè rilevabile. Per oggetti con debole\nforza radar, il rischio\ndi collisione è maggiore, in quanto\ndifficilmente rilevabili.',
-        'indica l’anno in cui l’oggetto al quale apparteneva il detrito è stato lanciato\nnello spazio. Vanno dal 1960 al 2021.',
+        'indica quanto il detrito\nè rilevabile dai radar, maggiore\nè la forza radar, più l’oggetto\nè rilevabile. Per oggetti\ncon debole forza radar,\nil rischio di collisione\nè maggiore, in quanto\ndifficilmente rilevabili.', 
+        'indica l’anno in cui l’oggetto al quale apparteneva il detrito è stato\nlanciato nello spazio. Vanno dal 1960 al 2021.',
         'è il punto di massima vicinanza\ndel detrito alla Terra, mentre orbita\nintorno ad essa.'
     ];
-    text(inconsolataTexts[i], r.x + 30, r.y + 80);
+    
+    if (i === 3) {
+        text(inconsolataTexts[i], r.x + 30, r.y + 160);
+    } else {
+        text(inconsolataTexts[i], r.x + 30, r.y + 80);
+    }
   }
 }

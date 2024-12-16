@@ -21,12 +21,40 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight); 
     let buttonPositions = [
-        { x: width - 540, y: 30 },
-        { x: width - 430, y: 30 },
-        { x: width - 300, y: 30 },
-        { x: width - 115, y: 30 }
+        { x: width - 630, y: 30 },
+        { x: width - 510, y: 30 },
+        { x: width - 370, y: 30 },
+        { x: width - 160, y: 30 }
     ];
     createButtons(buttonPositions);
+    
+    // Creazione del pulsante "ESPLORA I DATI" spostata qui
+    let exploreButton = createButton('ESPLORA I DATI');
+    exploreButton.position(width / 2 - 90, height / 2 + 190);
+    exploreButton.size(150, 60);
+    exploreButton.style('border-radius', '10px');
+    exploreButton.style('background-color', 'black');
+    exploreButton.style('color', 'white');
+    exploreButton.style('border', '2px solid black');
+    exploreButton.style('font-family', 'Inconsolata');
+    exploreButton.style('font-weight', 'bold');
+    exploreButton.style('font-size', '16px');
+    exploreButton.style('cursor', 'pointer');
+
+    exploreButton.mouseOver(() => {
+        exploreButton.style('background-color', 'white');
+        exploreButton.style('color', 'black');
+        exploreButton.style('border', '2px solid black');
+    });
+    exploreButton.mouseOut(() => {
+        exploreButton.style('background-color', 'black');
+        exploreButton.style('color', 'white');
+        exploreButton.style('border', '2px solid black');
+    });
+
+    exploreButton.mousePressed(() => {
+        window.location.href = '../grafico/index.html';
+    });
 }
 
 function windowResized() {
@@ -50,6 +78,10 @@ function createButtons(positions) {
         button.style('border', '2px solid black');
         button.style('font-family', 'Inconsolata');
         button.style('font-weight', 'bold');
+        button.style('font-size', '16px');
+        button.style('cursor', 'pointer');
+        button.style('width', 'auto');
+        button.style('padding', '10px 20px');
         
         button.mouseOver(() => {
             button.style('background-color', 'black');
@@ -101,17 +133,17 @@ function draw() {
   stroke(0); 
   fill(0); 
   textFont(fontRubik); 
-  text('RIFIUTI\nSPAZIALI', width / 2 - 10, height / 2 + 10); 
+  text('RIFIUTI\nSPAZIALI', width / 2 - 10, height / 2 -30); 
   strokeWeight(7); 
   fill(255); 
   textFont(fontRubik); 
-  text('RIFIUTI\nSPAZIALI', width / 2, height / 2); 
+  text('RIFIUTI\nSPAZIALI', width / 2, height / 2 -40); 
   
   // testino
-  textSize(14);
+  textSize(16);
   textFont(fontInconsolata); 
-  textLeading(14);
+  textLeading(16);
   noStroke ();
   fill (0);
-  text('Da quando noi umani abbiamo iniziato a esplorare lo spazio, abbiamo\nanche creato un pò di confusione...', width / 2, height / 2 + 170); 
+  text('Da quando noi umani abbiamo iniziato a esplorare lo spazio,\nabbiamo anche creato un pò di confusione...', width / 2, height / 2 + 130); 
 }

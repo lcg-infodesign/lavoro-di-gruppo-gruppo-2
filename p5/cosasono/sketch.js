@@ -27,11 +27,11 @@ imgcosaastronauta = loadImage('../../img/cosaastronauta.png');
 function setup() {
     createCanvas(windowWidth, 3900); 
     let buttonPositions = [
-        { x: width - 540, y: 30 },
-        { x: width - 430, y: 30 },
-        { x: width - 300, y: 30 },
-        { x: width - 115, y: 30 }
-    ];
+      { x: width - 630, y: 30 },
+      { x: width - 510, y: 30 },
+      { x: width - 370, y: 30 },
+      { x: width - 160, y: 30 }
+  ];
     createButtons(buttonPositions);
     // Aggiungi questa riga per rendere i pulsanti fissi
     let buttons = selectAll('button');
@@ -57,8 +57,14 @@ function createButtons(positions) {
         button.position(positions[i].x, positions[i].y);
         button.size(buttonWidth, buttonHeight);
         button.style('border-radius', '10px');
+        button.style('background-color', 'white');
+        button.style('border', '2px solid black');
         button.style('font-family', 'Inconsolata');
         button.style('font-weight', 'bold');
+        button.style('font-size', '16px');
+        button.style('cursor', 'pointer');
+        button.style('width', 'auto');
+        button.style('padding', '10px 20px');
 
         if (buttonLabels[i] === 'COSA SONO') {
             button.style('background-color', 'black');
@@ -162,9 +168,9 @@ image(imgcosaastronauta, 710 + cos(time + 7) * floatAmplitude, 3100 + sin(time +
   textFont(fontRubik); 
   text('COSA SONO\nI RIFIUTI\nSPAZIALI?', width / 2 - 500, 400); 
 
-  textSize(14);
+  textSize(16);
   textFont(fontInconsolata); 
-  textLeading(14);
+  textLeading(16);
   noStroke ();
   fill (0);
   text('I rifiuti spaziali sono qualsiasi pezzo di macchinario o detrito\nlasciato dagli esseri umani nello spazio.\nPuò riferirsi a oggetti di grandi dimensioni come satelliti morti che\nhanno fallito o sono rimasti in orbita alla fine della loro missione.\nPuò anche riferirsi a cose più piccole, come pezzi di detriti o macchie\ndi vernice cadute da un razzo.', width / 2 , 600);   
@@ -178,9 +184,9 @@ fill(255);
 textFont(fontRubik); 
 text('QUANTA SPAZZATURA\nSPAZIALE CE?', width / 2 - 500, 1250); 
 
-textSize(14);
+textSize(16);
 textFont(fontInconsolata); 
-textLeading(14);
+textLeading(16);
 noStroke ();
 fill (0);
 text('Mentre ci sono circa 2.000 satelliti attivi in orbita attorno alla Terra\nal momento, ce ne sono anche 3.000 morti che disseminano lo spazio.\nInoltre, ci sono circa 34.000 pezzi di spazzatura spaziale\npiù grandi di 10 centimetri e milioni di pezzi più piccoli\nche potrebbero comunque rivelarsi disastrosi\nse colpissero qualcos altro.', width / 2 , 1100);  
@@ -195,9 +201,9 @@ textFont(fontRubik);
 textAlign (RIGHT)
 text('COME ARRIVANO\nI DETRITI\nNELLO SPAZIO?', width / 2 + 450, 1800); 
 
-textSize(14);
+textSize(16);
 textFont(fontInconsolata); 
-textLeading(14);
+textLeading(16);
 noStroke ();
 fill (0);
 textAlign (LEFT)
@@ -212,9 +218,9 @@ fill(255);
 textFont(fontRubik); 
 text('QUALI RISCHI\nRAPPRESENTANO\nPER LESPLORAZIONE\nSPAZIALE?', width / 2 - 500,2600); 
 
-textSize(14);
+textSize(16);
 textFont(fontInconsolata); 
-textLeading(14);
+textLeading(16);
 noStroke ();
 fill (0);
 text('Fortunatamente, al momento, la spazzatura spaziale non rappresenta un grosso rischio per i nostri\nsforzi di esplorazione, il pericolo maggiore che rappresenta è per gli altri satelliti in orbita.\nQuesti satelliti devono spostarsi per evitare di essere colpiti da tutti questi detriti spaziali\nin arrivo, per evitare di essere danneggiati o distrutti.\nIn totale, ogni anno vengono eseguite centinaia di manovre anticollisione su tutti i satelliti,\ncompresa la Stazione Spaziale Internazionale (ISS), dove vivono gli astronauti.\nFortunatamente, le collisioni sono rare: un satellite cinese si è rotto a marzo 2021 dopo\nuna collisione. Prima di allora, lultimo satellite a scontrarsi ed essere distrutto da spazzatura\nspaziale era stato nel 2009. E quando si tratta di esplorare oltre lorbita terrestre,\nnessuna delle limitate quantità di spazzatura spaziale là fuori rappresenta un problema.', width / 2 -200 , 2830); 
@@ -229,9 +235,9 @@ textFont(fontRubik);
 textAlign (RIGHT)
 text('I DETRITI\nSPAZIALI\nSARANNO\nUN PROBLEMA\nIN FUTURO?', width / 2 + 500, 3400); 
 
-textSize(14);
+textSize(16);
 textFont(fontInconsolata); 
-textLeading(14);
+textLeading(16);
 noStroke ();
 fill (0);
 textAlign (LEFT)

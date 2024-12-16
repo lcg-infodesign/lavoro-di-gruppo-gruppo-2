@@ -22,11 +22,11 @@ imgCosaastronauta = loadImage('../../img/cosaastronauta.png');
 function setup() {
     createCanvas(windowWidth, 2000); 
     let buttonPositions = [
-        { x: width - 540, y: 30 },
-        { x: width - 430, y: 30 },
-        { x: width - 300, y: 30 },
-        { x: width - 115, y: 30 }
-    ];
+      { x: width - 630, y: 30 },
+      { x: width - 510, y: 30 },
+      { x: width - 370, y: 30 },
+      { x: width - 160, y: 30 }
+  ];
     createButtons(buttonPositions);
         // Aggiungi questa riga per rendere i pulsanti fissi
         let buttons = selectAll('button');
@@ -53,8 +53,14 @@ function createButtons(positions) {
         button.position(positions[i].x, positions[i].y);
         button.size(buttonWidth, buttonHeight);
         button.style('border-radius', '10px');
+        button.style('background-color', 'white');
+        button.style('border', '2px solid black');
         button.style('font-family', 'Inconsolata');
         button.style('font-weight', 'bold');
+        button.style('font-size', '16px');
+        button.style('cursor', 'pointer');
+        button.style('width', 'auto');
+        button.style('padding', '10px 20px');
 
         if (buttonLabels[i] === 'CHI SIAMO') {
             button.style('background-color', 'black');
@@ -152,9 +158,9 @@ image(imgCosaastronauta, 210 + cos(time + 2) * floatAmplitude, 100 + sin(time + 
   text('CIAO!', width / 2, 460);
 
   // testino
-  textSize(14);
+  textSize(16);
   textFont(fontInconsolata); 
-  textLeading(14);
+  textLeading(16);
   noStroke ();
   fill (0);
   text('Siamo studenti del Politecnico di Milano, del corso\ndi Laboratorio di Computer Grafica, Sezione C2,\ndel Secondo Anno di Design della Comunicazione.', width / 2, 550); 
@@ -204,8 +210,8 @@ image(imgCosaastronauta, 210 + cos(time + 2) * floatAmplitude, 100 + sin(time + 
     text(labels[i], rectX + rectWidth / 2, rectY + images[i].height * scaleFactor + 100);
 
     // Disegna la descrizione sotto il testo
-    textSize(14);
-    textLeading(14);
+    textSize(16);
+    textLeading(16);
     textFont(fontInconsolata); 
     noStroke();
     fill(0);
