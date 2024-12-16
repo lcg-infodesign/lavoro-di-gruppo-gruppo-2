@@ -97,13 +97,13 @@ function createButtons(positions) {
         button.mousePressed(() => {
             console.log(buttonLabels[i] + ' cliccato');
             if (buttonLabels[i] === 'COSA SONO') {
-                window.location.href = '../cosasono/index.html';
+                window.location.href = 'p5/cosasono/index.html';
             } else if (buttonLabels[i] === 'CHI SIAMO') {
-                window.location.href = '../chisiamo/index.html';
+                window.location.href = 'p5/chisiamo/index.html';
             } else if (buttonLabels[i] === 'LEGGERE IL GRAFICO') {
-                window.location.href = '../leggereilgrafico/index.html';
+                window.location.href = 'p5/leggereilgrafico/index.html';
             } else if (buttonLabels[i] === 'GRAFICO') {
-                window.location.href = '../notizie+vista generale/index.html';
+                window.location.href = 'p5/notizie+vista generale/index.html';
             }
         });
     }
