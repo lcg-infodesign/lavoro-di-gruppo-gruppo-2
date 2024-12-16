@@ -173,12 +173,12 @@ image(imgLeggere1, 100 + cos(time) * floatAmplitude, 300 + sin(time) * floatAmpl
 
   // Disegna 6 rettangoli bianchi con bordo nero e angoli arrotondati
   let rects = [
-    { x: 275, y: 1228, width: 306, height: 136 },
-    { x: 623, y: 1228, width: 632, height: 400 },
-    { x: 1297, y: 1228, width: 143, height: 569 },
-    { x: 275, y: 1398, width: 306, height: 620 },
-    { x: 623, y: 1670, width: 632, height: 127 },
-    { x: 623, y: 1836, width: 815, height: 182 }
+    { x: 145, y: 1228, width: 306, height: 136 },
+    { x: 493, y: 1228, width: 632, height: 400 },
+    { x: 1167, y: 1228, width: 143, height: 569 },
+    { x: 145, y: 1398, width: 306, height: 620 },
+    { x: 493, y: 1670, width: 632, height: 127 },
+    { x: 593, y: 1836, width: 815, height: 182 }
   ];
 
   for (let i = 0; i < rects.length; i++) {
