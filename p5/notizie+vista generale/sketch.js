@@ -32,6 +32,7 @@ let ANIMATION_SPEED = 0.15; // Velocità di animazione (0-1)
 
 
 function preload() {
+  
   // Carica i font
   fontRubik = loadFont('../../fonts/RubikOne.ttf');
   fontInconsolata = loadFont('../../fonts/Inconsolata.ttf');
@@ -52,13 +53,18 @@ function preload() {
   imgn15 = loadImage('../../img/n15.png');
   imgn16 = loadImage('../../img/n16.png');
   imgn17 = loadImage('../../img/n17.png');
+  imgn18 = loadImage('../../img/payload.png');
+  imgn19 = loadImage('../../img/tbi.png');
+  imgn20 = loadImage('../../img/rocket body.png');
+  imgn21 = loadImage('../../img/debris.png');
+  
 
 
   rocketImg = loadImage('../../img/razzino.png', img => {
     let ratio = img.width / img.height;
     rocketWidth = rocketHeight * ratio;
   });
-  terraImg = loadImage('../../img/leggereterrasottile.png');
+  terraImg = loadImage('../../img/marenero.png');
 
   // Carica l'immagine del fumo nella funzione preload
   fumoImg = loadImage("../../img/fumo.png", () => {
@@ -224,6 +230,8 @@ function draw() {
     }
     slider.value(selectedYear);
   }
+  // Disegna la legenda
+  drawLegend();
 
   drawSliderTimeline();
 
@@ -517,6 +525,7 @@ function drawHighlightedSector() {
   }
 }
 
+push();
 function drawInfoBox() {
   // Trova tutte le notizie fino all'anno selezionato
   let notizieDaMostrare = [];
@@ -542,7 +551,7 @@ function drawInfoBox() {
     let visibleHeight = 5;
     let offsetY = visibleHeight;
     
-    let imgSize = 100;
+    let imgSize = 150;
     let imgPadding = 10;
 
     // Inizializza le posizioni se necessario
@@ -624,6 +633,7 @@ function drawInfoBox() {
     }
   }
 }
+pop();
 
 // Aggiungi questa funzione per disegnare il razzo
 function drawRocket(x, y) {
@@ -678,5 +688,45 @@ function toggleMenu() {
     setTimeout(() => {
       dropdown.style('display', 'none');
     }, 300);
+  }
+}
+
+
+
+
+function drawLegend() {
+  const legendX = 50; // Posizione X della legenda
+  const legendY = 340; // Posizione Y iniziale della legenda
+  const imageWidth = 25; // Larghezza standard delle immagini
+  const spacing = 40; // Spaziatura verticale tra le immagini
+  const labels = [
+    { img: imgn18, text: "PAYLOAD" },
+    { img: imgn19, text: "TBI" },
+    { img: imgn20, text: "ROCKET BODY" },
+    { img: imgn21, text: "PIECE OF DEBRIS" }
+  ];
+
+  noStroke();
+  textAlign(LEFT, CENTER);
+  textFont(fontInconsolata);
+  textSize(15);
+  textStyle(NORMAL); // Assicura che il testo non sia in bold
+  fill(0);
+
+  // Itera tra le immagini e disegna la legenda
+  for (let i = 0; i < labels.length; i++) {
+    let img = labels[i].img;
+    let labelText = labels[i].text;
+
+    if (img) {
+      // Calcola l'altezza mantenendo le proporzioni
+      let imgHeight = imageWidth / (img.width / img.height);
+
+      // Disegna l'immagine
+      image(img, legendX, legendY + i * spacing, imageWidth, imgHeight);
+
+      // Disegna il testo accanto all'immagine
+      text(labelText, legendX + imageWidth + 10, legendY + i * spacing + imgHeight / 2);
+    }
   }
 }
