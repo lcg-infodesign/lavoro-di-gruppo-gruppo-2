@@ -5,7 +5,7 @@ let numFumo = 40; // Numero massimo di nuvolette di fumo
 let slider;
 
 let autoScroll = true; // Variabile per abilitare lo scorrimento automatico
-let autoScrollSpeed = 0.5; // Velocità dello scorrimento automatico
+let autoScrollSpeed = 1; // Velocità dello scorrimento automatico
 let autoScrollCompleted = false; // Variabile per indicare se l'auto-scroll è completato
 
 let selectedYear = 1960;
