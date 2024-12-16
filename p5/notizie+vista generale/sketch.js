@@ -208,7 +208,7 @@ function draw() {
   if (mouseX > 158 && mouseX < 300 && mouseY > 30 && mouseY < 70) {
     cursor(HAND);
     if (mouseIsPressed) {
-      window.location.href = '../home/index.html';
+      window.location.href = '../../index.html';
     }
   } else {
     cursor(ARROW);
@@ -289,7 +289,7 @@ function drawSliderTimeline() {
       translate(fumo.x, height - 60 + fumo.offsetY); // Posiziona il fumo con offset
       rotate(radians(fumo.rotation)); // Applica la rotazione casuale
       imageMode(CENTER); // Cambia il punto di riferimento dell'immagine
-      image(fumoImg, 0, 0, 30 * fumo.scale, (30 / fumoAspectRatio) * fumo.scale); // Disegna il fumo scalato
+      image(fumoImg, 0, 0, 25 * fumo.scale, (25 / fumoAspectRatio) * fumo.scale); // Ridotto da 30 a 25
       pop();
     }
   }

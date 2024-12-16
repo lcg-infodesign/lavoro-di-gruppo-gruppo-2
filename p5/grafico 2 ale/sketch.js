@@ -177,7 +177,7 @@ function draw() {
   if (mouseX > 158 && mouseX < 300 && mouseY > 30 && mouseY < 70) {
     cursor(HAND);
     if (mouseIsPressed) {
-      window.location.href = '../home/index.html';
+      window.location.href = '../../index.html';
     }
   } else {
     cursor(ARROW);

@@ -151,7 +151,7 @@ image(imgcosaastronauta, 710 + cos(time + 7) * floatAmplitude, 3100 + sin(time +
   if (mouseX > 158 && mouseX < 300 && mouseY > 30 && mouseY < 70) {
     cursor(HAND);
     if (mouseIsPressed) {
-      window.location.href = '../home/index.html';
+      window.location.href = '../../index.html';
     }
   } else {
     cursor(ARROW);
