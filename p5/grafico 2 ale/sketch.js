@@ -489,6 +489,35 @@ function createHamburgerMenu() {
   dropdownMenu.position(50, 130);
   dropdownMenu.style('display', 'none');
   
+  // Aggiungi la casella a destra sotto le linee del menu a tendina
+  let box = createDiv(''); // Crea un nuovo div per la casella
+  box.position(50, 150 + dropdownMenu.elt.offsetHeight); // Sposta la casella un po' più in basso
+  box.size(150, 220); // Imposta la dimensione della casella
+  box.style('border', 'transparent'); // Aggiungi un bordo
+  box.style('background-color', 'transparent'); // Imposta il colore di sfondo
+  box.style('padding', '10px'); // Aggiungi padding
+  box.style('border-radius', '10px'); // Aggiungi angoli arrotondati
+
+  // Aggiungi la legenda con le immagini
+  box.html(`
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+      <img src="../../img/payload.png" style="width: 40px; height: 40px; vertical-align: middle;"> 
+      <span style="font-family: Inconsolata; font-size: 16px; margin-left: 5px;">Payload</span>
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+      <img src="../../img/debris.png" style="width: 40px; height: 40px; vertical-align: middle;"> 
+      <span style="font-family: Inconsolata; font-size: 16px; margin-left: 5px;">Debris</span>
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+      <img src="../../img/rocket body.png" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 10px;"> 
+      <span style="font-family: Inconsolata; font-size: 16px; margin-left: 15px;">Rocket Body</span>
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 30px;">
+      <img src="../../img/tbi.png" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 15px;">
+      <span style="font-family: Inconsolata; font-size: 16px; margin-left: 10px;">To be identified</span>
+    </div>
+  `);
+
   if (countries && countries.length > 0) {
     countries.forEach(country => {
       let countryItem = createDiv(country);
