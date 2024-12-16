@@ -12,6 +12,8 @@ let terraImg; // Nuova variabile per l'immagine
 let countries = []; // Array per memorizzare i paesi unici
 let menuOpen = false; // Variabile per tracciare lo stato del menu
 let rocketBodyImage; // Aggiungi questa riga per la variabile dell'immagine del rocket body
+let razzinoImage; // Nuova variabile per l'immagine del razzino
+let smokePositions = []; // Array per memorizzare le posizioni del fumo
 
 function preload() {
   // Carica i font
@@ -59,6 +61,14 @@ function preload() {
     () => console.log("Immagine rocket body caricata con successo"), 
     (error) => console.error("Errore nel caricamento dell'immagine rocket body:", error)
   ); // Carica l'immagine del rocket body
+  razzinoImage = loadImage('../../img/razzino.png', // Carica l'immagine del razzino
+    () => console.log("Immagine razzino caricata con successo"), 
+    (error) => console.error("Errore nel caricamento dell'immagine razzino:", error)
+  ); 
+  smokeImage = loadImage('../../img/fumo.png', // Carica l'immagine del fumo
+    () => console.log("Immagine fumo caricata con successo"), 
+    (error) => console.error("Errore nel caricamento dell'immagine fumo:", error)
+  ); 
 }
 
 function setup() {
@@ -430,10 +440,23 @@ function drawRadialSlider() {
   let sliderX = centerX + (radius + 20) * cos(sliderAngle);
   let sliderY = centerY + (radius + 20) * sin(sliderAngle);
 
-  fill(255);
-  stroke(0);
-  strokeWeight(2);
-  ellipse(sliderX, sliderY, 16, 16);
+  // Aggiungi la posizione del fumo all'array
+  smokePositions.push({ x: sliderX, y: sliderY });
+
+  // Disegna tutte le immagini del fumo accumulate
+  for (let pos of smokePositions) {
+    image(smokeImage, pos.x - 14, pos.y - 4, smokeImage.width * 0.25, smokeImage.height * 0.25); // Riduci l'immagine del fumo del 75% e sposta a sinistra
+  }
+
+  // Usa l'immagine del razzino invece del cerchio
+  let imgWidth = razzinoImage.width * 0.15; // Riduci la dimensione dell'immagine del 50%
+  let imgHeight = razzinoImage.height * 0.15;
+  push();
+  translate(sliderX, sliderY); // Trasla al centro dell'immagine
+  rotate(radians(sliderAngle - 90)); // Ruota in base all'angolo dello slider, -90 per orientare verso l'alto
+  imageMode(CENTER); // Imposta il modo di immagine al centro
+  image(razzinoImage, 0, 0, imgWidth, imgHeight); // Usa l'immagine del razzino ridimensionata
+  pop();
 
   // Limita l'interazione solo se il clic è all'interno del raggio di interazione
   if (mouseIsPressed) {
