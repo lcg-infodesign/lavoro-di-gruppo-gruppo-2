@@ -700,10 +700,9 @@ function drawLegend() {
   const imageWidth = 40; // Larghezza standard delle immagini
   const spacing = 60; // Spaziatura verticale tra le immagini
   const labels = [
-    { img: imgn20, text: "ROCKET BODY" },
-    { img: imgn18, text: "PAYLOAD" },
-    { img: imgn19, text: "TBI" },
-    { img: imgn21, text: "PIECE OF DEBRIS" }
+    
+    { img: imgn19, text: "Rifiuto Spaziale" },
+    
   ];
 
   noStroke();

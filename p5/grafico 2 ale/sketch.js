@@ -19,7 +19,7 @@ function preload() {
   // Carica i font
   inconsolataFont = loadFont('../../fonts/Inconsolata.ttf');
   rubikOneFont = loadFont('../../fonts/RubikOne.ttf');
-  terraImg = loadImage('../../img/terra3.png'); // Carica l'immagine
+  terraImg = loadImage('../../img/marenero.png'); // Carica l'immagine
 
   // Carica il CSV
   satelliteData = loadTable('../../space_decay.csv', 'csv', 'header', 
@@ -225,10 +225,7 @@ function drawCircleWithRays() {
   image(terraImg, centerX, centerY, imgSize, imgSize);
   
   // Disegna solo il contorno del semicerchio
-  noFill();
-  stroke(0);
-  strokeWeight(2);
-  arc(centerX, centerY, radius * 2, radius * 2, 180, 360);
+  
   pop();
 }
 
@@ -401,8 +398,8 @@ function drawSelectedYear() {
   textFont(inconsolataFont);
   strokeWeight(0);
   stroke(0);
-  fill(0);
-  text(selectedYear, centerX, centerY - 30);
+  fill(255);
+  text(selectedYear, centerX, centerY - 55);
 }
 
 function drawRadialSlider() {
