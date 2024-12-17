@@ -521,9 +521,18 @@ function createHamburgerMenu() {
       countryItem.parent(dropdownMenu);
       countryItem.class('country-item');
       countryItem.style('color', 'black');
+      
+      // Aggiungi un evento di clic per ogni paese
+      countryItem.mousePressed(() => {
+        if (country === 'FRANCIA') {
+          window.location.href = '../grafico Francia/index.html'; // Modifica il percorso per la Francia
+        }
+        // Aggiungi qui altre condizioni per altri paesi se necessario
+      });
+      
       console.log("Aggiunto paese al menu:", country); // Log per debug
-       });
-     } else {
+    });
+  } else {
     console.log("Nessun paese disponibile"); // Log se non ci sono paesi
   }
 }

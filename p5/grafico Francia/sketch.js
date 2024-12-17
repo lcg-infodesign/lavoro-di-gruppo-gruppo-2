@@ -11,12 +11,15 @@ let inconsolataFont, rubikOneFont; // Variabili per i font
 let terraImg; // Nuova variabile per l'immagine
 let countries = []; // Array per memorizzare i paesi unici
 let menuOpen = false; // Variabile per tracciare lo stato del menu
+let rocketBodyImage; // Aggiungi questa riga per la variabile dell'immagine del rocket body
+let razzinoImage; // Nuova variabile per l'immagine del razzino
+let smokePositions = []; // Array per memorizzare le posizioni del fumo
 
 function preload() {
   // Carica i font
   inconsolataFont = loadFont('../../fonts/Inconsolata.ttf');
   rubikOneFont = loadFont('../../fonts/RubikOne.ttf');
-  terraImg = loadImage('../../img/terra3.png'); // Carica l'immagine
+  terraImg = loadImage('../../img/marenero.png'); // Carica l'immagine
 
   // Carica il CSV
   satelliteData = loadTable('../../space_decay.csv', 'csv', 'header', 
@@ -41,6 +44,31 @@ function preload() {
       console.error("Errore nel caricamento del CSV:", error); // Log per eventuali errori
     }
   );
+
+  payloadImage = loadImage('../../img/payload.png', 
+    () => console.log("Immagine payload caricata con successo"), 
+    (error) => console.error("Errore nel caricamento dell'immagine payload:", error)
+  ); // Carica l'immagine del payload
+  debrisImage = loadImage('../../img/debris.png', 
+    () => console.log("Immagine debris caricata con successo"), 
+    (error) => console.error("Errore nel caricamento dell'immagine debris:", error)
+  ); // Carica l'immagine dei debris
+  tbiImage = loadImage('../../img/tbi.png', 
+    () => console.log("Immagine TBI caricata con successo"), 
+    (error) => console.error("Errore nel caricamento dell'immagine TBI:", error)
+  ); // Carica l'immagine TBI
+  rocketBodyImage = loadImage('../../img/rocket body.png', // Assicurati di usare il nome corretto
+    () => console.log("Immagine rocket body caricata con successo"), 
+    (error) => console.error("Errore nel caricamento dell'immagine rocket body:", error)
+  ); // Carica l'immagine del rocket body
+  razzinoImage = loadImage('../../img/razzino.png', // Carica l'immagine del razzino
+    () => console.log("Immagine razzino caricata con successo"), 
+    (error) => console.error("Errore nel caricamento dell'immagine razzino:", error)
+  ); 
+  smokeImage = loadImage('../../img/fumo.png', // Carica l'immagine del fumo
+    () => console.log("Immagine fumo caricata con successo"), 
+    (error) => console.error("Errore nel caricamento dell'immagine fumo:", error)
+  ); 
 }
 
 function setup() {
@@ -152,7 +180,6 @@ function draw() {
   fill(0); 
   textFont(rubikOneFont);
   text('RIFIUTI SPAZIALI', 158, 52); 
-  //strokeWeight(3); 
   fill(255); 
   textFont(rubikOneFont); 
   text('RIFIUTI SPAZIALI', 160, 50); 
@@ -167,7 +194,7 @@ function draw() {
   }
 
   push();
-  // Titolo "FRANCIA" con il font Rubik One e nuovo stile
+  // Titolo "USA" con il font Rubik One e nuovo stile
   fill(0);
   textSize(50);
   textFont(rubikOneFont);
@@ -178,7 +205,13 @@ function draw() {
   drawDots();
   drawSelectedYear();
   drawRadialSlider();
+  
+  // Disegna il tooltip qui, dopo tutti gli altri elementi
+  if (hoveredPoint) {
+    drawTooltip(hoveredPoint);
+  }
 }
+
 
 function drawCircleWithRays() {
   let centerX = width / 2;
@@ -192,10 +225,7 @@ function drawCircleWithRays() {
   image(terraImg, centerX, centerY, imgSize, imgSize);
   
   // Disegna solo il contorno del semicerchio
-  noFill();
-  stroke(0);
-  strokeWeight(2);
-  arc(centerX, centerY, radius * 2, radius * 2, 180, 360);
+  
   pop();
 }
 
@@ -279,11 +309,6 @@ function drawDots() {
       let alpha = map(abs(point.year - selectedYear), 0, 60, 255, 50);
       alpha = constrain(alpha, 50, 255);
 
-      let col = color(point.color);
-      col.setAlpha(alpha);
-      fill(col);
-      noStroke();
-
       let d = dist(mouseX, mouseY, point.x, point.y);
       if (d < point.size) {
         hoveredPoint = point;
@@ -291,7 +316,34 @@ function drawDots() {
         stroke(0);
       }
 
-      ellipse(point.x, point.y, point.size, point.size);
+      // Sostituisci il cerchio con l'immagine del payload solo se il tipo è 'PAYLOAD'
+      if (point.objectType === 'PAYLOAD') {
+        let enlargedSize = point.size * 3; // Ingrandisci l'immagine del payload
+        image(payloadImage, point.x - enlargedSize / 2, point.y - enlargedSize / 2, enlargedSize, enlargedSize); // Usa l'immagine del payload
+      } 
+      // Sostituisci il cerchio con l'immagine dei debris solo se il tipo è 'DEBRIS'
+      else if (point.objectType === 'DEBRIS') {
+        let enlargedSize = point.size * 3; // Ingrandisci l'immagine dei debris
+        image(debrisImage, point.x - enlargedSize / 2, point.y - enlargedSize / 2, enlargedSize, enlargedSize); // Usa l'immagine dei debris
+      } 
+      // Sostituisci il cerchio con l'immagine TBI solo se il tipo è 'TO BE IDENTIFIED'
+      else if (point.objectType === 'TO BE IDENTIFIED') {
+        let enlargedSize = point.size * 3; // Ingrandisci l'immagine TBI
+        image(tbiImage, point.x - enlargedSize / 2, point.y - enlargedSize / 2, enlargedSize, enlargedSize); // Usa l'immagine TBI
+      } 
+      // Sostituisci il cerchio con l'immagine del rocket body solo se il tipo è 'ROCKET BODY'
+      else if (point.objectType === 'ROCKET BODY') {
+        let enlargedSize = point.size * 3; // Ingrandisci l'immagine del rocket body
+        let aspectRatio = rocketBodyImage.width / rocketBodyImage.height; // Calcola il rapporto di aspetto
+        let imgWidth = enlargedSize; // Larghezza dell'immagine
+        let imgHeight = enlargedSize / aspectRatio; // Calcola l'altezza mantenendo il rapporto di aspetto
+        image(rocketBodyImage, point.x - imgWidth / 2, point.y - imgHeight / 2, imgWidth, imgHeight); // Usa l'immagine del rocket body
+      } 
+      else {
+        fill(point.color); // Assicurati di riempire con il colore corretto
+        noStroke();
+        ellipse(point.x, point.y, point.size, point.size); // Mantieni il cerchio per gli altri tipi
+      }
     }
   }
 
@@ -300,6 +352,7 @@ function drawDots() {
   }
 }
 
+// ... existing code ...
 function drawTooltip(point) {
   let tooltipX = mouseX + 20;
   let tooltipY = mouseY;
@@ -309,6 +362,7 @@ function drawTooltip(point) {
   if (tooltipX + tooltipW > width) tooltipX = mouseX - tooltipW - 20;
   if (tooltipY + tooltipH > height) tooltipY = mouseY - tooltipH;
 
+  // Disegna il tooltip
   fill(255);
   stroke(0);
   strokeWeight(1);
@@ -317,18 +371,23 @@ function drawTooltip(point) {
   noStroke();
   fill(0);
   textAlign(LEFT);
-  textSize(12);
+  textSize(14);
+  textFont(inconsolataFont);
+  textStyle(BOLD);
 
-  let padding = 10;
+  let leftPadding = 20;
+  let verticalPadding = 1;
   let lineHeight = 20;
-  text(`Object ID: ${point.objectId}`, tooltipX + padding, tooltipY + padding + lineHeight);
-  text(`Launch Site: ${point.site}`, tooltipX + padding, tooltipY + padding + lineHeight * 2);
-  text(`Type: ${point.objectType}`, tooltipX + padding, tooltipY + padding + lineHeight * 3);
-  text(`Size: ${point.rcsSize}`, tooltipX + padding, tooltipY + padding + lineHeight * 4);
-  text(`Apoapsis: ${Math.round(point.apoapsis)} km`, tooltipX + padding, tooltipY + padding + lineHeight * 5);
+  
+  text(`Object ID: ${point.objectId}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight);
+  text(`Launch Site: ${point.site}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 2);
+  text(`Type: ${point.objectType}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 3);
+  text(`Size: ${point.rcsSize}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 4);
+  text(`Apoapsis: ${Math.round(point.apoapsis)} km`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 5);
 
   textAlign(CENTER, CENTER);
 }
+// ... existing code ...
 
 function drawSelectedYear() {
   let centerX = width / 2;
@@ -339,8 +398,8 @@ function drawSelectedYear() {
   textFont(inconsolataFont);
   strokeWeight(0);
   stroke(0);
-  fill(0);
-  text(selectedYear, centerX, centerY - 30);
+  fill(255);
+  text(selectedYear, centerX, centerY - 55);
 }
 
 function drawRadialSlider() {
@@ -378,10 +437,23 @@ function drawRadialSlider() {
   let sliderX = centerX + (radius + 20) * cos(sliderAngle);
   let sliderY = centerY + (radius + 20) * sin(sliderAngle);
 
-  fill(255);
-  stroke(0);
-  strokeWeight(2);
-  ellipse(sliderX, sliderY, 16, 16);
+  // Aggiungi la posizione del fumo all'array
+  smokePositions.push({ x: sliderX, y: sliderY });
+
+  // Disegna tutte le immagini del fumo accumulate
+  for (let pos of smokePositions) {
+    image(smokeImage, pos.x - 14, pos.y - 4, smokeImage.width * 0.25, smokeImage.height * 0.25); // Riduci l'immagine del fumo del 75% e sposta a sinistra
+  }
+
+  // Usa l'immagine del razzino invece del cerchio
+  let imgWidth = razzinoImage.width * 0.15; // Riduci la dimensione dell'immagine del 50%
+  let imgHeight = razzinoImage.height * 0.15;
+  push();
+  translate(sliderX, sliderY); // Trasla al centro dell'immagine
+  rotate(radians(sliderAngle - 90)); // Ruota in base all'angolo dello slider, -90 per orientare verso l'alto
+  imageMode(CENTER); // Imposta il modo di immagine al centro
+  image(razzinoImage, 0, 0, imgWidth, imgHeight); // Usa l'immagine del razzino ridimensionata
+  pop();
 
   // Limita l'interazione solo se il clic è all'interno del raggio di interazione
   if (mouseIsPressed) {
@@ -414,6 +486,35 @@ function createHamburgerMenu() {
   dropdownMenu.position(50, 130);
   dropdownMenu.style('display', 'none');
   
+  // Aggiungi la casella a destra sotto le linee del menu a tendina
+  let box = createDiv(''); // Crea un nuovo div per la casella
+  box.position(50, 150 + dropdownMenu.elt.offsetHeight); // Sposta la casella un po' più in basso
+  box.size(150, 220); // Imposta la dimensione della casella
+  box.style('border', 'transparent'); // Aggiungi un bordo
+  box.style('background-color', 'transparent'); // Imposta il colore di sfondo
+  box.style('padding', '10px'); // Aggiungi padding
+  box.style('border-radius', '10px'); // Aggiungi angoli arrotondati
+
+  // Aggiungi la legenda con le immagini
+  box.html(`
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+      <img src="../../img/payload.png" style="width: 40px; height: 40px; vertical-align: middle;"> 
+      <span style="font-family: Inconsolata; font-size: 16px; margin-left: 5px;">Payload</span>
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+      <img src="../../img/debris.png" style="width: 40px; height: 40px; vertical-align: middle;"> 
+      <span style="font-family: Inconsolata; font-size: 16px; margin-left: 5px;">Debris</span>
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+      <img src="../../img/rocket body.png" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 10px;"> 
+      <span style="font-family: Inconsolata; font-size: 16px; margin-left: 15px;">Rocket Body</span>
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 30px;">
+      <img src="../../img/tbi.png" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 15px;">
+      <span style="font-family: Inconsolata; font-size: 16px; margin-left: 10px;">To be identified</span>
+    </div>
+  `);
+
   if (countries && countries.length > 0) {
     countries.forEach(country => {
       let countryItem = createDiv(country);
