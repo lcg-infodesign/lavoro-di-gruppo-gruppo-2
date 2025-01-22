@@ -6,16 +6,16 @@ let imgHome3;
 const scaleFactor = 0.13;
 
 function preload() {
-  fontInconsolata = loadFont('./fonts/Inconsolata.woff'); 
-  fontRubik = loadFont('./fonts/RubikOne.woff'); 
-  imgHome1 = loadImage('./img/home1.png');
-  imgHome3 = loadImage('./img/home3.png');
-  imgHome2 = loadImage('./img/home2.png');
-  imgHome4 = loadImage('./img/home4.png');
-  imgHome5 = loadImage('./img/home5.png');
-  imgHome6 = loadImage('./img/home6.png');
-  imgHome7 = loadImage('./img/home7.png');
-  imgHomeastronauta = loadImage('./img/homeastronauta.png');
+  fontInconsolata = loadFont('fonts/Inconsolata.woff'); 
+  fontRubik = loadFont('fonts/RubikOne.woff'); 
+  imgHome1 = loadImage('img/home1.png');
+  imgHome3 = loadImage('img/home3.png');
+  imgHome2 = loadImage('img/home2.png');
+  imgHome4 = loadImage('img/home4.png');
+  imgHome5 = loadImage('img/home5.png');
+  imgHome6 = loadImage('img/home6.png');
+  imgHome7 = loadImage('img/home7.png');
+  imgHomeastronauta = loadImage('img/homeastronauta.png');
 }
 
 function setup() {
