@@ -4,6 +4,8 @@ let fontsLoaded = false;
 let imgHome1;
 let imgHome3;
 let imgHome2, imgHome4, imgHome5;
+
+
 const scaleFactor = 0.13;
 
 function preload() {
