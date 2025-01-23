@@ -5,7 +5,7 @@ let numFumo = 40; // Numero massimo di nuvolette di fumo
 let slider;
 
 let autoScroll = true; // Variabile per abilitare lo scorrimento automatico
-let autoScrollSpeed = 1; // Velocità dello scorrimento automatico
+let autoScrollSpeed = 0.5; // Rallentato del 50% rispetto a 1
 let autoScrollCompleted = false; // Variabile per indicare se l'auto-scroll è completato
 
 let selectedYear = 1960;
@@ -27,7 +27,14 @@ let fontRubik;
 let rotationAngle = 0;
 let cardPositions = []; // Array per tenere traccia delle posizioni delle carte
 let cardTargets = [];  // Array per le posizioni target
-let ANIMATION_SPEED = 0.15; // Velocità di animazione (0-1)
+let ANIMATION_SPEED = 0.075; // Rallentato del 50% rispetto a 0.15
+
+let autoScrollProgress = 0; // Variabile che traccia il progresso (0 a 1)
+let AUTO_SCROLL_DURATION = 5000; // Durata totale in millisecondi
+let lastUpdateTime = 0;
+
+
+let customCursorImg;
 ;
 
 
@@ -77,6 +84,9 @@ function preload() {
   // Carica i dati CSV
   table = loadTable("../../space_decay.csv", "header");
   notizieTable = loadTable("../../notizie.csv", "header");
+
+  // Carica l'immagine del cursore
+  customCursorImg = loadImage("../../img/cursor.png");
   
 }
 
@@ -86,7 +96,12 @@ function setup() {
   textFont(fontInconsolata);
   textAlign(CENTER, CENTER);
 
-  
+  noCursor();
+  // Imposta il cursore personalizzato
+  let cursorURL = "url('../../img/cursor.png'), auto";
+  canvas = document.querySelector('canvas');
+  canvas.style.cursor = cursorURL;
+
 
   // Posizioni pulsanti nella navbar
   let buttonPositions = [
@@ -209,15 +224,25 @@ function draw() {
     cursor(ARROW);
   }
 
-  if (autoScroll) {
-    // Incrementa l'anno automaticamente
-    selectedYear += autoScrollSpeed;
-    if (selectedYear > 2020) {
-      selectedYear = 1960; // Resetta all'inizio quando raggiunge la fine
-      autoScroll = false; // Disabilita l'auto-scroll
-      autoScrollCompleted = true; // Segna l'auto-scroll come completato
+  if (autoScroll && !autoScrollCompleted) {
+    // Incrementa il progresso temporale
+    autoScrollProgress += deltaTime / AUTO_SCROLL_DURATION;
+
+    // Applica easing-out per un rallentamento fluido verso la fine
+    let easedProgress = easeOutQuad(autoScrollProgress);
+
+
+    // Calcola l'anno in base al progresso interpolato
+    selectedYear = Math.round(lerp(1960, 2020, easedProgress)); // Arrotonda il valore
+
+    // Blocca il progresso a 1 per evitare overflow
+    if (autoScrollProgress >= 1) {
+      autoScrollProgress = 1;
+      autoScroll = false; // Ferma l'animazione
+      autoScrollCompleted = true;
     }
-    slider.value(selectedYear);
+
+    slider.value(selectedYear); // Aggiorna il valore dello slider
   }
   // Disegna la legenda
   drawLegend();
@@ -230,8 +255,17 @@ function draw() {
   drawDots();
   
   drawInfoBox();
+
+  // Disegna il cursore personalizzato
+  if (customCursorImg) {
+    image(customCursorImg, mouseX, mouseY, 14, 16); // Dimensioni cursore personalizzate
+  }
+  
 }
 
+function easeOutQuad(t) {
+  return t * (2 - t); // Equazione di easing-out quadratica
+}
 
 
 function precalculateFumo() {
@@ -718,3 +752,4 @@ function drawLegend() {
     }
   }
 }
+
