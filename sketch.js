@@ -6,8 +6,8 @@ let imgHome3;
 const scaleFactor = 0.13;
 
 function preload() {
-  fontInconsolata = loadFont('fonts/Inconsolata.woff'); 
-  fontRubik = loadFont('fonts/RubikOne.woff'); 
+  fontInconsolata = loadFont('fonts/Inconsolata.ttf'); 
+  fontRubik = loadFont('fonts/RubikOne.ttf'); 
   imgHome1 = loadImage('img/home1.png');
   imgHome3 = loadImage('img/home3.png');
   imgHome2 = loadImage('img/home2.png');
