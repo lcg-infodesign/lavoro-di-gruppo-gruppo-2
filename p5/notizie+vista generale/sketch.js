@@ -138,11 +138,25 @@ function setup() {
 
  // Create a single toggle button
  toggleButton = createButton('Play Sound'); // Starts with the play icon
- toggleButton.position(30, height - 60);
+ toggleButton.position(30, height - 55);
  toggleButton.mousePressed(toggleAudio);
  sound.setVolume(0.2);
- 
+ styleButton(toggleButton);
 
+
+}
+
+// Function to style the button
+function styleButton(button) {
+  button.style('font-family', 'Inconsolata'); // Use Inconsolata font
+  button.style('font-size', '12px');
+  button.style('padding', '5px 10px');
+  button.style('border', '2px solid black'); // Black border
+  button.style('border-radius', '8px'); // Rounded corners
+  button.style('background-color', 'white'); // White background
+  button.style('color', 'black'); // Black text
+  button.style('cursor', 'pointer'); // Pointer cursor
+  button.style('text-align', 'center');
 }
 
 // Function to toggle audio
@@ -153,7 +167,7 @@ function toggleAudio() {
     isPlaying = false;
   } else {
     sound.play();
-    toggleButton.html('Stop'); // Update to stop icon
+    toggleButton.html('Stop Sound'); // Update to stop icon
     isPlaying = true;
   }
 }
@@ -354,8 +368,8 @@ function drawSliderTimeline() {
   // Aggiorna `selectedYear` se il mouse è sopra lo slider e viene premuto
   if (
     mouseIsPressed &&
-    mouseY > height - 80 && // Ampliato il range verticale sopra lo slider
-    mouseY < height - 40 && // Ampliato il range verticale sotto lo slider
+    mouseY > height - 90 && // Ampliato il range verticale sopra lo slider
+    mouseY < height - 30 && // Ampliato il range verticale sotto lo slider
     mouseX > startX &&
     mouseX < endX
   ) {
