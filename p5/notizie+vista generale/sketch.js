@@ -235,6 +235,7 @@ function draw() {
     // Applica easing-out per un rallentamento fluido verso la fine
     let easedProgress = easeOutQuad(autoScrollProgress);
 
+
     // Calcola l'anno in base al progresso interpolato
     selectedYear = Math.round(lerp(1960, 2020, easedProgress)); // Arrotonda il valore
 
