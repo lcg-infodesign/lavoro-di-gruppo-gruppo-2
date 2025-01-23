@@ -35,6 +35,7 @@ let lastUpdateTime = 0;
 
 
 let customCursorImg;
+let arrowCursor;
 
 let sound;
 let toggleButton; // Variable for the button
@@ -90,6 +91,7 @@ function preload() {
 
   // Carica l'immagine del cursore
   customCursorImg = loadImage("../../img/cursor.png");
+  arrowCursor = loadImage('../../img/cursor.png')
 
   // Load the audio file in preload
   sound = loadSound('../../space.mp3');
@@ -296,10 +298,14 @@ function draw() {
   
   drawInfoBox();
 
-  // Disegna il cursore personalizzato
-  if (customCursorImg) {
-    image(customCursorImg, mouseX, mouseY, 14, 16); // Dimensioni cursore personalizzate
+  if (mouseX > 150 && mouseX < 250 && mouseY > 150 && mouseY < 200) {
+    // Cursore "pointer"
+    image(arrowCursor, mouseX, mouseY, 16, 32); // Disegna il cursore pointer
+  } else {
+    // Cursore predefinito
+    image(customCursorImg, mouseX, mouseY, 14, 16); // Disegna il cursore predefinito
   }
+  
   
 }
 
