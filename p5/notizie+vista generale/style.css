@@ -83,3 +83,7 @@ canvas {
   background: #f0f0f0;
   padding-left: 20px;
 }
+
+canvas {
+  cursor: none !important;
+}

@@ -32,6 +32,9 @@ let ANIMATION_SPEED = 0.075; // Rallentato del 50% rispetto a 0.15
 let autoScrollProgress = 0; // Variabile che traccia il progresso (0 a 1)
 let AUTO_SCROLL_DURATION = 5000; // Durata totale in millisecondi
 let lastUpdateTime = 0;
+
+
+let customCursorImg;
 ;
 
 
@@ -79,6 +82,9 @@ function preload() {
   // Carica i dati CSV
   table = loadTable("../../space_decay.csv", "header");
   notizieTable = loadTable("../../notizie.csv", "header");
+
+  // Carica l'immagine del cursore
+  customCursorImg = loadImage("../../img/cursor.png");
   
 }
 
@@ -88,7 +94,12 @@ function setup() {
   textFont(fontInconsolata);
   textAlign(CENTER, CENTER);
 
-  
+  noCursor();
+  // Imposta il cursore personalizzato
+  let cursorURL = "url('../../img/cursor.png'), auto";
+  canvas = document.querySelector('canvas');
+  canvas.style.cursor = cursorURL;
+
 
   // Posizioni pulsanti nella navbar
   let buttonPositions = [
@@ -208,6 +219,8 @@ function draw() {
   let deltaTime = currentTime - lastUpdateTime;
   lastUpdateTime = currentTime;
 
+  
+
   // Disegna il titolo
   textSize(23); 
   stroke(0); 
@@ -259,6 +272,11 @@ function draw() {
   drawDots();
   
   drawInfoBox();
+
+  // Disegna il cursore personalizzato
+  if (customCursorImg) {
+    image(customCursorImg, mouseX, mouseY, 14, 16); // Dimensioni cursore personalizzate
+  }
   
 }
 
