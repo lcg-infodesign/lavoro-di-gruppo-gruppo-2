@@ -35,7 +35,10 @@ let lastUpdateTime = 0;
 
 
 let customCursorImg;
-;
+
+let sound;
+let toggleButton; // Variable for the button
+let isPlaying = false; // Tracks the audio state
 
 
 function preload() {
@@ -87,6 +90,9 @@ function preload() {
 
   // Carica l'immagine del cursore
   customCursorImg = loadImage("../../img/cursor.png");
+
+  // Load the audio file in preload
+  sound = loadSound('../../space.mp3');
   
 }
 
@@ -129,8 +135,28 @@ function setup() {
   generateDots();
   // Precalcola i dati del fumo
   precalculateFumo();
+
+ // Create a single toggle button
+ toggleButton = createButton('Play Sound'); // Starts with the play icon
+ toggleButton.position(30, height - 60);
+ toggleButton.mousePressed(toggleAudio);
+ sound.setVolume(0.2);
+ 
+
 }
 
+// Function to toggle audio
+function toggleAudio() {
+  if (isPlaying) {
+    sound.stop();
+    toggleButton.html('Play Sound'); // Update to play icon
+    isPlaying = false;
+  } else {
+    sound.play();
+    toggleButton.html('Stop'); // Update to stop icon
+    isPlaying = true;
+  }
+}
 
 
 function windowResized() {
