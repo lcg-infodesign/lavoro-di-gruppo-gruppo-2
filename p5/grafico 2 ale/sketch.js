@@ -15,11 +15,14 @@ let rocketBodyImage; // Aggiungi questa riga per la variabile dell'immagine del 
 let razzinoImage; // Nuova variabile per l'immagine del razzino
 let smokePositions = []; // Array per memorizzare le posizioni del fumo
 
+
 function preload() {
   // Carica i font
   inconsolataFont = loadFont('../../fonts/Inconsolata.ttf');
   rubikOneFont = loadFont('../../fonts/RubikOne.ttf');
   terraImg = loadImage('../../img/marenero.png'); // Carica l'immagine
+  imgtitolo = loadImage('../../img/titolo.png');
+
 
   // Carica il CSV
   satelliteData = loadTable('../../space_decay.csv', 'csv', 'header', 
@@ -77,9 +80,8 @@ function setup() {
   textAlign(CENTER, CENTER);
 
   let buttonPositions = [
-    { x: width - 630, y: 30 },
-    { x: width - 510, y: 30 },
-    { x: width - 370, y: 30 },
+    { x: width - 430, y: 30 },
+    { x: width - 300, y: 30 },
     { x: width - 160, y: 30 }
 ];
 createButtons(buttonPositions);
@@ -107,7 +109,7 @@ function createButtons(positions) {
   let buttonWidth = 100;
   let buttonHeight = 40;
   let buttonSpacing = 10;
-  let buttonLabels = ['GRAFICO', 'COSA SONO', 'LEGGERE IL GRAFICO', 'CHI SIAMO'];
+  let buttonLabels = ['GRAFICO', 'COSA SONO', 'CHI SIAMO'];
   for (let i = 0; i < buttonLabels.length; i++) {
       let button = createButton(buttonLabels[i]);
       let buttonWidth = textWidth(buttonLabels[i]) + 20;
@@ -161,8 +163,6 @@ function createButtons(positions) {
             window.location.href = '../cosasono/index.html';
         } else if (buttonLabels[i] === 'CHI SIAMO') {
             window.location.href = '../chisiamo/index.html';
-        } else if (buttonLabels[i] === 'LEGGERE IL GRAFICO') {
-            window.location.href = '../leggereilgrafico/index.html';
           } else if (buttonLabels[i] === 'GRAFICO') {
               window.location.href = '../notizie+vista generale/index.html';
 }
@@ -174,17 +174,8 @@ function createButtons(positions) {
 function draw() {
   background(240);
 
-  // titolo
-  textSize(23); 
-  stroke(0); 
-  fill(0); 
-  textFont(rubikOneFont);
-  text('RIFIUTI SPAZIALI', 158, 52); 
-  fill(255); 
-  textFont(rubikOneFont); 
-  text('RIFIUTI SPAZIALI', 160, 50); 
-
-  if (mouseX > 158 && mouseX < 300 && mouseY > 30 && mouseY < 70) {
+  image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
+  if (mouseX > 50 && mouseX < -30 + imgtitolo.width * 0.25 && mouseY > 30 && mouseY < 20 + imgtitolo.height * 0.25) {
     cursor(HAND);
     if (mouseIsPressed) {
       window.location.href = '../../index.html';

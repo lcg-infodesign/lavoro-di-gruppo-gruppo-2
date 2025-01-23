@@ -57,6 +57,8 @@ function preload() {
   imgn19 = loadImage('../../img/tbi.png');
   imgn20 = loadImage('../../img/rocket body.png');
   imgn21 = loadImage('../../img/debris.png');
+  imgtitolo = loadImage('../../img/titolo.png');
+
   
 
 
@@ -88,11 +90,10 @@ function setup() {
 
   // Posizioni pulsanti nella navbar
   let buttonPositions = [
-    { x: width - 630, y: 30 },
-    { x: width - 510, y: 30 },
-    { x: width - 370, y: 30 },
+    { x: width - 430, y: 30 },
+    { x: width - 300, y: 30 },
     { x: width - 160, y: 30 }
-  ];
+];
 
   createButtons(buttonPositions);
 
@@ -127,7 +128,7 @@ function createButtons(positions) {
   let buttonWidth = 100;
   let buttonHeight = 40;
   let buttonSpacing = 10;
-  let buttonLabels = ['GRAFICO', 'COSA SONO', 'LEGGERE IL GRAFICO', 'CHI SIAMO'];
+  let buttonLabels = ['GRAFICO', 'COSA SONO', 'CHI SIAMO'];
   for (let i = 0; i < buttonLabels.length; i++) {
       let button = createButton(buttonLabels[i]);
       let buttonWidth = textWidth(buttonLabels[i]) + 20;
@@ -181,8 +182,6 @@ function createButtons(positions) {
             window.location.href = '../cosasono/index.html';
         } else if (buttonLabels[i] === 'CHI SIAMO') {
             window.location.href = '../chisiamo/index.html';
-        } else if (buttonLabels[i] === 'LEGGERE IL GRAFICO') {
-            window.location.href = '../leggereilgrafico/index.html';
           } else if (buttonLabels[i] === 'GRAFICO') {
               window.location.href = '../notizie+vista generale/index.html';
 }
@@ -200,18 +199,8 @@ function windowResized() {
 function draw() {
   background(240);
 
-  // Disegna il titolo
-  textSize(23); 
-  stroke(0); 
-  fill(0); 
-  textFont(fontRubik);  // Usa il font RubikOne
-  text('RIFIUTI SPAZIALI', 158, 52);  // Posizione del titolo
-  strokeWeight(3); 
-  fill(255); 
-  textFont(fontRubik); 
-  text('RIFIUTI SPAZIALI', 160, 50);  // Posizione del titolo sopra
-
-  if (mouseX > 158 && mouseX < 300 && mouseY > 30 && mouseY < 70) {
+  image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
+  if (mouseX > 50 && mouseX < -30 + imgtitolo.width * 0.25 && mouseY > 30 && mouseY < 20 + imgtitolo.height * 0.25) {
     cursor(HAND);
     if (mouseIsPressed) {
       window.location.href = '../../index.html';

@@ -21,17 +21,15 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight); 
     let buttonPositions = [
-        { x: width - 630, y: 30 },
-        { x: width - 510, y: 30 },
-        { x: width - 370, y: 30 },
+        { x: width - 300, y: 30 },
         { x: width - 160, y: 30 }
     ];
     createButtons(buttonPositions);
     
     // Creazione del pulsante "ESPLORA I DATI" spostata qui
-    let exploreButton = createButton('ESPLORA I DATI');
+    let exploreButton = createButton('ESPLORA IL GRAFICO');
     exploreButton.position(width / 2 - 90, height / 2 + 190);
-    exploreButton.size(150, 60);
+    exploreButton.size(190, 60);
     exploreButton.style('border-radius', '10px');
     exploreButton.style('background-color', 'black');
     exploreButton.style('color', 'white');
@@ -67,7 +65,7 @@ function createButtons(positions) {
     let buttonWidth = 100;
     let buttonHeight = 40;
     let buttonSpacing = 10;
-    let buttonLabels = ['GRAFICO', 'COSA SONO', 'LEGGERE IL GRAFICO', 'CHI SIAMO'];
+    let buttonLabels = ['COSA SONO', 'CHI SIAMO'];
     for (let i = 0; i < buttonLabels.length; i++) {
         let button = createButton(buttonLabels[i]);
         let buttonWidth = textWidth(buttonLabels[i]) + 20;
@@ -100,10 +98,6 @@ function createButtons(positions) {
                 window.location.href = 'p5/cosasono/index.html';
             } else if (buttonLabels[i] === 'CHI SIAMO') {
                 window.location.href = 'p5/chisiamo/index.html';
-            } else if (buttonLabels[i] === 'LEGGERE IL GRAFICO') {
-                window.location.href = 'p5/leggereilgrafico/index.html';
-            } else if (buttonLabels[i] === 'GRAFICO') {
-                window.location.href = 'p5/notizie+vista generale/index.html';
             }
         });
     }

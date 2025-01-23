@@ -20,16 +20,17 @@ imgCosa5 = loadImage('../../img/cosa5.png');
 imgCosa6 = loadImage('../../img/cosa6.png');
 imgCosarazzo = loadImage('../../img/cosarazzo.png');
 imgCosasuolo = loadImage('../../img/cosasuolo.png');
-//   imgHome7 = loadImage('../../img/home7.png');
+imgLeggere1 = loadImage('../../img/leggere1.png');
 imgcosaastronauta = loadImage('../../img/cosaastronauta.png');
+imgtitolo = loadImage('../../img/titolo.png');
+
 }
 
 function setup() {
-    createCanvas(windowWidth, 3900); 
+    createCanvas(windowWidth, 4550); 
     let buttonPositions = [
-      { x: width - 630, y: 30 },
-      { x: width - 510, y: 30 },
-      { x: width - 370, y: 30 },
+      { x: width - 430, y: 30 },
+      { x: width - 300, y: 30 },
       { x: width - 160, y: 30 }
   ];
     createButtons(buttonPositions);
@@ -50,7 +51,7 @@ function createButtons(positions) {
     let buttonWidth = 100;
     let buttonHeight = 40;
     let buttonSpacing = 10;
-    let buttonLabels = ['GRAFICO', 'COSA SONO', 'LEGGERE IL GRAFICO', 'CHI SIAMO'];
+    let buttonLabels = ['GRAFICO', 'COSA SONO', 'CHI SIAMO'];
     for (let i = 0; i < buttonLabels.length; i++) {
         let button = createButton(buttonLabels[i]);
         let buttonWidth = textWidth(buttonLabels[i]) + 20;
@@ -104,8 +105,6 @@ function createButtons(positions) {
               window.location.href = '../cosasono/index.html';
           } else if (buttonLabels[i] === 'CHI SIAMO') {
               window.location.href = '../chisiamo/index.html';
-          } else if (buttonLabels[i] === 'LEGGERE IL GRAFICO') {
-              window.location.href = '../leggereilgrafico/index.html';
             } else if (buttonLabels[i] === 'GRAFICO') {
                 window.location.href = '../notizie+vista generale/index.html';
 }
@@ -121,11 +120,9 @@ function draw() {
   let time = millis() * 0.001; // Tempo per l'oscillazione
   let floatAmplitude = 10; // Ampiezza del movimento
 
-  //immagini
-//   image(imgHome1, 90 + cos(time) * floatAmplitude, 10 + sin(time) * floatAmplitude, imgHome1.width * scaleFactor, imgHome1.height * scaleFactor);
-//   image(imgHome3, 410 + cos(time + 1) * floatAmplitude, 390 + sin(time + 1) * floatAmplitude, imgHome3.width * scaleFactor, imgHome3.height * scaleFactor);
-//   image(imgHome2, 160 + cos(time + 2) * floatAmplitude, 490 + sin(time + 2) * floatAmplitude, imgHome2.width * scaleFactor, imgHome2.height * scaleFactor);
-image(imgHome4, 810 + cos(time + 3) * floatAmplitude, 150 + sin(time + 3) * floatAmplitude, imgHome4.width * 0.2, imgHome4.height * 0.2);
+
+  
+  image(imgHome4, 810 + cos(time + 3) * floatAmplitude, 150 + sin(time + 3) * floatAmplitude, imgHome4.width * 0.2, imgHome4.height * 0.2);
 //   image(imgHome5, 1110 + cos(time + 4) * floatAmplitude, 50 + sin(time + 4) * floatAmplitude, imgHome5.width * scaleFactor, imgHome5.height * scaleFactor);
 image(imgHome6, 200 + cos(time + 5) * floatAmplitude, 1000 + sin(time + 5) * floatAmplitude, imgHome6.width * scaleFactor, imgHome6.height * scaleFactor);
 image(imgCosa2, 600 + cos(time + 5) * floatAmplitude, 800 + sin(time + 5) * floatAmplitude, imgCosa2.width * scaleFactor, imgCosa2.height * scaleFactor);
@@ -133,29 +130,21 @@ image(imgCosa4, 900 + cos(time + 5) * floatAmplitude, 1200 + sin(time + 5) * flo
 image(imgCosa5, 1400 + cos(time + 5) * floatAmplitude, 1450 + sin(time + 5) * floatAmplitude, imgCosa5.width * scaleFactor, imgCosa5.height * scaleFactor);
 image(imgCosa6, 200 + cos(time + 5) * floatAmplitude, 1550 + sin(time + 5) * floatAmplitude, imgCosa6.width * scaleFactor, imgCosa6.height * scaleFactor);
 image(imgCosarazzo, 1200 + cos(time + 5) * floatAmplitude, 2250 + sin(time + 5) * floatAmplitude, imgCosarazzo.width * scaleFactor, imgCosarazzo.height * scaleFactor);
-image(imgCosasuolo, 0, 3740, imgCosasuolo.width * 0.16, imgCosasuolo.height * 0.16);
+image(imgCosasuolo, 0, 4390, imgCosasuolo.width * 0.16, imgCosasuolo.height * 0.16);
 //   image(imgHome7, 700 + cos(time + 6) * floatAmplitude, 140 + sin(time + 6) * floatAmplitude, imgHome7.width * scaleFactor, imgHome7.height * scaleFactor);
-image(imgcosaastronauta, 710 + cos(time + 7) * floatAmplitude, 3100 + sin(time + 7) * floatAmplitude, imgcosaastronauta.width * scaleFactor, imgcosaastronauta.height * scaleFactor);
+image(imgcosaastronauta, 730 + cos(time + 7) * floatAmplitude, 3100 + sin(time + 7) * floatAmplitude, imgcosaastronauta.width * scaleFactor, imgcosaastronauta.height * scaleFactor);
+image(imgLeggere1, 100 + cos(time) * floatAmplitude, 3770 + sin(time) * floatAmplitude, imgLeggere1.width * scaleFactor, imgLeggere1.height * scaleFactor);
 
-  // titolo
-  textSize(23); 
-  stroke(0); 
-  fill(0); 
-  textFont(fontRubik); 
-  text('RIFIUTI SPAZIALI', 158, 52); 
-  strokeWeight(3); 
-  fill(255); 
-  textFont(fontRubik); 
-  text('RIFIUTI SPAZIALI', 160, 50); 
-
-  if (mouseX > 158 && mouseX < 300 && mouseY > 30 && mouseY < 70) {
-    cursor(HAND);
-    if (mouseIsPressed) {
-      window.location.href = '../../index.html';
-    }
-  } else {
-    cursor(ARROW);
+image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
+if (mouseX > 50 && mouseX < -30 + imgtitolo.width * 0.25 && mouseY > 30 && mouseY < 20 + imgtitolo.height * 0.25) {
+  cursor(HAND);
+  if (mouseIsPressed) {
+    window.location.href = '../../index.html';
   }
+} else {
+  cursor(ARROW);
+}
+
 
   textAlign (LEFT, CENTER);
 
@@ -242,4 +231,21 @@ noStroke ();
 fill (0);
 textAlign (LEFT)
 text('Potrebbero benissimo esserlo. Diverse aziende\nstanno progettando nuovi grandi gruppi\ndi satelliti, chiamati mega costellazioni,\nche trasmetteranno internet sulla Terra.\nQueste aziende, tra cui SpaceX e Amazon, hanno\nin programma di lanciare migliaia di satelliti\nper raggiungere una copertura globale di internet via\nsatellite. In caso di successo, potrebbero\nesserci altri 50.000 satelliti in orbita.\nCiò significa anche che saranno necessarie molte\npiù manovre di prevenzione delle collisioni.\nA settembre 2019, lAgenzia Spaziale Europea\nha eseguito la sua prima manovra satellitare\nper evitare la collisione con una mega costellazione.\nÈ insolito dover evitare satelliti attivi.\nAssicurandoci che i satelliti vengano rimossi\ndallorbita in un lasso di tempo ragionevole\nuna volta che non sono più attivi, potremo attenuare\nil problema dei rifiuti spaziali in futuro.\nLorbita della Terra ci consente di studiare\nil nostro pianeta, inviare comunicazioni e altro\nancora. È importante che la utilizziamo in modo\nsostenibile, consentendo anche alle generazioni\nfuture di goderne i benefici.', width / 2 - 500, 3425); 
+
+// paragrafo6
+textAlign (CENTER, CENTER);
+textSize (57)
+strokeWeight(7);
+textLeading(57); 
+stroke (0)
+fill(255); 
+textFont(fontRubik); 
+text('DA DOVE VENGONO\nI DATI?', width / 2, 4000);
+
+textSize(16);
+textFont(fontInconsolata); 
+textLeading(16);
+noStroke ();
+fill (0);
+text('Il dataset di riferimento è fornito da una API di Space-Track.org basato\nsui dati del United States Space Surveillance Network che rileva,\ntraccia, cataloga e identifica oggetti artificial\nin orbita attorno alla Terra.', width / 2, 4140); 
 }
