@@ -461,50 +461,56 @@ function drawRadialSlider() {
 }
 
 function createHamburgerMenu() {
-  let menuButton = createDiv('');
+  let menuButton = createDiv('►');
   menuButton.class('hamburger-menu');
-  menuButton.position(50, 80);
-  menuButton.mousePressed(toggleMenu);
-  
-  for (let i = 0; i < 3; i++) {
-    let line = createDiv('');
-    line.parent(menuButton);
-    line.class('menu-line');
-  }
+  menuButton.position(width / 2 - 20, 300); // Posizione della freccia
+  menuButton.style('font-size', '16px'); // Dimensione della freccia
+  menuButton.style('background-color', 'transparent'); // Rimuovi lo sfondo
+  menuButton.style('border', 'none'); // Rimuovi il bordo
+  menuButton.mousePressed(() => {
+    toggleMenu();
+    // Ruota la freccia e cambia il colore di sfondo
+    if (menuButton.html() === '►') {
+      menuButton.html('▼'); // Cambia la freccia verso il basso
+      // Non cambiare il colore di sfondo
+    } else {
+      menuButton.html('►'); // Cambia la freccia verso destra
+      // Non cambiare il colore di sfondo
+    }
+  });
   
   let dropdownMenu = createDiv('');
   dropdownMenu.class('dropdown-menu');
-  dropdownMenu.position(50, 130);
+  dropdownMenu.position(width / 2 - 105, 350); // Sposta il menu a sinistra di 5px
   dropdownMenu.style('display', 'none');
-  
-  // Aggiungi la casella a destra sotto le linee del menu a tendina
-  let box = createDiv(''); // Crea un nuovo div per la casella
-  box.position(50, 150 + dropdownMenu.elt.offsetHeight); // Sposta la casella un po' più in basso
-  box.size(150, 220); // Imposta la dimensione della casella
-  box.style('border', 'transparent'); // Aggiungi un bordo
-  box.style('background-color', 'transparent'); // Imposta il colore di sfondo
-  box.style('padding', '10px'); // Aggiungi padding
-  box.style('border-radius', '10px'); // Aggiungi angoli arrotondati
+  dropdownMenu.style('width', '200px'); // Aumenta la larghezza del menu
+  dropdownMenu.style('height', 'auto'); // Altezza automatica per adattarsi al contenuto
+  dropdownMenu.style('background-color', 'white'); // Sfondo bianco per il menu
+  dropdownMenu.style('border-radius', '10px'); // Angoli arrotondati
+  dropdownMenu.style('padding', '10px'); // Padding per il contenuto del menu
+  dropdownMenu.style('border', '2px solid black'); // Aggiungi bordo nero al menu
 
-  // Aggiungi la legenda con le immagini
-  box.html(`
-    <div style="display: flex; align-items: center; margin-bottom: 10px;">
-      <img src="../../img/payload.png" style="width: 40px; height: 40px; vertical-align: middle;"> 
-      <span style="font-family: Inconsolata; font-size: 16px; margin-left: 5px;">Payload</span>
-    </div>
-    <div style="display: flex; align-items: center; margin-bottom: 10px;">
-      <img src="../../img/debris.png" style="width: 40px; height: 40px; vertical-align: middle;"> 
-      <span style="font-family: Inconsolata; font-size: 16px; margin-left: 5px;">Debris</span>
-    </div>
-    <div style="display: flex; align-items: center; margin-bottom: 10px;">
-      <img src="../../img/rocket body.png" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 10px;"> 
-      <span style="font-family: Inconsolata; font-size: 16px; margin-left: 15px;">Rocket Body</span>
-    </div>
-    <div style="display: flex; align-items: center; margin-bottom: 30px;">
-      <img src="../../img/tbi.png" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 15px;">
-      <span style="font-family: Inconsolata; font-size: 16px; margin-left: 10px;">To be identified</span>
-    </div>
-  `);
+  // Aggiungi stili per lo slider
+  dropdownMenu.style('overflow-y', 'auto'); // Abilita lo slider verticale
+  dropdownMenu.style('overflow-x', 'hidden'); // Nascondi lo slider orizzontale
+  dropdownMenu.style('background-color', 'white'); // Sfondo dello slider
+  dropdownMenu.style('color', 'black'); // Colore del testo
+
+  // Aggiungi stili per la barra dello slider
+  let style = document.createElement('style');
+  style.innerHTML = `
+    .dropdown-menu::-webkit-scrollbar {
+      width: 8px; /* Larghezza della barra dello slider */
+    }
+    .dropdown-menu::-webkit-scrollbar-track {
+      background: white; /* Sfondo della barra dello slider */
+    }
+    .dropdown-menu::-webkit-scrollbar-thumb {
+      background: black; /* Colore della barra dello slider */
+      border-radius: 10px; /* Angoli arrotondati della barra */
+    }
+  `;
+  document.head.appendChild(style);
 
   if (countries && countries.length > 0) {
     countries.forEach(country => {
@@ -512,6 +518,8 @@ function createHamburgerMenu() {
       countryItem.parent(dropdownMenu);
       countryItem.class('country-item');
       countryItem.style('color', 'black');
+      countryItem.style('text-align', 'center'); // Centra il testo dei paesi
+      countryItem.style('font-family', 'RubikOne'); // Imposta il font RubikOne
       
       // Aggiungi un evento di clic per ogni paese
       countryItem.mousePressed(() => {

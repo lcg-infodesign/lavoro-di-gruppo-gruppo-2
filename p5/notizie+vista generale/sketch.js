@@ -35,7 +35,11 @@ let lastUpdateTime = 0;
 
 
 let customCursorImg;
-;
+let arrowCursor;
+
+let sound;
+let toggleButton; // Variable for the button
+let isPlaying = false; // Tracks the audio state
 
 
 function preload() {
@@ -87,6 +91,10 @@ function preload() {
 
   // Carica l'immagine del cursore
   customCursorImg = loadImage("../../img/cursor.png");
+  arrowCursor = loadImage('../../img/cursor.png')
+
+  // Load the audio file in preload
+  sound = loadSound('../../space.mp3');
   
 }
 
@@ -129,8 +137,42 @@ function setup() {
   generateDots();
   // Precalcola i dati del fumo
   precalculateFumo();
+
+ // Create a single toggle button
+ toggleButton = createButton('Play Sound'); // Starts with the play icon
+ toggleButton.position(30, height - 55);
+ toggleButton.mousePressed(toggleAudio);
+ sound.setVolume(0.2);
+ styleButton(toggleButton);
+
+
 }
 
+// Function to style the button
+function styleButton(button) {
+  button.style('font-family', 'Inconsolata'); // Use Inconsolata font
+  button.style('font-size', '12px');
+  button.style('padding', '5px 10px');
+  button.style('border', '2px solid black'); // Black border
+  button.style('border-radius', '8px'); // Rounded corners
+  button.style('background-color', 'white'); // White background
+  button.style('color', 'black'); // Black text
+  button.style('cursor', 'pointer'); // Pointer cursor
+  button.style('text-align', 'center');
+}
+
+// Function to toggle audio
+function toggleAudio() {
+  if (isPlaying) {
+    sound.stop();
+    toggleButton.html('Play Sound'); // Update to play icon
+    isPlaying = false;
+  } else {
+    sound.play();
+    toggleButton.html('Stop Sound'); // Update to stop icon
+    isPlaying = true;
+  }
+}
 
 
 function windowResized() {
@@ -256,13 +298,14 @@ function draw() {
   
   drawInfoBox();
 
-  // Disegna le finestrelle a sinistra
-  drawInfoBoxes();
-
-  // Disegna il cursore personalizzato
-  if (customCursorImg) {
-    image(customCursorImg, mouseX, mouseY, 14, 16); // Dimensioni cursore personalizzate
+  if (mouseX > 150 && mouseX < 250 && mouseY > 150 && mouseY < 200) {
+    // Cursore "pointer"
+    image(arrowCursor, mouseX, mouseY, 16, 32); // Disegna il cursore pointer
+  } else {
+    // Cursore predefinito
+    image(customCursorImg, mouseX, mouseY, 14, 16); // Disegna il cursore predefinito
   }
+  
   
 }
 
@@ -331,8 +374,8 @@ function drawSliderTimeline() {
   // Aggiorna `selectedYear` se il mouse è sopra lo slider e viene premuto
   if (
     mouseIsPressed &&
-    mouseY > height - 80 && // Ampliato il range verticale sopra lo slider
-    mouseY < height - 40 && // Ampliato il range verticale sotto lo slider
+    mouseY > height - 90 && // Ampliato il range verticale sopra lo slider
+    mouseY < height - 30 && // Ampliato il range verticale sotto lo slider
     mouseX > startX &&
     mouseX < endX
   ) {
