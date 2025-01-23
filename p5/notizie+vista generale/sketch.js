@@ -256,6 +256,9 @@ function draw() {
   
   drawInfoBox();
 
+  // Disegna le finestrelle a sinistra
+  drawInfoBoxes();
+
   // Disegna il cursore personalizzato
   if (customCursorImg) {
     image(customCursorImg, mouseX, mouseY, 14, 16); // Dimensioni cursore personalizzate
@@ -750,6 +753,25 @@ function drawLegend() {
       // Disegna il testo accanto all'immagine
       text(labelText, legendX + imageWidth + 10, legendY + i * spacing + imgHeight / 2);
     }
+  }
+}
+
+// Aggiungi questa nuova funzione per disegnare le finestrelle
+function drawInfoBoxes() {
+  let boxWidth = 150; // Larghezza delle finestrelle
+  let boxHeight = 100; // Altezza delle finestrelle
+  let baseX = 20; // Posizione X delle finestrelle
+  let baseY = height - 200; // Posizione Y iniziale delle finestrelle (spostato più in basso)
+  let padding = 10; // Padding interno
+
+  for (let i = 0; i < 3; i++) {
+    let boxY = baseY + i * (boxHeight + padding); // Calcola la posizione Y per ogni finestra
+
+    // Disegna il rettangolo bianco
+    fill(255);
+    stroke(0);
+    strokeWeight(1.5);
+    rect(baseX, boxY, boxWidth, boxHeight, 8);
   }
 }
 
