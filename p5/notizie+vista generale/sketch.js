@@ -259,6 +259,7 @@ function draw() {
   drawDots();
   
   drawInfoBox();
+  
 }
 
 function easeOutQuad(t) {
@@ -750,3 +751,4 @@ function drawLegend() {
     }
   }
 }
+
