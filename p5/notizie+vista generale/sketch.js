@@ -104,7 +104,7 @@ function setup() {
 
   // Inizializza altre funzioni del setup
   slider = createSlider(1960, 2020, 1960, 1);
-  slider.position((width - 700) / 2, height - 60);
+  slider.position((width - slider.width) / 2, height - 60);
   slider.style('width', '700px');
   slider.style('opacity', '0');
 
