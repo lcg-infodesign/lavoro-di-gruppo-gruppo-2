@@ -256,6 +256,15 @@ function windowResized() {
 function draw() {
   background(240);
 
+  // Disegna il riquadro bianco a sinistra con angoli arrotondati
+  fill(255); // Colore bianco
+  stroke(0); // Bordo nero
+  strokeWeight(2); // Spessore del bordo
+  let boxWidth = 300; // Larghezza del riquadro
+  let boxHeight = 500; // Altezza del riquadro
+  let cornerRadius = 10; // Raggio degli angoli arrotondati
+  rect(40, (height - boxHeight) / 2, boxWidth, boxHeight, cornerRadius); // Spostato a destra
+
   image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
   if (mouseX > 50 && mouseX < -30 + imgtitolo.width * 0.25 && mouseY > 30 && mouseY < 20 + imgtitolo.height * 0.25) {
     cursor(HAND);
@@ -287,8 +296,6 @@ function draw() {
     slider.value(selectedYear); // Aggiorna il valore dello slider
   }
   // Disegna la legenda
-  drawLegend();
-
   drawSliderTimeline();
 
   // Resto del codice di rendering
@@ -306,7 +313,82 @@ function draw() {
     image(customCursorImg, mouseX, mouseY, 14, 16); // Disegna il cursore predefinito
   }
   
-  
+  // Aggiungi il nuovo contenuto all'interno del rettangolo bianco
+  textFont(fontRubik);
+  textSize(20);
+  fill(0);
+  noStroke(); // Assicurati che non ci sia contorno
+  textAlign(LEFT); // Allinea il testo a sinistra
+  text('RIFIUTO SPAZIALE', 50, (height - boxHeight) / 2 + 40); // Posizione a sinistra
+
+  // Rettangolo (come placeholder)
+  fill(0);
+  ellipse(50 + 15, (height - boxHeight) / 2 + 70 + 15, 30, 30); // Disegna un cerchio nero
+
+  // Stile per il testo descrittivo
+  textFont(fontRubik);
+  textSize(18);
+  fill(0);
+  noStroke(); // Assicurati che non ci sia contorno
+  text('PERIGEO', 50, (height - boxHeight) / 2 + 120); // Posizionato a sinistra
+
+  textFont(fontInconsolata);
+  textSize(14);
+  fill(0);
+  noStroke(); // Assicurati che non ci sia contorno
+  text('DISTANZA DALLA TERRA', 50, (height - boxHeight) / 2 + 150); // Posizionato a sinistra
+
+  // Rettangolo nero (simula i dati oscurati)
+  fill(0);
+  rect(50, (height - boxHeight) / 2 + 180, 200, 30); // Posizionato a sinistra
+
+  textFont(fontInconsolata);
+  textSize(12);
+  fill(0);
+  noStroke(); // Assicurati che non ci sia contorno
+  text(
+    'Il punto di massima vicinanza del detrito\nalla terra, mentre orbita intorno ad essa',
+    50,
+    (height - boxHeight) / 2 + 250 // Aumentata la distanza
+  );
+
+  textFont(fontRubik);
+  textSize(18);
+  fill(0);
+  noStroke(); // Assicurati che non ci sia contorno
+  text('ANNO', 50, (height - boxHeight) / 2 + 280); // Posizionato a sinistra
+
+  textFont(fontInconsolata);
+  textSize(24); // Dimensione del testo per "0000"
+  fill(0);
+  noStroke(); // Assicurati che non ci sia contorno
+  text('0000', 50, (height - boxHeight) / 2 + 310); // Posizionato a sinistra
+
+  textFont(fontInconsolata);
+  textSize(12);
+  fill(0);
+  noStroke(); // Assicurati che non ci sia contorno
+  text(
+    'L’anno in cui l’oggetto è stato lanciato\nnello spazio. Dal 1960 al 2021',
+    50,
+    (height - boxHeight) / 2 + 360 // Aumentata la distanza
+  );
+
+  textFont(fontRubik);
+  textSize(18);
+  fill(0);
+  noStroke(); // Assicurati che non ci sia contorno
+  text('PAESE', 50, (height - boxHeight) / 2 + 400); // Posizionato a sinistra
+
+  fill(0);
+  rect(50, (height - boxHeight) / 2 + 410, 200, 30); // Posizionato a sinistra
+
+  // Nuovo testo aggiunto sotto l'ultimo rettangolo nero
+  textFont(fontInconsolata);
+  textSize(12);
+  fill(0);
+  noStroke(); // Assicurati che non ci sia contorno
+  text('Il paese responsabile del lancio del detrito', 50, (height - boxHeight) / 2 + 470); // Posizionato sotto il rettangolo nero
 }
 
 function easeOutQuad(t) {
@@ -769,34 +851,58 @@ function drawLegend() {
   const imageWidth = 40; // Larghezza standard delle immagini
   const spacing = 60; // Spaziatura verticale tra le immagini
   const labels = [
-    
     { img: imgn19, text: "Rifiuto Spaziale" },
-    
   ];
 
   noStroke();
+  fill(255); // Colore di riempimento bianco per il riquadro
+  // Modificato per includere il testo
+  rect(legendX - 10, legendY - 10, imageWidth + 10 + 150, labels.length * spacing + 20 + 120); // Disegna il riquadro
+
+  noStroke();
   textAlign(LEFT, CENTER);
-  textFont(fontInconsolata);
+  textFont(fontRubik); // Assicurati di usare il font corretto
   textSize(15);
-  textStyle(NORMAL); // Assicura che il testo non sia in bold
+  textStyle(BOLD); // Imposta il testo in grassetto
   fill(0);
 
   // Itera tra le immagini e disegna la legenda
   for (let i = 0; i < labels.length; i++) {
     let img = labels[i].img;
-    let labelText = labels[i].text;
+    let labelText = labels[i].text.toUpperCase(); // Converti il testo in maiuscolo
 
     if (img) {
+      // Disegna il testo
+      text(labelText, legendX, legendY + i * spacing); // Posiziona il testo
+
       // Calcola l'altezza mantenendo le proporzioni
       let imgHeight = imageWidth / (img.width / img.height);
 
-      // Disegna l'immagine
-      image(img, legendX, legendY + i * spacing, imageWidth, imgHeight);
-
-      // Disegna il testo accanto all'immagine
-      text(labelText, legendX + imageWidth + 10, legendY + i * spacing + imgHeight / 2);
+      // Disegna l'immagine centrata sotto il testo
+      image(img, legendX + (150 - imageWidth) / 2, legendY + i * spacing + 20, imageWidth, imgHeight); // Posiziona l'immagine centrata sotto il testo
     }
   }
+
+  // Aggiungi il testo "DISTANZA DALLA TERRA" sotto il pallino
+  textSize(12); // Dimensione del testo per la nuova scritta
+  textStyle(NORMAL); // Assicurati che il testo non sia in bold
+  text("DISTANZA DALLA TERRA", legendX + (150 - textWidth("DISTANZA DALLA TERRA")) / 2, legendY + labels.length * spacing + 20 + 10); // Posiziona il testo centrato
+
+
+  // Aggiungi il testo descrittivo sotto "PERIGEO"
+  textFont(fontInconsolata); // Cambia il font a Inconsolata
+  textSize(10); // Dimensione del testo per la descrizione
+  textStyle(NORMAL); // Assicurati che il testo non sia in bold
+  text("È IL PUNTO DI MASSIMA VICINANZA DEL DETRITO ALLA TERRA, MENTRE ORBITA INTORNO AD ESSA", legendX + 10, legendY + labels.length * spacing + 20 + 50, 130); // Posiziona il testo centrato
+
+  // Aggiungi l'immagine "perigeo.png" sotto il testo descrittivo
+  let perigeoImg = loadImage("img/perigeo.png"); // Carica l'immagine dal percorso corretto
+  image(perigeoImg, legendX + (150 - imageWidth) / 2, legendY + labels.length * spacing + 20 + 70, imageWidth, imageWidth * (perigeoImg.height / perigeoImg.width)); // Posiziona l'immagine centrata
+
+  stroke(0); // Imposta il colore del bordo a nero
+  noFill(); // Non riempire il rettangolo
+  // Modificato per includere il testo
+  rect(legendX - 10, legendY - 10, imageWidth + 10 + 150, labels.length * spacing + 20 + 120); // Disegna il bordo
 }
 
 // Aggiungi questa nuova funzione per disegnare le finestrelle
