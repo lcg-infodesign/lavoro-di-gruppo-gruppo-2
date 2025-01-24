@@ -179,9 +179,9 @@ function draw() {
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
   let boxWidth = 225; // Larghezza del riquadro
-  let boxHeight = 710; // Altezza del riquadro (modificata per allungare il rettangolo)
+  let boxHeight = 590; // Altezza del riquadro (modificata per allungare il rettangolo)
   let cornerRadius = 10; // Raggio degli angoli arrotondati
-  rect(20, (height - boxHeight) / 2 + 10, boxWidth, boxHeight, cornerRadius); // Posizione modificata
+  rect(20, (height - boxHeight) / 2 -20 , boxWidth, boxHeight, cornerRadius); // Posizione modificata
 
   // Aggiungi il testo "LEGGERE IL GRAFICO" in bianco con stroke nero
   fill(255); // Colore del testo (bianco)
@@ -191,7 +191,7 @@ function draw() {
   textFont(rubikOneFont); // Font Rubik
   textAlign(LEFT, TOP); // Allineamento del testo
   let textX = 30; // Posizione X del testo
-  let textY = (height - boxHeight) / 2 + 10; // Posizione Y del testo
+  let textY = (height - boxHeight) / 2 -10; // Posizione Y del testo
   text("LEGGERE ", textX, textY); // Testo "LEGGERE IL GRAFICO"
   textY += 20
   text("IL GRAFICO", textX, textY); // Testo "LEGGERE IL GRAFICO"
@@ -211,33 +211,30 @@ function draw() {
   textFont(inconsolataFont); // Font Inconsolata
   textSize(14); // Dimensione del testo per PAYLOAD, TBA, ROCKET BODY
   textY += 30; // Sposta la posizione Y per le voci specifiche
-  text("PAYLOAD", textX, textY); // Voce "PAYLOAD"
-
+  text("PAYLOAD      To Be Identified  ", textX, textY); // Voce "PAYLOAD"
   // Sostituisci il rettangolo nero con l'immagine payload
   let payloadImageX = textX; // Posizione X dell'immagine
   let payloadImageY = textY + 20; // Posizione Y dell'immagine
   image(payloadImage, payloadImageX, payloadImageY, 50, 40); // Disegna l'immagine al posto del rettangolo nero
-  
-  textY += 70; // Sposta la posizione Y per "TBA oggetto da identificare" (aumentato per più spazio)
-  text("TBI oggetto da identificare", textX, textY); // Voce "TBA oggetto da identificare"
   let tbiX = textX; // Posizione X dell'immagine
   let tbiY = textY + 20; // Posizione Y dell'immagine
-  image(tbiImage, tbiX+5, tbiY, 40, 40); // Disegna l'immagine al posto del rettangolo nero
+  image(tbiImage, tbiX+125, tbiY, 40, 40); // Disegna l'immagine al posto del rettangolo nero
+  
+  
+  
   
   textY += 70; // Sposta la posizione Y per "ROCKET BODY" (aumentato per più spazio)
-  text("ROCKET BODY", textX, textY); // Voce "ROCKET BODY"
+  text("ROCKET BODY       DETRITO", textX, textY); // Voce "ROCKET BODY"
 
   // Disegna un rettangolo nero tra "ROCKET BODY" e "DIMENSIONE"
   let rocketX = textX; // Posizione X dell'immagine
   let rocketY = textY + 20; // Posizione Y dell'immagine
   image(rocketBodyImage, rocketX+10, rocketY, 30, 30); // Disegna l'immagine al posto del rettangolo nero
   
-  textY += 70; // Sposta la posizione Y per "ROCKET BODY" (aumentato per più spazio)
-  text("DETRITO", textX, textY); // Voce "ROCKET BODY"
   
   let debrisX = textX; // Posizione X dell'immagine
-  let debrisY = textY + 20; // Posizione Y dell'immagine
-  image(debrisImage, debrisX, debrisY, 60, 60); // Disegna l'immagine al posto del rettangolo nero
+  let debrisY = textY; // Posizione Y dell'immagine
+  image(debrisImage, debrisX+120, debrisY, 60, 60); // Disegna l'immagine al posto del rettangolo nero
   
 
   textY += 80; // Sposta la posizione Y per il resto del testo (aumentato per più spazio)
