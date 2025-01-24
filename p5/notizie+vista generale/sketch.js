@@ -261,9 +261,9 @@ function draw() {
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
   let boxWidth = 300; // Larghezza del riquadro
-  let boxHeight = 500; // Altezza del riquadro
+  let boxHeight = 520; // Altezza del riquadro
   let cornerRadius = 10; // Raggio degli angoli arrotondati
-  rect(40, (height - boxHeight) / 2, boxWidth, boxHeight, cornerRadius); // Spostato a destra
+  rect(40, (height - boxHeight) / 2 - 20, boxWidth, boxHeight, cornerRadius); // Spostato più in alto
 
   image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
   if (mouseX > 50 && mouseX < -30 + imgtitolo.width * 0.25 && mouseY > 30 && mouseY < 20 + imgtitolo.height * 0.25) {
@@ -315,11 +315,20 @@ function draw() {
   
   // Aggiungi il nuovo contenuto all'interno del rettangolo bianco
   textFont(fontRubik);
-  textSize(20);
-  fill(0);
+  textSize(22);
+
+  fill(255);
   noStroke(); // Assicurati che non ci sia contorno
   textAlign(LEFT); // Allinea il testo a sinistra
-  text('RIFIUTO SPAZIALE', 50, (height - boxHeight) / 2 + 40); // Posizione a sinistra
+  
+  stroke(0); // Aggiungi il contorno nero
+  strokeWeight(2); // Imposta lo spessore del contorno
+  fill(255); // Ripristina il colore di riempimento per il testo
+  text('LEGGERE IL GRAFICO', 50, (height - boxHeight) / 2 + 8); // Disegna di nuovo il testo con contorno
+  noStroke(); // Assicurati che non ci sia contorno per il testo successivo
+  fill(0); // Colore del testo nero
+  textSize(20);
+  text('RIFIUTO SPAZIALE', 50, (height - boxHeight) / 2 + 48); // Posizione a sinistra
 
   // Rettangolo (come placeholder)
   fill(0);
@@ -330,7 +339,7 @@ function draw() {
   textSize(18);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('PERIGEO', 50, (height - boxHeight) / 2 + 120); // Posizionato a sinistra
+  text('PERIGEO', 50, (height - boxHeight) / 2 + 130); // Posizionato a sinistra
 
   textFont(fontInconsolata);
   textSize(14);
@@ -349,20 +358,20 @@ function draw() {
   text(
     'Il punto di massima vicinanza del detrito\nalla terra, mentre orbita intorno ad essa',
     50,
-    (height - boxHeight) / 2 + 250 // Aumentata la distanza
+    (height - boxHeight) / 2 + 240 // Aumentata la distanza
   );
 
   textFont(fontRubik);
   textSize(18);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('ANNO', 50, (height - boxHeight) / 2 + 280); // Posizionato a sinistra
+  text('ANNO', 50, (height - boxHeight) / 2 + 290); // Posizionato a sinistra
 
   textFont(fontInconsolata);
   textSize(24); // Dimensione del testo per "0000"
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('0000', 50, (height - boxHeight) / 2 + 310); // Posizionato a sinistra
+  text('0000', 50, (height - boxHeight) / 2 + 315); // Posizionato a sinistra
 
   textFont(fontInconsolata);
   textSize(12);
@@ -371,7 +380,7 @@ function draw() {
   text(
     'L’anno in cui l’oggetto è stato lanciato\nnello spazio. Dal 1960 al 2021',
     50,
-    (height - boxHeight) / 2 + 360 // Aumentata la distanza
+    (height - boxHeight) / 2 + 350 // Aumentata la distanza
   );
 
   textFont(fontRubik);
@@ -380,15 +389,15 @@ function draw() {
   noStroke(); // Assicurati che non ci sia contorno
   text('PAESE', 50, (height - boxHeight) / 2 + 400); // Posizionato a sinistra
 
-  fill(0);
-  rect(50, (height - boxHeight) / 2 + 410, 200, 30); // Posizionato a sinistra
+  fill(192); // Colore grigio
+  arc(60 + 20, (height - boxHeight) / 2 + 430, 350, 250, 0, PI + QUARTER_PI); // Modificato per essere più ampio
 
   // Nuovo testo aggiunto sotto l'ultimo rettangolo nero
   textFont(fontInconsolata);
   textSize(12);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('Il paese responsabile del lancio del detrito', 50, (height - boxHeight) / 2 + 470); // Posizionato sotto il rettangolo nero
+  text('Il paese responsabile del lancio del detrito', 50, (height - boxHeight) / 2 + 457); // Posizionato sotto il rettangolo nero
 }
 
 function easeOutQuad(t) {
