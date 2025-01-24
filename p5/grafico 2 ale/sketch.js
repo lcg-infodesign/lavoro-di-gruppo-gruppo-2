@@ -179,7 +179,7 @@ function draw() {
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
   let boxWidth = 225; // Larghezza del riquadro
-  let boxHeight = 700; // Altezza del riquadro (modificata per allungare il rettangolo)
+  let boxHeight = 710; // Altezza del riquadro (modificata per allungare il rettangolo)
   let cornerRadius = 10; // Raggio degli angoli arrotondati
   rect(20, (height - boxHeight) / 2 + 10, boxWidth, boxHeight, cornerRadius); // Posizione modificata
 
@@ -254,7 +254,14 @@ function draw() {
   image(tbiImage, textX + 15, textY+ 20, 20, 20);
   image(tbiImage, textX + 80, textY+ 10, 40, 40);
   image(tbiImage, textX + 140, textY+ 5, 60, 60);
-  textY += 70; // A capo
+
+  textFont(inconsolataFont); // Font Inconsolata
+  textSize(14);
+
+  textY += 50; // A capo
+
+  text("Intensità della forza radar", textX, textY)
+  textY += 40; // A capo
 
   // Ripristina il font Rubik per il resto del testo
   textFont(rubikOneFont); // Font Rubik
@@ -287,7 +294,7 @@ textSize(18); // Dimensione del testo per DIMENSIONE
   textFont(inconsolataFont); // Font Inconsolata
   textSize(14); // Dimensione del testo per "anno in cui è stato lanciato il detrito"
   textY += 30; // Sposta la posizione Y per "anno in cui è stato lanciato il detrito"
-  text("anno in cui è stato lanciato", textX, textY); // Resto del testo
+  text("Anno in cui è stato lanciato", textX, textY); // Resto del testo
   textY += 20; // A capo
   text("il detrito", textX, textY); // Voce "il detrito"
 
