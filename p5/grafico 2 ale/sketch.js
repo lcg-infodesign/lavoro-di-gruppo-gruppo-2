@@ -588,22 +588,17 @@ function drawRadialSlider() {
 }
 
 function createHamburgerMenu() {
-  let menuButton = createDiv('►');
+  let menuButton = createButton('Cambia Paese'); // Nuovo bottone
   menuButton.class('hamburger-menu');
-  menuButton.position(width / 2 - 20, 300); // Posizione della freccia
-  menuButton.style('font-size', '16px'); // Dimensione della freccia
-  menuButton.style('background-color', 'transparent'); // Rimuovi lo sfondo
-  menuButton.style('border', 'none'); // Rimuovi il bordo
+  menuButton.position(width / 2 - 105, 300); // Centra il bottone orizzontalmente (105px è la metà della larghezza del menu)
+  menuButton.style('font-size', '16px'); // Dimensione del bottone
+  menuButton.style('background-color', 'white'); // Sfondo bianco
+  menuButton.style('border', '2px solid black'); // Bordo nero
+  menuButton.style('font-family', 'RubikOne'); // Font RubikOne per il bottone
+  menuButton.style('padding', '10px 20px'); // Padding per il bottone
+  menuButton.style('width', '220px'); // Imposta la larghezza del bottone per corrispondere al menu
   menuButton.mousePressed(() => {
     toggleMenu();
-    // Ruota la freccia e cambia il colore di sfondo
-    if (menuButton.html() === '►') {
-      menuButton.html('▼'); // Cambia la freccia verso il basso
-      // Non cambiare il colore di sfondo
-    } else {
-      menuButton.html('►'); // Cambia la freccia verso destra
-      // Non cambiare il colore di sfondo
-    }
   });
   
   let dropdownMenu = createDiv('');
