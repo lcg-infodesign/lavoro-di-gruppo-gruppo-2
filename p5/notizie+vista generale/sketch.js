@@ -69,6 +69,7 @@ function preload() {
   imgn20 = loadImage('../../img/rocket body.png');
   imgn21 = loadImage('../../img/debris.png');
   imgtitolo = loadImage('../../img/titolo.png');
+  imgperigeo = loadImage('../../img/perigeo2.png');
 
   
 
@@ -322,17 +323,17 @@ function draw() {
   textAlign(LEFT); // Allinea il testo a sinistra
   
   stroke(0); // Aggiungi il contorno nero
-  strokeWeight(2); // Imposta lo spessore del contorno
+  strokeWeight(3); // Imposta lo spessore del contorno
   fill(255); // Ripristina il colore di riempimento per il testo
   text('LEGGERE IL GRAFICO', 50, (height - boxHeight) / 2 + 8); // Disegna di nuovo il testo con contorno
   noStroke(); // Assicurati che non ci sia contorno per il testo successivo
   fill(0); // Colore del testo nero
-  textSize(20);
+  textSize(18);
   text('RIFIUTO SPAZIALE', 50, (height - boxHeight) / 2 + 48); // Posizione a sinistra
 
   // Rettangolo (come placeholder)
   fill(0);
-  ellipse(50 + 15, (height - boxHeight) / 2 + 70 + 15, 30, 30); // Disegna un cerchio nero
+  ellipse(50 + 15, (height - boxHeight) / 2 + 70 + 15, 10, 10); // Disegna un cerchio nero
 
   // Stile per il testo descrittivo
   textFont(fontRubik);
@@ -341,15 +342,13 @@ function draw() {
   noStroke(); // Assicurati che non ci sia contorno
   text('PERIGEO', 50, (height - boxHeight) / 2 + 130); // Posizionato a sinistra
 
+  image(imgperigeo, 50, 380, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
+
   textFont(fontInconsolata);
   textSize(14);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
   text('DISTANZA DALLA TERRA', 50, (height - boxHeight) / 2 + 150); // Posizionato a sinistra
-
-  // Rettangolo nero (simula i dati oscurati)
-  fill(0);
-  rect(50, (height - boxHeight) / 2 + 180, 200, 30); // Posizionato a sinistra
 
   textFont(fontInconsolata);
   textSize(12);
