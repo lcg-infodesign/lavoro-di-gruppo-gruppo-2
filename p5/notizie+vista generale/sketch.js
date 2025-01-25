@@ -315,6 +315,7 @@ function draw() {
   
   drawInfoBox();
 
+  
  
   
   // Aggiungi il nuovo contenuto all'interno del rettangolo bianco
