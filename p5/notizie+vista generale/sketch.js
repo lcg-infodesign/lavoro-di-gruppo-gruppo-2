@@ -353,7 +353,7 @@ function draw() {
   noStroke(); // Assicurati che non ci sia contorno
   text('PERIGEO', 50, (height - boxHeight) / 2-95); // Posizionato a sinistra
 
-  image(imgperigeo, 50, 310, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
+  image(imgperigeo, 50, (height - boxHeight) / 2 -56, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
 
   textFont(fontInconsolata);
   textSize(14);
