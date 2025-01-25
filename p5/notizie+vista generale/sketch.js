@@ -101,6 +101,7 @@ function setup() {
   textFont(fontInconsolata);
   textAlign(CENTER, CENTER);
 
+  cursor('default');
   
 
 
@@ -803,54 +804,6 @@ function drawRocket(x, y) {
   image(rocketImg, 0, 0, rocketWidth, rocketHeight);
   pop();
 }
-
-
-
-function createHamburgerMenu() {
-  let menuButton = createDiv('');
-  menuButton.class('hamburger-menu');
-  menuButton.position(50, 80);
-  menuButton.mousePressed(toggleMenu);
-  
-  for (let i = 0; i < 3; i++) {
-    let line = createDiv('');
-    line.parent(menuButton);
-    line.class('menu-line');
-  }
-  
-  let dropdownMenu = createDiv('');
-  dropdownMenu.class('dropdown-menu');
-  dropdownMenu.position(50, 130);
-  dropdownMenu.style('display', 'none');
-  
-  if (countries && countries.length > 0) {
-    countries.forEach(country => {
-      let countryItem = createDiv(country);
-      countryItem.parent(dropdownMenu);
-      countryItem.class('country-item');
-      countryItem.style('color', 'black');
-      console.log("Aggiunto paese al menu:", country); // Log per debug
-       });
-     } else {
-    console.log("Nessun paese disponibile"); // Log se non ci sono paesi
-  }
-}
-
-function toggleMenu() {
-  let dropdown = select('.dropdown-menu');
-  if (dropdown.style('display') === 'none') {
-    dropdown.style('display', 'block');
-    setTimeout(() => {
-      dropdown.addClass('show');
-    }, 10);
-  } else {
-    dropdown.removeClass('show');
-    setTimeout(() => {
-      dropdown.style('display', 'none');
-    }, 300);
-  }
-}
-
 
 
 
