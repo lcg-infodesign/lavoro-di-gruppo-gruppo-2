@@ -181,7 +181,7 @@ function draw() {
   let boxWidth = 225; // Larghezza del riquadro
   let boxHeight = 590; // Altezza del riquadro (modificata per allungare il rettangolo)
   let cornerRadius = 10; // Raggio degli angoli arrotondati
-  rect(20, (height - boxHeight) / 2 -20 , boxWidth, boxHeight, cornerRadius); // Posizione modificata
+  rect(67, (height - boxHeight) / 2 -20 , boxWidth, boxHeight, cornerRadius); // Posizione modificata
 
   // Aggiungi il testo "LEGGERE IL GRAFICO" in bianco con stroke nero
   fill(255); // Colore del testo (bianco)
@@ -190,7 +190,7 @@ function draw() {
   textSize(22); // Dimensione del testo
   textFont(rubikOneFont); // Font Rubik
   textAlign(LEFT, TOP); // Allineamento del testo
-  let textX = 30; // Posizione X del testo
+  let textX = 75; // Posizione X del testo
   let textY = (height - boxHeight) / 2 -10; // Posizione Y del testo
   text("LEGGERE ", textX, textY); // Testo "LEGGERE IL GRAFICO"
   textY += 20
