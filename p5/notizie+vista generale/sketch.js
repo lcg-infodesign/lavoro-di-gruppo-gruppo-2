@@ -35,7 +35,6 @@ let lastUpdateTime = 0;
 
 
 
-
 let sound;
 let toggleButton; // Variable for the button
 let isPlaying = false; // Tracks the audio state
@@ -299,7 +298,7 @@ function draw() {
   
   drawInfoBox();
 
-  
+ 
   
   // Aggiungi il nuovo contenuto all'interno del rettangolo bianco
   textFont(fontRubik);
