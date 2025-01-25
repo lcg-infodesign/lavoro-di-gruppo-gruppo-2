@@ -15,6 +15,10 @@ let rocketBodyImage; // Aggiungi questa riga per la variabile dell'immagine del 
 let razzinoImage; // Nuova variabile per l'immagine del razzino
 let smokePositions = []; // Array per memorizzare le posizioni del fumo
 
+// Add these global variables at the top
+let fumoData = []; // Array for storing fixed smoke properties
+let numFumo = 75; // Maximum number of smoke puffs
+let fumoAspectRatio = 1; // Width/height ratio of smoke images
 
 function preload() {
   // Carica i font
@@ -69,10 +73,12 @@ function preload() {
     () => console.log("Immagine razzino caricata con successo"), 
     (error) => console.error("Errore nel caricamento dell'immagine razzino:", error)
   ); 
-  smokeImage = loadImage('../../img/fumo.png', // Carica l'immagine del fumo
-    () => console.log("Immagine fumo caricata con successo"), 
-    (error) => console.error("Errore nel caricamento dell'immagine fumo:", error)
-  ); 
+  smokeImage = loadImage('../../img/fumo.png', () => {
+    fumoAspectRatio = smokeImage.width / smokeImage.height;
+    console.log("Immagine fumo caricata con successo");
+    // Precalculate smoke positions after loading
+    precalculateFumo();
+  }, (error) => console.error("Errore nel caricamento dell'immagine fumo:", error));
 }
 
 function setup() {
@@ -104,6 +110,28 @@ function windowResized() {
   // ridimensiona canvas quando finestra viene ridimensionata
   resizeCanvas(windowWidth, windowHeight);
   redraw(); 
+}
+
+function precalculateFumo() {
+  let centerX = width / 2;
+  let centerY = height;
+  let radius = 320;
+  let arcLength = PI * radius; // Length of the semicircle
+  let step = arcLength / numFumo;
+
+  for (let i = 0; i < numFumo; i++) {
+    let angle = map(i, 0, numFumo, 180, 360);
+    let randomScale = random(0.8, 1.3);
+    let randomRotation = random(-30, 30);
+    let randomOffsetR = random(-5, 5);
+
+    fumoData.push({
+      angle: angle,
+      scale: randomScale,
+      rotation: randomRotation,
+      offsetR: randomOffsetR
+    });
+  }
 }
 
 function createButtons(positions) {
@@ -558,21 +586,33 @@ function drawRadialSlider() {
   // Aggiungi la posizione del fumo all'array
   smokePositions.push({ x: sliderX, y: sliderY });
 
-  // Disegna tutte le immagini del fumo accumulate
-  for (let pos of smokePositions) {
-    image(smokeImage, pos.x - 14, pos.y - 4, smokeImage.width * 0.25, smokeImage.height * 0.25); // Riduci l'immagine del fumo del 75% e sposta a sinistra
+  // Draw smoke effects
+  for (let fumo of fumoData) {
+    if (fumo.angle <= sliderAngle) {
+      let fumoX = centerX + (radius + 20 + fumo.offsetR) * cos(fumo.angle);
+      let fumoY = centerY + (radius + 20 + fumo.offsetR) * sin(fumo.angle);
+      
+      push();
+      translate(fumoX, fumoY);
+      rotate(radians(fumo.rotation));
+      imageMode(CENTER);
+      image(smokeImage, 0, 0, 
+        25 * fumo.scale, 
+        (25 / fumoAspectRatio) * fumo.scale
+      );
+      pop();
+    }
   }
 
-  // Usa l'immagine del razzino invece del cerchio
-  let imgWidth = razzinoImage.width * 0.15; // Riduci la dimensione dell'immagine del 50%
+  // Draw rocket with orbital rotation
+  let imgWidth = razzinoImage.width * 0.15;
   let imgHeight = razzinoImage.height * 0.15;
   push();
-  translate(sliderX, sliderY); // Trasla al centro dell'immagine
-  let tangentAngle = getTangentAngle(selectedYear); // Calcola l'angolo tangente
-  console.log("Tangent Angle:", tangentAngle); // Log dell'angolo tangente
-  rotate(radians(tangentAngle)); // Ruota in base all'angolo tangente
-  imageMode(CENTER); // Imposta il modo di immagine al centro
-  image(razzinoImage, 0, 0, imgWidth, imgHeight); // Usa l'immagine del razzino ridimensionata
+  translate(sliderX, sliderY);
+  // Make rocket rotate around the center point
+  rotate(radians(sliderAngle));
+  imageMode(CENTER);
+  image(razzinoImage, 0, 0, imgWidth, imgHeight);
   pop();
 
   // Limita l'interazione solo se il clic è all'interno del raggio di interazione
