@@ -24,6 +24,10 @@ let autoScrollSpeed = 0.5;
 let autoScrollCompleted = false;
 let lastUpdateTime = 0;
 let ANIMATION_DURATION = 5000; // 5 seconds for the full animation
+let slider;
+let rocketImg;
+let rocketWidth;
+let rocketHeight = 40;
 
 function preload() {
   // Carica i font
@@ -84,6 +88,11 @@ function preload() {
     // Precalculate smoke positions after loading
     precalculateFumo();
   }, (error) => console.error("Errore nel caricamento dell'immagine fumo:", error));
+
+  rocketImg = loadImage('../../img/razzino.png', img => {
+    let ratio = img.width / img.height;
+    rocketWidth = rocketHeight * ratio;
+  });
 }
 
 function setup() {
@@ -631,7 +640,6 @@ function drawRadialSlider() {
   let radius = 320;
   let startAngle = 180;
   let endAngle = 360;
-  let interactionRadius = 50; // Raggio di interazione per il clic
 
   noFill();
   stroke(192);
@@ -654,6 +662,24 @@ function drawRadialSlider() {
 
     let textY = centerY + (radius + 40) * sin(angle) - 10;
     text(year, centerX + (radius + 60) * cos(angle), textY);
+  }
+
+  // Handle click interaction anywhere on the arc
+  if (mouseIsPressed) {
+    let mouseAngle = atan2(mouseY - centerY, mouseX - centerX);
+    if (mouseAngle < 0) mouseAngle += 360;
+    
+    // Calculate distance from mouse to the arc
+    let mouseDist = dist(mouseX, mouseY, centerX, centerY);
+    let arcDist = abs(mouseDist - (radius + 20));
+    
+    // If mouse is near the arc (within 30 pixels) and within the valid angle range
+    if (arcDist < 30 && mouseAngle >= startAngle && mouseAngle <= endAngle) {
+      selectedYear = floor(map(mouseAngle, startAngle, endAngle, startYear, endYear + 1));
+      selectedYear = constrain(selectedYear, startYear, endYear);
+      autoScrollCompleted = true;
+      autoScroll = false;
+    }
   }
 
   let sliderAngle = map(selectedYear, startYear, endYear, startAngle, endAngle);
@@ -686,24 +712,10 @@ function drawRadialSlider() {
   let imgHeight = razzinoImage.height * 0.15;
   push();
   translate(sliderX, sliderY);
-  // Make rocket rotate around the center point
   rotate(radians(sliderAngle));
   imageMode(CENTER);
   image(razzinoImage, 0, 0, imgWidth, imgHeight);
   pop();
-
-  // Limita l'interazione solo se il clic è all'interno del raggio di interazione
-  if (mouseIsPressed) {
-    let d = dist(mouseX, mouseY, sliderX, sliderY);
-    if (d < interactionRadius) {
-      let angle = atan2(mouseY - centerY, mouseX - centerX);
-      if (angle < 0) angle += 360;
-      if (angle >= startAngle && angle <= endAngle) {
-        selectedYear = floor(map(angle, startAngle, endAngle, startYear, endYear + 1));
-        selectedYear = constrain(selectedYear, startYear, endYear);
-      }
-    }
-  }
 }
 
 function createHamburgerMenu() {
@@ -840,4 +852,67 @@ function mousePressed() {
   if (autoScroll || !autoScrollCompleted) {
     return false;
   }
+}
+
+function drawSliderTimeline() {
+  // Mostra l'anno selezionato sopra lo slider
+  stroke(0);
+  strokeWeight(0);
+  fill(0);
+  textFont(inconsolataFont);
+  textSize(20);
+  text(selectedYear, width / 2, height - 100);
+
+  // Disegna le etichette degli anni estremi
+  noStroke();
+  fill(0);
+  textFont(inconsolataFont);
+  textSize(14);
+  text('1960', (width - 700) / 2 - 60, height - 57);
+  text('2020', (width + 700) / 2 + 40, height - 57);
+
+  // Disegna la linea principale dello slider
+  stroke(192);
+  strokeWeight(2);
+  let startX = (width - 700) / 2;
+  let endX = startX + 700;
+  let passedX = map(selectedYear, 1960, 2020, startX, endX);
+  line(passedX, height - 55, endX, height - 55);
+
+  // Disegna i pallini di delimitazione
+  fill(0);
+  ellipse(startX, height - 55, 10, 10);
+  ellipse(endX, height - 55, 10, 10);
+
+  // Aggiorna selectedYear se il mouse è sopra lo slider e viene premuto
+  if (
+    mouseIsPressed &&
+    mouseY > height - 90 &&
+    mouseY < height - 30 &&
+    mouseX > startX &&
+    mouseX < endX
+  ) {
+    autoScrollCompleted = true;
+    autoScroll = false;
+    let mouseXPosition = constrain(mouseX, startX, endX);
+    let mouseIndex = map(mouseXPosition, startX, endX, 0, 60);
+    selectedYear = int(map(mouseIndex, 0, 60, 1960, 2020));
+    slider.value(selectedYear);
+  }
+
+  // Disegna il razzo sopra lo slider
+  let rocketX = map(selectedYear, 1960, 2020, startX, endX);
+  if (rocketX <= endX) {
+    drawRocket(rocketX, height - 55);
+  }
+}
+
+// Make sure you also have the drawRocket function
+function drawRocket(x, y) {
+  push();
+  translate(x, y);
+  rotate(90);  // Ruota il razzo di 90°
+  imageMode(CENTER);
+  image(rocketBodyImage, 0, 0, rocketBodyImage.width * 0.15, rocketBodyImage.height * 0.15);
+  pop();
 }
