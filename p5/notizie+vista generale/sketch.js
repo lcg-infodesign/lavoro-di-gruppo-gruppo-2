@@ -444,8 +444,8 @@ function drawSliderTimeline() {
   fill(0);
   textFont(fontInconsolata);
   textSize(14);
-  text('1960', (width - 700) / 2 - 30, height - 55); // Etichetta 1960
-  text('2020', (width + 700) / 2 + 30, height - 55); // Etichetta 2020
+  text('1960', (width - 700) / 2 - 60, height - 57); // Etichetta 1960
+  text('2020', (width + 700) / 2 + 40, height - 57); // Etichetta 2020
 
   // Disegna la linea principale dello slider solo a destra del cursore
   stroke(192); // Colore grigio
