@@ -69,7 +69,9 @@ function preload() {
   imgn20 = loadImage('../../img/rocket body.png');
   imgn21 = loadImage('../../img/debris.png');
   imgtitolo = loadImage('../../img/titolo.png');
- 
+
+  
+
 
   rocketImg = loadImage('../../img/razzino.png', img => {
     let ratio = img.width / img.height;
@@ -77,6 +79,7 @@ function preload() {
   });
   terraImg = loadImage('../../img/marenero.png');
 
+  // Carica l'immagine del fumo nella funzione preload
   fumoImg = loadImage("../../img/fumo.png", () => {
     // Calcola il rapporto larghezza/altezza una volta caricata l'immagine
     fumoAspectRatio = fumoImg.width / fumoImg.height;
@@ -136,7 +139,7 @@ function setup() {
   precalculateFumo();
 
  // Create a single toggle button
- toggleButton = createButton('Riproduci suono'); // Starts with the play icon
+ toggleButton = createButton('Play Sound'); // Starts with the play icon
  toggleButton.position(30, height - 55);
  toggleButton.mousePressed(toggleAudio);
  sound.setVolume(0.2);
@@ -162,11 +165,11 @@ function styleButton(button) {
 function toggleAudio() {
   if (isPlaying) {
     sound.stop();
-    toggleButton.html('Riproduci suono'); // Update to play icon
+    toggleButton.html('Play Sound'); // Update to play icon
     isPlaying = false;
   } else {
     sound.play();
-    toggleButton.html('Ferma suono'); // Update to stop icon
+    toggleButton.html('Stop Sound'); // Update to stop icon
     isPlaying = true;
   }
 }
@@ -319,17 +322,17 @@ function draw() {
   textAlign(LEFT); // Allinea il testo a sinistra
   
   stroke(0); // Aggiungi il contorno nero
-  strokeWeight(3); // Imposta lo spessore del contorno
+  strokeWeight(2); // Imposta lo spessore del contorno
   fill(255); // Ripristina il colore di riempimento per il testo
   text('LEGGERE IL GRAFICO', 50, (height - boxHeight) / 2 + 8); // Disegna di nuovo il testo con contorno
   noStroke(); // Assicurati che non ci sia contorno per il testo successivo
   fill(0); // Colore del testo nero
-  textSize(18);
+  textSize(20);
   text('RIFIUTO SPAZIALE', 50, (height - boxHeight) / 2 + 48); // Posizione a sinistra
 
   // Rettangolo (come placeholder)
   fill(0);
-  ellipse(50 + 15, (height - boxHeight) / 2 + 70 + 15, 10, 10); // Disegna un cerchio nero
+  ellipse(50 + 15, (height - boxHeight) / 2 + 70 + 15, 30, 30); // Disegna un cerchio nero
 
   // Stile per il testo descrittivo
   textFont(fontRubik);
@@ -338,14 +341,15 @@ function draw() {
   noStroke(); // Assicurati che non ci sia contorno
   text('PERIGEO', 50, (height - boxHeight) / 2 + 130); // Posizionato a sinistra
 
-  image(imgperigeo, 50, 380, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
-
-
   textFont(fontInconsolata);
   textSize(14);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
   text('DISTANZA DALLA TERRA', 50, (height - boxHeight) / 2 + 150); // Posizionato a sinistra
+
+  // Rettangolo nero (simula i dati oscurati)
+  fill(0);
+  rect(50, (height - boxHeight) / 2 + 180, 200, 30); // Posizionato a sinistra
 
   textFont(fontInconsolata);
   textSize(12);
@@ -901,7 +905,7 @@ function drawLegend() {
   text("È IL PUNTO DI MASSIMA VICINANZA DEL DETRITO ALLA TERRA, MENTRE ORBITA INTORNO AD ESSA", legendX + 10, legendY + labels.length * spacing + 20 + 50, 130); // Posiziona il testo centrato
 
   // Aggiungi l'immagine "perigeo.png" sotto il testo descrittivo
-  let perigeoImg = loadImage("../../img/perigeo.png"); // Carica l'immagine dal percorso corretto
+  let perigeoImg = loadImage('../../img/perigeo.png'); // Carica l'immagine dal percorso corretto
   image(perigeoImg, legendX + (150 - imageWidth) / 2, legendY + labels.length * spacing + 20 + 70, imageWidth, imageWidth * (perigeoImg.height / perigeoImg.width)); // Posiziona l'immagine centrata
 
   stroke(0); // Imposta il colore del bordo a nero
@@ -928,4 +932,3 @@ function drawInfoBoxes() {
     rect(baseX, boxY, boxWidth, boxHeight, 8);
   }
 }
-
