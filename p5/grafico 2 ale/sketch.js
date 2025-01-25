@@ -557,7 +557,7 @@ function drawRadialSlider() {
   let interactionRadius = 50; // Raggio di interazione per il clic
 
   noFill();
-  stroke(0);
+  stroke(192);
   strokeWeight(2);
   arc(centerX, centerY, (radius + 20) * 2, (radius + 20) * 2, startAngle, endAngle);
 
