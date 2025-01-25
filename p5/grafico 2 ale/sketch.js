@@ -22,6 +22,7 @@ function preload() {
   rubikOneFont = loadFont('../../fonts/RubikOne.ttf');
   terraImg = loadImage('../../img/marenero.png'); // Carica l'immagine
   imgtitolo = loadImage('../../img/titolo.png');
+  imgperigeo = loadImage('../../img/perigeo2.png');
 
 
   // Carica il CSV
@@ -186,7 +187,7 @@ function draw() {
   // Aggiungi il testo "LEGGERE IL GRAFICO" in bianco con stroke nero
   fill(255); // Colore del testo (bianco)
   stroke(0); // Colore dello stroke (nero)
-  strokeWeight(1); // Spessore dello stroke
+  strokeWeight(3); // Spessore dello stroke
   textSize(22); // Dimensione del testo
   textFont(rubikOneFont); // Font Rubik
   textAlign(LEFT, TOP); // Allineamento del testo
@@ -271,9 +272,11 @@ function draw() {
 
   textY += 20; // A capo
 
+  image(imgperigeo, 80, 590, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
+
+
   text("DISTANZA DALLA TERRA", textX, textY); // Voce "DISTANZA DALLA TERRA"
 // Ripristina il font Rubik per il resto del testo
-rect(textX, textY + 20, 50, 40);
   textY += 40; // A capo
 
 
@@ -565,7 +568,9 @@ function drawRadialSlider() {
   let imgHeight = razzinoImage.height * 0.15;
   push();
   translate(sliderX, sliderY); // Trasla al centro dell'immagine
-  rotate(radians(sliderAngle - 90)); // Ruota in base all'angolo dello slider, -90 per orientare verso l'alto
+  let tangentAngle = getTangentAngle(selectedYear); // Calcola l'angolo tangente
+  console.log("Tangent Angle:", tangentAngle); // Log dell'angolo tangente
+  rotate(radians(tangentAngle)); // Ruota in base all'angolo tangente
   imageMode(CENTER); // Imposta il modo di immagine al centro
   image(razzinoImage, 0, 0, imgWidth, imgHeight); // Usa l'immagine del razzino ridimensionata
   pop();
@@ -668,4 +673,42 @@ function toggleMenu() {
       dropdown.style('display', 'none');
     }, 300);
   }
+}
+
+function updateRazzinoPosition(sliderValue) {
+    const curvePoint = getCurvePoint(sliderValue); // Ottieni il punto sulla curva
+    const tangentAngle = getTangentAngle(sliderValue); // Calcola l'angolo tangente
+
+    // Posiziona Razzino
+    razzino.position.set(curvePoint.x, curvePoint.y); // Imposta la posizione del razzino
+    razzino.rotation.z = radians(tangentAngle); // Ruota Razzino per essere tangente
+}
+
+// Funzione per calcolare il punto sulla curva
+function getCurvePoint(value) {
+    let centerX = width / 2;
+    let centerY = height;
+    let radius = 320; // Raggio dell'arco
+    let startAngle = 180; // Angolo di inizio
+    let endAngle = 360; // Angolo di fine
+
+    // Calcola l'angolo corrispondente al valore
+    let angle = map(value, startYear, endYear, startAngle, endAngle);
+    
+    // Calcola le coordinate del punto sulla curva
+    let x = centerX + radius * cos(radians(angle));
+    let y = centerY + radius * sin(radians(angle));
+
+    return { x, y }; // Restituisce un oggetto con le coordinate x e y
+}
+
+// Funzione per calcolare l'angolo della tangente
+function getTangentAngle(value) {
+    let startAngle = 180; // Angolo di inizio
+    let endAngle = 360; // Angolo di fine
+
+    // Calcola l'angolo corrispondente al valore
+    let angle = map(value, startYear, endYear, startAngle, endAngle);
+    console.log("Input Value:", value, "Calculated Angle:", angle); // Log per il debug
+    return angle; // Restituisce l'angolo della tangente
 }
