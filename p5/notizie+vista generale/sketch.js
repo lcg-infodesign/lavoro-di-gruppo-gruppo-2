@@ -34,8 +34,7 @@ let AUTO_SCROLL_DURATION = 5000; // Durata totale in millisecondi
 let lastUpdateTime = 0;
 
 
-let customCursorImg;
-let arrowCursor;
+
 
 let sound;
 let toggleButton; // Variable for the button
@@ -90,9 +89,7 @@ function preload() {
   table = loadTable("../../space_decay.csv", "header");
   notizieTable = loadTable("../../notizie.csv", "header");
 
-  // Carica l'immagine del cursore
-  customCursorImg = loadImage("../../img/cursor.png");
-  arrowCursor = loadImage('../../img/cursor.png')
+  
 
   // Load the audio file in preload
   sound = loadSound('../../space.mp3');
@@ -105,11 +102,7 @@ function setup() {
   textFont(fontInconsolata);
   textAlign(CENTER, CENTER);
 
-  noCursor();
-  // Imposta il cursore personalizzato
-  let cursorURL = "url('../../img/cursor.png'), auto";
-  canvas = document.querySelector('canvas');
-  canvas.style.cursor = cursorURL;
+  
 
 
   // Posizioni pulsanti nella navbar
@@ -306,13 +299,7 @@ function draw() {
   
   drawInfoBox();
 
-  if (mouseX > 150 && mouseX < 250 && mouseY > 150 && mouseY < 200) {
-    // Cursore "pointer"
-    image(arrowCursor, mouseX, mouseY, 16, 32); // Disegna il cursore pointer
-  } else {
-    // Cursore predefinito
-    image(customCursorImg, mouseX, mouseY, 14, 16); // Disegna il cursore predefinito
-  }
+  
   
   // Aggiungi il nuovo contenuto all'interno del rettangolo bianco
   textFont(fontRubik);
