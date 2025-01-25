@@ -1,6 +1,6 @@
 let selectedYear = 1960;
 let points = [];
-const colors = ["#00bffc","#1b39ff","#9c76ff","#f400da", ]; // Nuova palette
+const colors = ["#00bffc","#1b39ff","#9c76ff","#000000", ]; // Nuova palette
 const dotOffset = 40; // Offset per creare un anello vuoto attorno al cerchio centrale
 const totalSpicchi = 60; // Numero di spicchi
 const startYear = 1960; // Anno di inizio
@@ -444,7 +444,7 @@ function generateDotsForYear(year) {
         case 'DEBRIS':
           dotColor = colors[2];
           break;
-        default:
+        default :
           dotColor = colors[3];
       }
 
