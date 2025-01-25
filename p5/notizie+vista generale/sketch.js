@@ -1,40 +1,49 @@
 let fumoImg; // Variabile globale per l'immagine del fumo
 let fumoAspectRatio = 1; // Rapporto larghezza/altezza delle nuvolette
-let fumoData = []; // Array per memorizzare le proprietà fisse delle nuvolette
 let numFumo = 40; // Numero massimo di nuvolette di fumo
 let slider;
+
+let selectedYear = 1960;
+const dotOffset = 40; // Offset per creare un anello vuoto attorno al cerchio centrale
+let notizieTable;
+let notiziaCorrente = null;
+
+
+//IMAGES
+let rocketImg;
+let rocketWidth;
+let rocketHeight = 40; // Aumentato da 30 a 50 per un razzo più grande
+let terraImg;
+
+//FONTS
+let fontInconsolata;
+let fontRubik;
+let rotationAngle = 0;
+
+//ARRAYS
+let cardPositions = []; // Array per tenere traccia delle posizioni delle carte
+let cardTargets = [];  // Array per le posizioni target
+let immaginiNotizie = {};
+let points = [];
+let countryCodes = []; // Array per i codici paese
+let countryEventCount = {}; // Conta gli eventi per ciascun paese
+let sectors = []; // Associa i codici paese ai settori
+let fumoData = []; // Array per memorizzare le proprietà fisse delle nuvolette
+
+
+
+//ANIMATION
+let autoScrollProgress = 0; // Variabile che traccia il progresso (0 a 1)
+let AUTO_SCROLL_DURATION = 5000; // Durata totale in millisecondi
+let lastUpdateTime = 0;
+let ANIMATION_SPEED = 0.075; // Rallentato del 50% rispetto a 0.15
 
 let autoScroll = true; // Variabile per abilitare lo scorrimento automatico
 let autoScrollSpeed = 0.5; // Rallentato del 50% rispetto a 1
 let autoScrollCompleted = false; // Variabile per indicare se l'auto-scroll è completato
 
-let selectedYear = 1960;
-let points = [];
-let countryCodes = []; // Array per i codici paese
-let countryEventCount = {}; // Conta gli eventi per ciascun paese
-const totalDots = 15000;
-let sectors = []; // Associa i codici paese ai settori
-const dotOffset = 40; // Offset per creare un anello vuoto attorno al cerchio centrale
-let notizieTable;
-let notiziaCorrente = null;
-let immaginiNotizie = {};
-let rocketImg;
-let rocketWidth;
-let rocketHeight = 40; // Aumentato da 30 a 50 per un razzo più grande
-let terraImg;
-let fontInconsolata;
-let fontRubik;
-let rotationAngle = 0;
-let cardPositions = []; // Array per tenere traccia delle posizioni delle carte
-let cardTargets = [];  // Array per le posizioni target
-let ANIMATION_SPEED = 0.075; // Rallentato del 50% rispetto a 0.15
 
-let autoScrollProgress = 0; // Variabile che traccia il progresso (0 a 1)
-let AUTO_SCROLL_DURATION = 5000; // Durata totale in millisecondi
-let lastUpdateTime = 0;
-
-
-
+//SOUND
 let sound;
 let toggleButton; // Variable for the button
 let isPlaying = false; // Tracks the audio state
@@ -101,7 +110,7 @@ function setup() {
   textFont(fontInconsolata);
   textAlign(CENTER, CENTER);
 
-  cursor('default');
+  
   
 
 
