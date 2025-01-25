@@ -233,43 +233,61 @@ function draw() {
     }
   }
 
-  // Disegna il riquadro bianco a sinistra con angoli arrotondati
+  let boxWidth = 270; // Larghezza dei rettangoli
+  let boxHeight = 140; // Altezza standard dei rettangoli
+  let firstBoxHeight = boxHeight * 1.5; // Altezza del primo rettangolo aumentata di 1.5 volte
+  let cornerRadius = 10; // Raggio degli angoli arrotondati
+  let startY = (height - (firstBoxHeight + boxHeight * 3 + 30)) / 2 + 50; // Aggiunto 50 per spostare i rettangoli più in basso
+  let startX = 30; // Posizione X dei rettangoli
+  let spacing = 20; // Distanza tra i rettangoli
+
+  // Disegna il primo rettangolo con altezza aumentata
   fill(255); // Colore bianco
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
-  let boxWidth = 225; // Larghezza del riquadro
-  let boxHeight = 590; // Altezza del riquadro (modificata per allungare il rettangolo)
-  let cornerRadius = 10; // Raggio degli angoli arrotondati
-  rect(67, (height - boxHeight) / 2 -20 , boxWidth, boxHeight, cornerRadius); // Posizione modificata
+  rect(startX, startY, boxWidth, firstBoxHeight, cornerRadius); // Disegna il primo rettangolo
 
-  // Aggiungi il testo "LEGGERE IL GRAFICO" in bianco con stroke nero
-  fill(255); // Colore del testo (bianco)
-  stroke(0); // Colore dello stroke (nero)
-  strokeWeight(3); // Spessore dello stroke
-  textSize(22); // Dimensione del testo
+  // Disegna il secondo rettangolo (spostato più in basso)
+  fill(255); // Colore bianco
+  stroke(0); // Bordo nero
+  strokeWeight(2); // Spessore del bordo
+  rect(startX, startY + (boxHeight + spacing) +65, boxWidth, boxHeight, cornerRadius); // Disegna il secondo rettangolo più in basso
+
+  // Calcola la posizione X per gli ultimi due rettangoli
+  let rightX = width - boxWidth - 30; // Posizione X per gli ultimi due rettangoli
+
+  // Disegna il terzo rettangolo
+  fill(255); // Colore bianco
+  stroke(0); // Bordo nero
+  strokeWeight(2); // Spessore del bordo
+  rect(rightX, startY, boxWidth, boxHeight * 1.3, cornerRadius); // Allunga il terzo rettangolo
+
+  // Disegna il quarto rettangolo (alla stessa altezza del secondo)
+  fill(255); // Colore bianco
+  stroke(0); // Bordo nero
+  strokeWeight(2); // Spessore del bordo
+  rect(rightX, startY + (boxHeight + spacing) + 37, boxWidth, boxHeight * 0.8, cornerRadius); // Accorcia il quarto rettangolo
+  
   textFont(rubikOneFont); // Font Rubik
   textAlign(LEFT, TOP); // Allineamento del testo
-  let textX = 75; // Posizione X del testo
-  let textY = (height - boxHeight) / 2 -10; // Posizione Y del testo
-  text("LEGGERE ", textX, textY); // Testo "LEGGERE IL GRAFICO"
-  textY += 20
-  text("IL GRAFICO", textX, textY); // Testo "LEGGERE IL GRAFICO"
+  let textX = 42; // Posizione X del testo
+  let textY = (height - boxHeight) / 2 -198; // Modificato per allineare il testo con il primo rettangolo
+  
 
   // Aggiungi il resto del testo all'interno del rettangolo
   fill(0); // Colore del testo per il resto
   strokeWeight(0); // Nessuno stroke per il resto del testo
   textSize(18); // Dimensione del testo per RIFIUTI SPAZIALI, TIPOLOGIE, DIMENSIONE
   textAlign(LEFT, TOP); // Allineamento del testo
-  textY += 40; // Sposta la posizione Y per il resto del testo
   text("RIFIUTI SPAZIALI", textX, textY); // Testo "RIFIUTI SPAZIALI"
 
-  textY += 20; // Sposta ulteriormente la posizione Y per "TIPOLOGIE"
+  textY += 25; // Sposta ulteriormente la posizione Y per "TIPOLOGIE"
   text("TIPOLOGIE", textX, textY); // Testo "TIPOLOGIE"
 
   // Imposta il font Inconsolata per le voci specifiche
   textFont(inconsolataFont); // Font Inconsolata
   textSize(14); // Dimensione del testo per PAYLOAD, TBA, ROCKET BODY
-  textY += 30; // Sposta la posizione Y per le voci specifiche
+  textY += 35; // Sposta la posizione Y per le voci specifiche
   text("PAYLOAD      To Be Identified  ", textX, textY); // Voce "PAYLOAD"
   // Sostituisci il rettangolo nero con l'immagine payload
   let payloadImageX = textX; // Posizione X dell'immagine
@@ -296,25 +314,25 @@ function draw() {
   image(debrisImage, debrisX+120, debrisY, 60, 60); // Disegna l'immagine al posto del rettangolo nero
   
 
-  textY += 80; // Sposta la posizione Y per il resto del testo (aumentato per più spazio)
+  textY += 96; // Sposta la posizione Y per il resto del testo (aumentato per più spazio)
   textFont(rubikOneFont); // Font Rubik
   textSize(18); // Dimensione del testo per DIMENSIONE
 
   text("DIMENSIONE", textX, textY); // Resto del testo
 
   textFont(inconsolataFont); // Font Inconsolata
-  textSize(14);
+  textSize(12);
   // Aggiungi il nuovo testo richiesto
-  textY += 30; // Sposta la posizione Y per "DIMENSIONE"
-  text("Piccolo     Medio     Grande", textX, textY); // Voce "Piccolo,"
+  textY += 35; // Sposta la posizione Y per "DIMENSIONE"
+  text("Piccolo       Medio       Grande", textX, textY); // Voce "Piccolo,"
   image(tbiImage, textX + 15, textY+ 20, 20, 20);
   image(tbiImage, textX + 80, textY+ 10, 40, 40);
   image(tbiImage, textX + 140, textY+ 5, 60, 60);
 
   textFont(inconsolataFont); // Font Inconsolata
-  textSize(14);
+  textSize(12);
 
-  textY += 50; // A capo
+  textY += 60; // A capo
 
   text("Intensità della forza radar", textX, textY)
   textY += 40; // A capo
@@ -323,38 +341,6 @@ function draw() {
   textFont(rubikOneFont); // Font Rubik
   textSize(18); // Dimensione del testo per DIMENSIONE
 
-  text("PERIGEO", textX, textY); // Voce "PERIGEO"
-  
-  textFont(inconsolataFont); // Font Inconsolata
-  textSize(14);
-
-  textY += 20; // A capo
-
-  image(imgperigeo, 80, 590, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
-
-
-  text("DISTANZA DALLA TERRA", textX, textY); // Voce "DISTANZA DALLA TERRA"
-// Ripristina il font Rubik per il resto del testo
-  textY += 40; // A capo
-
-
-textFont(rubikOneFont); // Font Rubik
-textSize(18); // Dimensione del testo per DIMENSIONE
-  textY += 40; // Sposta la posizione Y per "ANNO"
-  text("ANNO", textX, textY); // Testo "ANNO"
-
-  textFont(inconsolataFont); // Font Inconsolata
-  textSize(22);
-  textY += 20
-  text("0000", textX, textY); // Testo "ANNO"
-
-  // Imposta il font Inconsolata per "anno in cui è stato lanciato il detrito"
-  textFont(inconsolataFont); // Font Inconsolata
-  textSize(14); // Dimensione del testo per "anno in cui è stato lanciato il detrito"
-  textY += 30; // Sposta la posizione Y per "anno in cui è stato lanciato il detrito"
-  text("Anno in cui è stato lanciato", textX, textY); // Resto del testo
-  textY += 20; // A capo
-  text("il detrito", textX, textY); // Voce "il detrito"
 
   if (imgtitolo) {
     image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
@@ -386,6 +372,65 @@ textSize(18); // Dimensione del testo per DIMENSIONE
   // Disegna il tooltip qui, dopo tutti gli altri elementi
   if (hoveredPoint) {
     drawTooltip(hoveredPoint);
+  }
+
+  // Aggiungi il testo per il terzo rettangolo (copia speculare)
+  textFont(rubikOneFont); // Font Rubik
+  textAlign(LEFT, TOP); // Allineamento del testo
+  let textXRight = rightX +12 ; // Posizione X del testo a destra
+  let textYRight = (height - boxHeight) / 2 -198; // Modificato per allineare il testo con il terzo rettangolo
+
+  // Aggiungi il resto del testo all'interno del terzo rettangolo
+  fill(0); // Colore del testo per il resto
+  strokeWeight(0); // Nessuno stroke per il resto del testo
+  textSize(18); // Dimensione del testo per RIFIUTI SPAZIALI, TIPOLOGIE, DIMENSIONE
+  textAlign(LEFT, TOP); // Allineamento del testo
+  text("PERIGEO", textXRight, textYRight); // Testo "RIFIUTI SPAZIALI"
+
+
+  // Imposta il font Inconsolata per le voci specifiche
+  textFont(inconsolataFont); // Font Inconsolata
+  textSize(14); // Dimensione del testo per PAYLOAD, TBA, ROCKET BODY
+  textYRight += 32; // Sposta la posizione Y per le voci specifiche
+  text("DISTANZA DALLA TERRA", textXRight, textYRight); // Voce "PAYLOAD"
+// Ripristina il font Rubik per il resto del testo
+  textYRight += 32; // A capo
+//
+
+image(imgperigeo, textXRight, textYRight, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
+textYRight += 57; // A capo
+textSize(12); // Dimensione del testo per PAYLOAD, TBA, ROCKET BODY
+
+text("Il punto di massima vicinanza del tetrito \nalla terra, mentre orbita intorno ad essa", textXRight, textYRight); // Voce "DISTANZA DALLA TERRA"
+// Ripristina il font Rubik per il resto del testo
+textY += 52; // A capo
+
+textFont(rubikOneFont); // Font Rubik
+textSize(18); // Dimensione del testo per DIMENSIONE
+  textYRight += 73; // Sposta la posizione Y per "ANNO"
+  text("ANNO", textXRight, textYRight); // Testo "ANNO"
+
+  textFont(inconsolataFont); // Font Inconsolata
+  textSize(22);
+  textYRight += 30
+  text("0000", textXRight, textYRight); // Testo "ANNO"
+
+  // Imposta il font Inconsolata per "anno in cui è stato lanciato il detrito"
+  textFont(inconsolataFont); // Font Inconsolata
+  textSize(12); // Dimensione del testo per "anno in cui è stato lanciato il detrito"
+  textYRight += 37; // Sposta la posizione Y per "anno in cui è stato lanciato il detrito"
+  text("Anno in cui è stato lanciato il detrito", textXRight, textYRight); // Resto del testo
+
+  if (imgtitolo) {
+    image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
+  }
+  if (mouseX > 50 && mouseX < -30 + imgtitolo.width * 0.25 && mouseY > 30 && mouseY < 20 + imgtitolo.height * 0.25) {
+    cursor(HAND);
+    if (mouseIsPressed) {
+      window.location.href = '../../index.html';
+    }
+  } else {
+    cursor(ARROW);
   }
 }
 
