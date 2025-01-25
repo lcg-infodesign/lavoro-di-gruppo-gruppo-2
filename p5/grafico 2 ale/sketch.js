@@ -19,6 +19,11 @@ let smokePositions = []; // Array per memorizzare le posizioni del fumo
 let fumoData = []; // Array for storing fixed smoke properties
 let numFumo = 75; // Maximum number of smoke puffs
 let fumoAspectRatio = 1; // Width/height ratio of smoke images
+let autoScroll = true;
+let autoScrollSpeed = 0.5;
+let autoScrollCompleted = false;
+let lastUpdateTime = 0;
+let ANIMATION_DURATION = 5000; // 5 seconds for the full animation
 
 function preload() {
   // Carica i font
@@ -203,6 +208,31 @@ function createButtons(positions) {
 function draw() {
   background(240);
 
+  // Handle automatic slider advancement
+  if (autoScroll && !autoScrollCompleted) {
+    let currentTime = millis();
+    
+    if (lastUpdateTime === 0) {
+      lastUpdateTime = currentTime;
+    }
+    
+    let elapsed = currentTime - lastUpdateTime;
+    let progress = elapsed / ANIMATION_DURATION;
+    
+    // Apply easing for deceleration
+    let easedProgress = easeOutQuad(progress);
+    
+    // Update the year based on progress
+    selectedYear = Math.round(lerp(1960, 2020, easedProgress));
+    
+    // Check if animation is complete
+    if (progress >= 1) {
+      selectedYear = 2020;
+      autoScroll = false;
+      autoScrollCompleted = true;
+    }
+  }
+
   // Disegna il riquadro bianco a sinistra con angoli arrotondati
   fill(255); // Colore bianco
   stroke(0); // Bordo nero
@@ -326,7 +356,9 @@ textSize(18); // Dimensione del testo per DIMENSIONE
   textY += 20; // A capo
   text("il detrito", textX, textY); // Voce "il detrito"
 
-  image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
+  if (imgtitolo) {
+    image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
+  }
   if (mouseX > 50 && mouseX < -30 + imgtitolo.width * 0.25 && mouseY > 30 && mouseY < 20 + imgtitolo.height * 0.25) {
     cursor(HAND);
     if (mouseIsPressed) {
@@ -751,4 +783,16 @@ function getTangentAngle(value) {
     let angle = map(value, startYear, endYear, startAngle, endAngle);
     console.log("Input Value:", value, "Calculated Angle:", angle); // Log per il debug
     return angle; // Restituisce l'angolo della tangente
+}
+
+// Easing function for smooth deceleration
+function easeOutQuad(t) {
+  return t * (2 - t);
+}
+
+// Update mousePressed to prevent interaction during animation
+function mousePressed() {
+  if (autoScroll || !autoScrollCompleted) {
+    return false;
+  }
 }
