@@ -543,7 +543,7 @@ function drawTooltip(point) {
   fill(255);
   stroke(0);
   strokeWeight(1);
-  rect(tooltipX, tooltipY, tooltipW, tooltipH, 5);
+  rect(tooltipX, tooltipY, tooltipW, tooltipH + 10, 5); // Aggiunto padding inferiore di 25 px
 
   noStroke();
   fill(0);
@@ -552,15 +552,15 @@ function drawTooltip(point) {
   textFont(inconsolataFont);
   textStyle(BOLD);
 
-  let leftPadding = 20;
-  let verticalPadding = 1;
+  let leftPadding = 25;
+  let verticalPadding = 2;
   let lineHeight = 20;
   
-  text(`Object ID: ${point.objectId}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight);
-  text(`Launch Site: ${point.site}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 2);
-  text(`Type: ${point.objectType}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 3);
-  text(`Size: ${point.rcsSize}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 4);
-  text(`Apoapsis: ${Math.round(point.apoapsis)} km`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 5);
+  text(`ID oggetto: ${point.objectId}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight);
+  text(`Sito di lancio: ${point.site}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 2);
+  text(`Tipo: ${point.objectType}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 3);
+  text(`Forza segnale: ${point.rcsSize}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 4);
+  text(`Perigeo: ${Math.round(point.apoapsis)} km`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 5);
 
   textAlign(CENTER, CENTER);
 }
