@@ -477,11 +477,19 @@ function generateDotsForYear(year) {
     let launchYear = launchDate.getFullYear();
 
     if (launchYear === year) {
-      let apoapsis = parseFloat(row.get('APOAPSIS'));
-      if (isNaN(apoapsis)) continue;
+      // Add console.log to debug PERIAPSIS value
+      let periapsisRaw = row.get('PERIAPSIS');
+      console.log('Raw PERIAPSIS value:', periapsisRaw);
+      
+      let periapsis = parseFloat(row.get('PERIAPSIS'));
+      if (isNaN(periapsis)) {
+        console.log('Invalid PERIAPSIS value:', periapsisRaw);
+        continue;
+      }
+      console.log('Parsed PERIAPSIS value:', periapsis);
 
-      let constrainedApoapsis = constrain(apoapsis, 0, 1000000);
-      let distance = map(constrainedApoapsis, 0, 1000000, minDistance, maxDistance);
+      let constrainedPeriapsis = constrain(periapsis, 0, 1000000);
+      let distance = map(constrainedPeriapsis, 0, 1000000, minDistance, maxDistance);
 
       let angle = map(year - startYear, 0, endYear - startYear, 180, 360);
       angle += random(-8, 8);
@@ -529,7 +537,7 @@ function generateDotsForYear(year) {
         site: row.get('SITE'),
         objectType: row.get('OBJECT_TYPE'),
         rcsSize: row.get('RCS_SIZE'),
-        apoapsis: row.get('APOAPSIS')
+        periapsis: periapsis  // Make sure we're using the parsed value
       });
     }
   }
@@ -588,6 +596,9 @@ function drawDots() {
 
 // ... existing code ...
 function drawTooltip(point) {
+  // Add console.log to debug tooltip values
+  console.log('Tooltip point data:', point);
+  
   let tooltipX = mouseX + 20;
   let tooltipY = mouseY;
   let tooltipW = 200;
@@ -600,7 +611,7 @@ function drawTooltip(point) {
   fill(255);
   stroke(0);
   strokeWeight(1);
-  rect(tooltipX, tooltipY, tooltipW, tooltipH + 10, 5); // Aggiunto padding inferiore di 25 px
+  rect(tooltipX, tooltipY, tooltipW, tooltipH + 10, 5);
 
   noStroke();
   fill(0);
@@ -613,11 +624,19 @@ function drawTooltip(point) {
   let verticalPadding = 2;
   let lineHeight = 20;
   
+  // Check if periapsis exists and is a number
+  let periapsisValue = point.periapsis;
+  if (periapsisValue === undefined || isNaN(periapsisValue)) {
+    periapsisValue = 'N/A';
+  } else {
+    periapsisValue = Math.round(periapsisValue) + ' km';
+  }
+  
   text(`ID oggetto: ${point.objectId}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight);
   text(`Sito di lancio: ${point.site}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 2);
   text(`Tipo: ${point.objectType}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 3);
   text(`Forza segnale: ${point.rcsSize}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 4);
-  text(`Perigeo: ${Math.round(point.apoapsis)} km`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 5);
+  text(`Perigeo: ${periapsisValue}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 5);
 
   textAlign(CENTER, CENTER);
 }
