@@ -39,6 +39,8 @@ let autoScroll = true; // Variabile per abilitare lo scorrimento automatico
 let autoScrollSpeed = 0.5; // Rallentato del 50% rispetto a 1
 let autoScrollCompleted = false; // Variabile per indicare se l'auto-scroll è completato
 
+let sectorHighlightProgress = 0; // Variabile per tracciare il progresso dell'evidenziazione dei settori
+
 //SOUND
 let sound;
 let toggleButton; // Variable for the button
@@ -387,7 +389,7 @@ function draw() {
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
   text(
-    'L’anno in cui l’oggetto è stato lanciato\nnello spazio. Dal 1960 al 2021',
+    "L'anno in cui l'oggetto è stato lanciato\nnello spazio. Dal 1960 al 2021",
     56,
     (height - boxHeight) / 2 + 162  // Spostato in basso
   );
@@ -476,15 +478,18 @@ function drawSliderTimeline() {
     // Applica easing-out per un rallentamento fluido verso la fine
     let easedProgress = easeOutQuad(autoScrollProgress);
 
-
     // Calcola l'anno in base al progresso interpolato
     selectedYear = Math.round(lerp(1960, 2020, easedProgress)); // Arrotonda il valore
+
+    // Aggiorna il progresso dell'evidenziazione dei settori
+    sectorHighlightProgress = easedProgress;
 
     // Blocca il progresso a 1 per evitare overflow
     if (autoScrollProgress >= 1) {
       autoScrollProgress = 1;
       autoScroll = false; // Ferma l'animazione
       autoScrollCompleted = true;
+      sectorHighlightProgress = 0; // Reset the sector highlight progress
     }
 
     slider.value(selectedYear); // Aggiorna il valore dello slider
@@ -594,6 +599,29 @@ function drawHighlightedSector() {
   if (mouseAngle < 0) mouseAngle += 360;
   let mouseDist = dist(mouseX, mouseY, centerX, centerY);
 
+  // Calcola quale settore evidenziare in base al progresso dell'animazione
+  if (autoScroll && !autoScrollCompleted) {
+    let currentSector = Math.floor(map(sectorHighlightProgress, 0, 1, 0, 99));
+
+    // Evidenzia il settore corrente
+    let angle1 = map(currentSector, 0, 99, 0, 360);
+    let angle2 = map(currentSector + 1, 0, 99, 0, 360);
+
+    fill(80, 80, 80, 80); // Colore evidenziato
+    noStroke();
+    arc(centerX, centerY, (radius + rayLength) * 2, (radius + rayLength) * 2, angle1, angle2, PIE);
+
+    // Mostra il nome del paese associato al settore corrente
+    let countryName = sectors[currentSector].countryCode; // Nome del paese
+    textSize(25);
+    textFont(fontRubik);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+    noStroke();
+    fill(0);
+    text(countryName, width / 2, 100); // Posiziona il testo al centro in alto
+  }
+
   // Controlla se il mouse è dentro il cerchio
   if (mouseDist > radius + dotOffset && mouseDist < radius + rayLength) {
     for (let i = 0; i < 99; i++) {
@@ -611,14 +639,12 @@ function drawHighlightedSector() {
 
         // Disegna il nome del paese al centro in alto
         textSize(25);
-        textFont(fontRubik)
+        textFont(fontRubik);
         textStyle(BOLD);
         textAlign(CENTER, CENTER);
         noStroke();
         fill(0);
         text(countryName, width / 2, 100); // Posiziona il testo al centro in alto
-        
-
 
         // Aggiungi il reindirizzamento se il paese è Stati Uniti
         if (countryName === "STATI UNITI") { // Assicurati che il codice paese sia corretto
