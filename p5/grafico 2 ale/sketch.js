@@ -30,6 +30,11 @@ let rocketWidth;
 let rocketHeight = 40;
 let rotationAngle = 0; // Add this variable to track the rotation angle
 
+// Add these global variables for sound
+let sound;
+let toggleButton; // Variable for the button
+let isPlaying = false; // Tracks the audio state
+
 function preload() {
   // Carica i font
   inconsolataFont = loadFont('../../fonts/Inconsolata.ttf');
@@ -94,6 +99,9 @@ function preload() {
     let ratio = img.width / img.height;
     rocketWidth = rocketHeight * ratio;
   });
+
+  //LOAD SOUND
+  sound = loadSound('../../space.mp3');
 }
 
 function setup() {
@@ -119,6 +127,38 @@ buttons.forEach(button => {
     generateDotsForYear(year);
   }
   createHamburgerMenu();
+
+  //PLAY SOUND BUTTON SETUP
+  toggleButton = createButton('Play Sound'); // Starts with the play icon
+  toggleButton.position(30, height - 55);
+  toggleButton.mousePressed(toggleAudio);
+  sound.setVolume(0.2);
+  styleButton(toggleButton);
+}
+
+function styleButton(button) {
+  button.style('font-family', 'Inconsolata'); // Use Inconsolata font
+  button.style('font-size', '12px');
+  button.style('padding', '5px 10px');
+  button.style('border', '2px solid black'); // Black border
+  button.style('border-radius', '8px'); // Rounded corners
+  button.style('background-color', 'white'); // White background
+  button.style('color', 'black'); // Black text
+  button.style('cursor', 'pointer'); // Pointer cursor
+  button.style('text-align', 'center');
+}
+
+// Function to toggle audio
+function toggleAudio() {
+  if (isPlaying) {
+    sound.stop();
+    toggleButton.html('Play Sound'); // Update to play icon
+    isPlaying = false;
+  } else {
+    sound.play();
+    toggleButton.html('Stop Sound'); // Update to stop icon
+    isPlaying = true;
+  }
 }
 
 function windowResized() {

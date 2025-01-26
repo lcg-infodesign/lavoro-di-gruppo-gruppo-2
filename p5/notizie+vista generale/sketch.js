@@ -143,7 +143,7 @@ function setup() {
     { x: width - 430, y: 30 },
     { x: width - 300, y: 30 },
     { x: width - 160, y: 30 }
-];
+  ];
 
   //CREATE TOP NAVBAR BUTTONS
   createButtons(buttonPositions);
@@ -160,18 +160,18 @@ function setup() {
   slider.style('width', '700px');
   slider.style('opacity', '0');
 
- //PLAY SOUND BUTTON SETUP
- toggleButton = createButton('Play Sound'); // Starts with the play icon
- toggleButton.position(30, height - 55);
- toggleButton.mousePressed(toggleAudio);
- sound.setVolume(0.2);
- styleButton(toggleButton);
+  //PLAY SOUND BUTTON SETUP
+  toggleButton = createButton('Play Sound'); // Starts with the play icon
+  toggleButton.position(40, height - 55); // Set x to 40
+  toggleButton.mousePressed(toggleAudio);
+  sound.setVolume(0.2);
+  styleButton(toggleButton);
 
- //SETUP OTHER FUNCTIONS
- loadCountryCodes();
- generateSectors();
- generateDots();
- precalculateFumo();
+  //SETUP OTHER FUNCTIONS
+  loadCountryCodes();
+  generateSectors();
+  generateDots();
+  precalculateFumo();
 }
 
 function windowResized() {
