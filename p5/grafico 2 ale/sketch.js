@@ -303,8 +303,8 @@ function draw() {
   strokeWeight(2); // Spessore del bordo
   rect(startX, startY + (boxHeight + spacing) +65, boxWidth, boxHeight-7, cornerRadius); // Disegna il secondo rettangolo più in basso
 
-  // Calcola la posizione X per gli ultimi due rettangoli
-  let rightX = width - boxWidth - 30; // Posizione X per gli ultimi due rettangoli
+  // Update the calculation for rightX
+  let rightX = width - boxWidth - 40; // Posizione X per gli ultimi due rettangoli
 
   let increasedWidth = boxWidth + 13; // Aumenta la larghezza di 20 pixel
 
