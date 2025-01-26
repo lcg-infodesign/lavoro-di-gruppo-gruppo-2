@@ -18,6 +18,7 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth, windowHeight); 
+    
     let buttonPositions = [
         { x: width - 300, y: 30 },
         { x: width - 160, y: 30 }
