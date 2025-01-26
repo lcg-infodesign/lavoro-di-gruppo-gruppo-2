@@ -343,7 +343,7 @@ function draw() {
 
   textY += 60; // A capo
 
-  text("Intensità della forza radar", textX, textY)
+  text("Forza del segnale radar", textX, textY)
   textY += 40; // A capo
 
   // Ripristina il font Rubik per il resto del testo
@@ -410,7 +410,7 @@ image(imgperigeo, textXRight, textYRight, imgperigeo.width * 0.17, imgperigeo.he
 textYRight += 57; // A capo
 textSize(12); // Dimensione del testo per PAYLOAD, TBA, ROCKET BODY
 
-text("Il punto di massima vicinanza del tetrito \nalla terra, mentre orbita intorno ad essa", textXRight, textYRight); // Voce "DISTANZA DALLA TERRA"
+text("Il punto di massima vicinanza del detrito \nalla terra, mentre orbita intorno ad essa", textXRight, textYRight); // Voce "DISTANZA DALLA TERRA"
 // Ripristina il font Rubik per il resto del testo
 textY += 52; // A capo
 
