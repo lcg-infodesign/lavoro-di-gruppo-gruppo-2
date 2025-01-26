@@ -532,30 +532,40 @@ function drawRocket(x, y) {
 
 
 //CIRCLE SETUP
-function drawCircleWithRays() {
-  let centerX = windowWidth / 2;  // Use windowWidth instead of width
-  let centerY = windowHeight / 2; // Use windowHeight instead of height
-  let radius = 80;
-  let rayLength = 200;
+function getGraphSize() {
+  // Use 5/6 of window height as the base size
+  const baseSize = (windowHeight * 5) / 6;
+  return {
+    radius: baseSize * 0.12,        // Earth radius (12% of base size)
+    rayLength: baseSize * 0.3,      // Length of rays/sectors (30% of base size)
+    dotSize: baseSize * 0.003,      // Size of debris dots
+    minRadius: baseSize * 0.14,     // Inner radius for dots (slightly larger than Earth)
+    maxRadius: baseSize * 0.35      // Outer radius for dots (35% of base size)
+  };
+}
 
-  // Disegna l'immagine della terra al posto del cerchio con rotazione
+function drawCircleWithRays() {
+  let centerX = windowWidth / 2;
+  let centerY = windowHeight / 2;
+  const sizes = getGraphSize();
+
+  // Draw Earth with rotation
   push();
   translate(centerX, centerY);
   rotate(rotationAngle);
   imageMode(CENTER);
-  image(terraImg, 0, 0, radius * 2, radius * 2);
+  image(terraImg, 0, 0, sizes.radius * 2, sizes.radius * 2);
   pop();
 
-  // Incrementa l'angolo di rotazione (modifica questo valore per cambiare la velocità)
   rotationAngle += 0.2;
 
-  // Disegna i raggi invisibili
+  // Draw rays
   for (let i = 0; i < 99; i++) {
     let angle = map(i, 0, 99, 0, 360);
-    let x1 = centerX + radius * cos(angle);
-    let y1 = centerY + radius * sin(angle);
-    let x2 = centerX + (radius + rayLength) * cos(angle);
-    let y2 = centerY + (radius + rayLength) * sin(angle);
+    let x1 = centerX + sizes.radius * cos(angle);
+    let y1 = centerY + sizes.radius * sin(angle);
+    let x2 = centerX + (sizes.radius + sizes.rayLength) * cos(angle);
+    let y2 = centerY + (sizes.radius + sizes.rayLength) * sin(angle);
 
     stroke(240);
     strokeWeight(0.5);
@@ -587,27 +597,24 @@ function generateSectors() {
 
 
 function drawHighlightedSector() {
-  let centerX = windowWidth / 2;  // Use windowWidth instead of width
-  let centerY = windowHeight / 2; // Use windowHeight instead of height
-  let radius = 100;
-  let rayLength = 200;
+  let centerX = windowWidth / 2;
+  let centerY = windowHeight / 2;
+  const sizes = getGraphSize();
 
-  // Calcola la posizione polare del mouse rispetto al centro del cerchio
+  // Calculate mouse position relative to center
   let mouseAngle = atan2(mouseY - centerY, mouseX - centerX);
   if (mouseAngle < 0) mouseAngle += 360;
   let mouseDist = dist(mouseX, mouseY, centerX, centerY);
 
-  // Calcola quale settore evidenziare in base al progresso dell'animazione
+  // Rest of the sector highlighting code using sizes.radius and sizes.rayLength
   if (autoScroll && !autoScrollCompleted) {
     let currentSector = Math.floor(map(sectorHighlightProgress, 0, 1, 0, 99));
-
-    // Evidenzia il settore corrente
     let angle1 = map(currentSector, 0, 99, 0, 360);
     let angle2 = map(currentSector + 1, 0, 99, 0, 360);
 
-    fill(80, 80, 80, 80); // Colore evidenziato
+    fill(80, 80, 80, 80);
     noStroke();
-    arc(centerX, centerY, (radius + rayLength) * 2, (radius + rayLength) * 2, angle1, angle2, PIE);
+    arc(centerX, centerY, (sizes.radius + sizes.rayLength) * 2, (sizes.radius + sizes.rayLength) * 2, angle1, angle2, PIE);
 
     // Mostra il nome del paese associato al settore corrente
     let countryName = sectors[currentSector].countryCode; // Nome del paese
@@ -620,8 +627,7 @@ function drawHighlightedSector() {
     text(countryName, width / 2, 100); // Posiziona il testo al centro in alto
   }
 
-  // Controlla se il mouse è dentro il cerchio
-  if (mouseDist > radius + dotOffset && mouseDist < radius + rayLength) {
+  if (mouseDist > sizes.radius + dotOffset && mouseDist < sizes.radius + sizes.rayLength) {
     for (let i = 0; i < 99; i++) {
       let angle1 = map(i, 0, 99, 0, 360);
       let angle2 = map(i + 1, 0, 99, 0, 360);
@@ -630,7 +636,7 @@ function drawHighlightedSector() {
       if (mouseAngle >= angle1 && mouseAngle < angle2) {
         fill(80, 80, 80, 80); // Colore evidenziato
         noStroke();
-        arc(centerX, centerY, (radius + rayLength) * 2, (radius + rayLength) * 2, angle1, angle2, PIE);
+        arc(centerX, centerY, (sizes.radius + sizes.rayLength) * 2, (sizes.radius + sizes.rayLength) * 2, angle1, angle2, PIE);
 
         // Mostra il codice paese e il nome del paese associato
         let countryName = sectors[i].countryCode; // Nome del paese
@@ -663,12 +669,10 @@ function drawHighlightedSector() {
 
 //PRECALCULATE DOTS
 function generateDots() {
-  let centerX = windowWidth / 2;  // Use windowWidth instead of width
-  let centerY = windowHeight / 2; // Use windowHeight instead of height
-  let minRadius = 100;        
-  let maxRadius = 250;        
+  let centerX = windowWidth / 2;
+  let centerY = windowHeight / 2;
+  const sizes = getGraphSize();
 
-  // Clear existing points when regenerating
   points = [];
 
   // Calculate min and max periapsis for each sector
@@ -703,12 +707,12 @@ function generateDots() {
         periapsis,
         sectorPeriapsis[i].min,
         sectorPeriapsis[i].max,
-        minRadius,
-        maxRadius
+        sizes.minRadius,
+        sizes.maxRadius
       );
 
       // Constrain the distance to ensure it stays within the sector's boundaries
-      let constrainedDistance = constrain(mappedDistance, minRadius, maxRadius);
+      let constrainedDistance = constrain(mappedDistance, sizes.minRadius, sizes.maxRadius);
 
       let x = centerX + constrainedDistance * cos(randomAngle);
       let y = centerY + constrainedDistance * sin(randomAngle);
@@ -725,25 +729,17 @@ function generateDots() {
 
 //DOTS / DEBRIS DRAW
 function drawDots() {
+  const sizes = getGraphSize();
   selectedYear = slider.value();
 
   for (let point of points) {
-    if (point.year <= selectedYear) { 
-      // Calcola la differenza tra l'anno selezionato e l'anno di lancio
+    if (point.year <= selectedYear) {
       let yearsAgo = selectedYear - point.year;
-
-      // Mappa la differenza di anni su una scala di grigi (0 = nero, 255 = bianco)
-      let grayValue = map(yearsAgo, 0, 60, 0, 255); // Supponendo una durata massima di 60 anni
-
-      // Assicurati che i valori siano tra 0 (nero) e 255 (bianco)
+      let grayValue = map(yearsAgo, 0, 60, 0, 255);
       grayValue = constrain(grayValue, 0, 255);
-
-      // Imposta il colore in base alla scala di grigi
-      fill(grayValue);  
+      fill(grayValue);
       noStroke();
-
-      // Disegna il pallino
-      ellipse(point.x, point.y, 4, 4);
+      ellipse(point.x, point.y, sizes.dotSize, sizes.dotSize);
     }
   }
 }
