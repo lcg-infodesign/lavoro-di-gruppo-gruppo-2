@@ -650,10 +650,10 @@ function drawSelectedYear() {
 
   // Nuovo stile per l'anno selezionato
   textSize(32);
-  textFont(inconsolataFont);
-  strokeWeight(0);
-  stroke(0);
-  fill(255);
+  textFont(rubikOneFont);  // Cambiato da inconsolataFont a rubikOneFont
+  strokeWeight(4);         // Aggiunto stroke weight
+  stroke(0);              // Aggiunto stroke nero
+  fill(255);             // Cambiato fill a bianco
   textAlign(CENTER, CENTER);
   text(selectedYear, centerX, centerY - 55); // Mostra l'anno selezionato
 }
