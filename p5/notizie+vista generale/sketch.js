@@ -175,9 +175,9 @@ function setup() {
 }
 
 function windowResized() {
+  // ridimensiona canvas quando finestra viene ridimensionata
   resizeCanvas(windowWidth, windowHeight);
-  generateDots(); // Recalculate positions and sizes
-  redraw();
+  redraw(); 
 }
 
 //PLAY SOUND BUTTON STYLE
@@ -666,24 +666,15 @@ function drawHighlightedSector() {
 //PRECALCULATE DOTS
 function generateDots() {
   let centerX = width / 2;
-  let centerY = height / 2;
-  
-  // Calculate dynamic radii based on window height
-  let totalHeight = height / 2; // Total height for the representation
-  let minRadius = totalHeight * 0.2; // Minimum distance from the center
-  let maxRadius = totalHeight * 0.5; // Maximum distance from the center
-
-  // Calculate Earth image size to fit within the minRadius
-  let earthSize = minRadius * 0.8; // Adjust this factor as needed to ensure it fits well
-
-  // Draw the Earth image at the center
-  image(terraImg, centerX - earthSize / 2, centerY - earthSize / 2, earthSize, earthSize);
+  let centerY = height / 2;  
+  let minRadius = 100;        // Minimum distance from the center
+  let maxRadius = 250;        // Maximum distance from the center
 
   // Calculate min and max periapsis for each sector
   let sectorPeriapsis = sectors.map(() => ({ min: Infinity, max: -Infinity }));
 
   for (let row of table.rows) {
-    let countryCode = row.get("COUNTRY_CODE") || "SCONOSCIUTO";
+    let countryCode = row.get("COUNTRY_CODE");
     let sectorIndex = countryCodes.indexOf(countryCode);
     if (sectorIndex !== -1) {
       let periapsis = row.getNum("PERIAPSIS");
@@ -692,18 +683,21 @@ function generateDots() {
     }
   }
 
-  for (let i = 0; i < sectors.length; i++) {
+  for (let i = 0; i < 99; i++) {
     let countryCode = sectors[i].countryCode; 
     let numEvents = countryEventCount[countryCode] || 0; 
 
     for (let j = 0; j < numEvents; j++) {
-      let angle1 = map(i, 0, sectors.length, 0, 360);
-      let angle2 = map(i + 1, 0, sectors.length, 0, 360);
+      let angle1 = map(i, 0, 99, 0, 360);
+      let angle2 = map(i + 1, 0, 99, 0, 360);
 
+      // Ensure the angle is within the sector's boundaries
       let randomAngle = random(angle1, angle2);
 
+      // Get the "PERIAPSIS" value for this event
       let periapsis = table.getNum(j, "PERIAPSIS");
 
+      // Map the "PERIAPSIS" value to a distance between minRadius and maxRadius for this sector
       let mappedDistance = map(
         periapsis,
         sectorPeriapsis[i].min,
@@ -712,6 +706,7 @@ function generateDots() {
         maxRadius
       );
 
+      // Constrain the distance to ensure it stays within the sector's boundaries
       let constrainedDistance = constrain(mappedDistance, minRadius, maxRadius);
 
       let x = centerX + constrainedDistance * cos(randomAngle);
