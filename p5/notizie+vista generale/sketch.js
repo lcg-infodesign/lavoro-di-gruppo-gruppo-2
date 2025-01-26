@@ -667,8 +667,21 @@ function drawHighlightedSector() {
 function generateDots() {
   let centerX = width / 2;
   let centerY = height / 2;  
-  let minRadius = 100;        // Aumentato da 80 a 100 per creare più spazio
-  let maxRadius = 250;       // Distanza massima dal centro
+  let minRadius = 100;        // Minimum distance from the center
+  let maxRadius = 250;        // Maximum distance from the center
+
+  // Calculate min and max periapsis for each sector
+  let sectorPeriapsis = sectors.map(() => ({ min: Infinity, max: -Infinity }));
+
+  for (let row of table.rows) {
+    let countryCode = row.get("COUNTRY_CODE");
+    let sectorIndex = countryCodes.indexOf(countryCode);
+    if (sectorIndex !== -1) {
+      let periapsis = row.getNum("PERIAPSIS");
+      if (periapsis < sectorPeriapsis[sectorIndex].min) sectorPeriapsis[sectorIndex].min = periapsis;
+      if (periapsis > sectorPeriapsis[sectorIndex].max) sectorPeriapsis[sectorIndex].max = periapsis;
+    }
+  }
 
   for (let i = 0; i < 99; i++) {
     let countryCode = sectors[i].countryCode; 
@@ -678,13 +691,26 @@ function generateDots() {
       let angle1 = map(i, 0, 99, 0, 360);
       let angle2 = map(i + 1, 0, 99, 0, 360);
 
+      // Ensure the angle is within the sector's boundaries
       let randomAngle = random(angle1, angle2);
 
-      // Calcola la distanza radiale
-      let randomDist = random(minRadius, maxRadius);
+      // Get the "PERIAPSIS" value for this event
+      let periapsis = table.getNum(j, "PERIAPSIS");
 
-      let x = centerX + randomDist * cos(randomAngle);
-      let y = centerY + randomDist * sin(randomAngle);
+      // Map the "PERIAPSIS" value to a distance between minRadius and maxRadius for this sector
+      let mappedDistance = map(
+        periapsis,
+        sectorPeriapsis[i].min,
+        sectorPeriapsis[i].max,
+        minRadius,
+        maxRadius
+      );
+
+      // Constrain the distance to ensure it stays within the sector's boundaries
+      let constrainedDistance = constrain(mappedDistance, minRadius, maxRadius);
+
+      let x = centerX + constrainedDistance * cos(randomAngle);
+      let y = centerY + constrainedDistance * sin(randomAngle);
 
       let launchDate = table.getString(j, "LAUNCH_DATE");
       let launchYear = int(launchDate.substring(0, 4));
