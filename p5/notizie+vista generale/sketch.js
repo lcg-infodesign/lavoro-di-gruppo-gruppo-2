@@ -161,8 +161,9 @@ function setup() {
   slider.style('opacity', '0');
 
   //PLAY SOUND BUTTON SETUP
-  toggleButton = createButton('Play Sound'); // Starts with the play icon
-  toggleButton.position(40, height - 55); // Set x to 40
+  toggleButton = createButton('Play Sound');
+  toggleButton.style('position', 'fixed');
+  toggleButton.position(40, windowHeight - 55);
   toggleButton.mousePressed(toggleAudio);
   sound.setVolume(0.2);
   styleButton(toggleButton);
@@ -175,9 +176,13 @@ function setup() {
 }
 
 function windowResized() {
-  // ridimensiona canvas quando finestra viene ridimensionata
   resizeCanvas(windowWidth, windowHeight);
-  redraw(); 
+  // Update the play sound button position on window resize
+  toggleButton.position(40, windowHeight - 55);
+  // Regenerate dots with new center position
+  generateDots();
+  // Redraw the canvas
+  redraw();
 }
 
 //PLAY SOUND BUTTON STYLE
@@ -270,13 +275,6 @@ function createButtons(positions) {
 }
     });
   }
-}
-
-
-function windowResized() {
-  // ridimensiona canvas quando finestra viene ridimensionata
-  resizeCanvas(windowWidth, windowHeight);
-  redraw(); 
 }
 
 function draw() {
@@ -535,8 +533,8 @@ function drawRocket(x, y) {
 
 //CIRCLE SETUP
 function drawCircleWithRays() {
-  let centerX = width / 2;
-  let centerY = height / 2;
+  let centerX = windowWidth / 2;  // Use windowWidth instead of width
+  let centerY = windowHeight / 2; // Use windowHeight instead of height
   let radius = 80;
   let rayLength = 200;
 
@@ -589,8 +587,8 @@ function generateSectors() {
 
 
 function drawHighlightedSector() {
-  let centerX = width / 2;
-  let centerY = height / 2; // Posiziona il cerchio al centro della pagina
+  let centerX = windowWidth / 2;  // Use windowWidth instead of width
+  let centerY = windowHeight / 2; // Use windowHeight instead of height
   let radius = 100;
   let rayLength = 200;
 
@@ -665,10 +663,13 @@ function drawHighlightedSector() {
 
 //PRECALCULATE DOTS
 function generateDots() {
-  let centerX = width / 2;
-  let centerY = height / 2;  
-  let minRadius = 100;        // Minimum distance from the center
-  let maxRadius = 250;        // Maximum distance from the center
+  let centerX = windowWidth / 2;  // Use windowWidth instead of width
+  let centerY = windowHeight / 2; // Use windowHeight instead of height
+  let minRadius = 100;        
+  let maxRadius = 250;        
+
+  // Clear existing points when regenerating
+  points = [];
 
   // Calculate min and max periapsis for each sector
   let sectorPeriapsis = sectors.map(() => ({ min: Infinity, max: -Infinity }));
