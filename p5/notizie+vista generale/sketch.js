@@ -533,8 +533,8 @@ function drawRocket(x, y) {
 
 //CIRCLE SETUP
 function getGraphSize() {
-  // Use 5/6 of window height as the base size
-  const baseSize = (windowHeight * 5) / 6;
+  // Use 7/8 of window height as the base size
+  const baseSize = (windowHeight * 7) / 8;
   return {
     radius: baseSize * 0.12,        // Earth radius (12% of base size)
     rayLength: baseSize * 0.3,      // Length of rays/sectors (30% of base size)
