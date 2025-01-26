@@ -1,52 +1,56 @@
 let fumoImg; // Variabile globale per l'immagine del fumo
 let fumoAspectRatio = 1; // Rapporto larghezza/altezza delle nuvolette
-let fumoData = []; // Array per memorizzare le proprietà fisse delle nuvolette
 let numFumo = 40; // Numero massimo di nuvolette di fumo
 let slider;
+
+let selectedYear = 1960;
+const dotOffset = 40; // Offset per creare un anello vuoto attorno al cerchio centrale
+let notizieTable;
+let notiziaCorrente = null;
+
+//IMAGES
+let rocketImg;
+let rocketWidth;
+let rocketHeight = 40; // Aumentato da 30 a 50 per un razzo più grande
+let terraImg;
+
+//FONTS
+let fontInconsolata;
+let fontRubik;
+let rotationAngle = 0;
+
+//ARRAYS
+let cardPositions = []; // Array per tenere traccia delle posizioni delle carte
+let cardTargets = [];  // Array per le posizioni target
+let immaginiNotizie = {};
+let points = [];
+let countryCodes = []; // Array per i codici paese
+let countryEventCount = {}; // Conta gli eventi per ciascun paese
+let sectors = []; // Associa i codici paese ai settori
+let fumoData = []; // Array per memorizzare le proprietà fisse delle nuvolette
+
+//ANIMATION
+let autoScrollProgress = 0; // Variabile che traccia il progresso (0 a 1)
+let AUTO_SCROLL_DURATION = 5000; // Durata totale in millisecondi
+let lastUpdateTime = 0;
+let ANIMATION_SPEED = 0.075; // Rallentato del 50% rispetto a 0.15
 
 let autoScroll = true; // Variabile per abilitare lo scorrimento automatico
 let autoScrollSpeed = 0.5; // Rallentato del 50% rispetto a 1
 let autoScrollCompleted = false; // Variabile per indicare se l'auto-scroll è completato
 
-let selectedYear = 1960;
-let points = [];
-let countryCodes = []; // Array per i codici paese
-let countryEventCount = {}; // Conta gli eventi per ciascun paese
-const totalDots = 15000;
-let sectors = []; // Associa i codici paese ai settori
-const dotOffset = 40; // Offset per creare un anello vuoto attorno al cerchio centrale
-let notizieTable;
-let notiziaCorrente = null;
-let immaginiNotizie = {};
-let rocketImg;
-let rocketWidth;
-let rocketHeight = 40; // Aumentato da 30 a 50 per un razzo più grande
-let terraImg;
-let fontInconsolata;
-let fontRubik;
-let rotationAngle = 0;
-let cardPositions = []; // Array per tenere traccia delle posizioni delle carte
-let cardTargets = [];  // Array per le posizioni target
-let ANIMATION_SPEED = 0.075; // Rallentato del 50% rispetto a 0.15
-
-let autoScrollProgress = 0; // Variabile che traccia il progresso (0 a 1)
-let AUTO_SCROLL_DURATION = 5000; // Durata totale in millisecondi
-let lastUpdateTime = 0;
-
-
-let customCursorImg;
-let arrowCursor;
-
+//SOUND
 let sound;
 let toggleButton; // Variable for the button
 let isPlaying = false; // Tracks the audio state
 
 
 function preload() {
-  
-  // Carica i font
+  //LOAD FONTS
   fontRubik = loadFont('../../fonts/RubikOne.ttf');
   fontInconsolata = loadFont('../../fonts/Inconsolata.ttf');
+
+  //LOAD NEWS IMAGES
   imgn1 = loadImage('../../img/n1.png');
   imgn2 = loadImage('../../img/n2.png');
   imgn3 = loadImage('../../img/n3.png');
@@ -68,34 +72,62 @@ function preload() {
   imgn19 = loadImage('../../img/tbi.png');
   imgn20 = loadImage('../../img/rocket body.png');
   imgn21 = loadImage('../../img/debris.png');
+
+  //LOAD SPECIFIC IMAGES
   imgtitolo = loadImage('../../img/titolo.png');
+  imgperigeo = loadImage('../../img/perigeo2.png');
 
-  
-
-
+  //LOAD ROCKET IMAGE
   rocketImg = loadImage('../../img/razzino.png', img => {
     let ratio = img.width / img.height;
     rocketWidth = rocketHeight * ratio;
   });
+
+  //LOAD TERRA IMAGE
   terraImg = loadImage('../../img/marenero.png');
 
-  // Carica l'immagine del fumo nella funzione preload
+  //LOAD SMOKE IMAGE
   fumoImg = loadImage("../../img/fumo.png", () => {
-    // Calcola il rapporto larghezza/altezza una volta caricata l'immagine
     fumoAspectRatio = fumoImg.width / fumoImg.height;
   });
 
-  // Carica i dati CSV
+  //LOAD CSV DATA
   table = loadTable("../../space_decay.csv", "header");
   notizieTable = loadTable("../../notizie.csv", "header");
 
-  // Carica l'immagine del cursore
-  customCursorImg = loadImage("../../img/cursor.png");
-  arrowCursor = loadImage('../../img/cursor.png')
-
-  // Load the audio file in preload
+  //LOAD SOUND
   sound = loadSound('../../space.mp3');
-  
+}
+
+
+function loadCountryCodes() {
+  // Verifica se la tabella è stata caricata correttamente
+  if (table.getRowCount() > 0) {
+    // Estrai i codici paese dalla colonna COUNTRY_CODE
+    countryCodes = table.getColumn("COUNTRY_CODE");
+
+    // Rimuovi eventuali duplicati
+    countryCodes = [...new Set(countryCodes)];
+
+    // Conta gli eventi per ciascun paese
+    countCountryEvents();
+
+    console.log(`Codici paese caricati: ${countryCodes.length}`);
+  } else {
+    console.error("Errore nel caricamento del CSV. Controlla il file.");
+  }
+}
+
+function countCountryEvents() {
+  // Conta il numero di eventi per ciascun paese
+  for (let row of table.rows) {
+    let countryCode = row.get("COUNTRY_CODE");
+    if (countryEventCount[countryCode]) {
+      countryEventCount[countryCode]++;
+    } else {
+      countryEventCount[countryCode] = 1;
+    }
+  }
 }
 
 function setup() {
@@ -104,13 +136,6 @@ function setup() {
   textFont(fontInconsolata);
   textAlign(CENTER, CENTER);
 
-  noCursor();
-  // Imposta il cursore personalizzato
-  let cursorURL = "url('../../img/cursor.png'), auto";
-  canvas = document.querySelector('canvas');
-  canvas.style.cursor = cursorURL;
-
-
   // Posizioni pulsanti nella navbar
   let buttonPositions = [
     { x: width - 430, y: 30 },
@@ -118,6 +143,7 @@ function setup() {
     { x: width - 160, y: 30 }
 ];
 
+  //CREATE TOP NAVBAR BUTTONS
   createButtons(buttonPositions);
 
   // Rendi i pulsanti fissi per il ridimensionamento
@@ -126,29 +152,33 @@ function setup() {
     button.style('position', 'fixed');
   });
 
-  // Inizializza altre funzioni del setup
+  //SLIDER SETUP
   slider = createSlider(1960, 2020, 1960, 1);
   slider.position((width - slider.width) / 2, height - 60);
   slider.style('width', '700px');
   slider.style('opacity', '0');
 
-  loadCountryCodes();
-  generateSectors();
-  generateDots();
-  // Precalcola i dati del fumo
-  precalculateFumo();
-
- // Create a single toggle button
+ //PLAY SOUND BUTTON SETUP
  toggleButton = createButton('Play Sound'); // Starts with the play icon
  toggleButton.position(30, height - 55);
  toggleButton.mousePressed(toggleAudio);
  sound.setVolume(0.2);
  styleButton(toggleButton);
 
-
+ //SETUP OTHER FUNCTIONS
+ loadCountryCodes();
+ generateSectors();
+ generateDots();
+ precalculateFumo();
 }
 
-// Function to style the button
+function windowResized() {
+  // ridimensiona canvas quando finestra viene ridimensionata
+  resizeCanvas(windowWidth, windowHeight);
+  redraw(); 
+}
+
+//PLAY SOUND BUTTON STYLE
 function styleButton(button) {
   button.style('font-family', 'Inconsolata'); // Use Inconsolata font
   button.style('font-size', '12px');
@@ -174,13 +204,7 @@ function toggleAudio() {
   }
 }
 
-
-function windowResized() {
-  // ridimensiona canvas quando finestra viene ridimensionata
-  resizeCanvas(windowWidth, windowHeight);
-  redraw(); 
-}
-
+//TOP NAVBAR BUTTONS
 function createButtons(positions) {
   let buttonWidth = 100;
   let buttonHeight = 40;
@@ -256,15 +280,33 @@ function windowResized() {
 function draw() {
   background(240);
 
-  // Disegna il riquadro bianco a sinistra con angoli arrotondati
+  //INFO BOX SETUP
   fill(255); // Colore bianco
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
   let boxWidth = 300; // Larghezza del riquadro
-  let boxHeight = 520; // Altezza del riquadro
+  let boxHeight = 120; // Altezza di ciascun rettangolo
+  let firstBoxHeight = boxHeight * (2 / 3); // Altezza del primo rettangolo a 2/3
+  let secondBoxHeight = boxHeight * (4 / 3); // Altezza del secondo rettangolo aumentata di 1/3
   let cornerRadius = 10; // Raggio degli angoli arrotondati
-  rect(40, (height - boxHeight) / 2 - 20, boxWidth, boxHeight, cornerRadius); // Spostato più in alto
+  let spacing = 15; // Spazio tra i rettangoli
+  let totalHeight = firstBoxHeight + secondBoxHeight + boxHeight * 2 + spacing * 4; // Altezza totale per 4 rettangoli e spazi
+  let startY = (height - totalHeight) / 2; // Posizione Y iniziale per centrare
 
+  // Disegna il primo rettangolo con altezza ridotta
+  rect(40, startY, boxWidth, firstBoxHeight, cornerRadius); 
+
+  // Disegna il secondo rettangolo con altezza aumentata
+  rect(40, startY + firstBoxHeight + spacing, boxWidth, secondBoxHeight, cornerRadius);
+
+  // Disegna i restanti 2 rettangoli mantenendo la stessa distanza
+  for (let i = 2; i < 3; i++) {
+    rect(40, startY + firstBoxHeight + secondBoxHeight + spacing * 2 + (i - 2) * (boxHeight + spacing), boxWidth, boxHeight, cornerRadius);
+  }
+  // Modifica l'altezza del quarto rettangolo
+  rect(40, startY + firstBoxHeight + secondBoxHeight + spacing * 2 + (3 - 2) * (boxHeight + spacing), boxWidth, boxHeight * 0.9, cornerRadius); // Ridotto a 90% dell'altezza originale
+
+  //TITLE HOME BUTTON
   image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
   if (mouseX > 50 && mouseX < -30 + imgtitolo.width * 0.25 && mouseY > 30 && mouseY < 20 + imgtitolo.height * 0.25) {
     cursor(HAND);
@@ -275,43 +317,17 @@ function draw() {
     cursor(ARROW);
   }
 
-  if (autoScroll && !autoScrollCompleted) {
-    // Incrementa il progresso temporale
-    autoScrollProgress += deltaTime / AUTO_SCROLL_DURATION;
-
-    // Applica easing-out per un rallentamento fluido verso la fine
-    let easedProgress = easeOutQuad(autoScrollProgress);
-
-
-    // Calcola l'anno in base al progresso interpolato
-    selectedYear = Math.round(lerp(1960, 2020, easedProgress)); // Arrotonda il valore
-
-    // Blocca il progresso a 1 per evitare overflow
-    if (autoScrollProgress >= 1) {
-      autoScrollProgress = 1;
-      autoScroll = false; // Ferma l'animazione
-      autoScrollCompleted = true;
-    }
-
-    slider.value(selectedYear); // Aggiorna il valore dello slider
-  }
-  // Disegna la legenda
+  
+  
+  //SLIDER TIMELINE DRAW
   drawSliderTimeline();
-
-  // Resto del codice di rendering
   drawHighlightedSector();
   drawCircleWithRays();
   drawDots();
-  
-  drawInfoBox();
+  drawNewsBox();
 
-  if (mouseX > 150 && mouseX < 250 && mouseY > 150 && mouseY < 200) {
-    // Cursore "pointer"
-    image(arrowCursor, mouseX, mouseY, 16, 32); // Disegna il cursore pointer
-  } else {
-    // Cursore predefinito
-    image(customCursorImg, mouseX, mouseY, 14, 16); // Disegna il cursore predefinito
-  }
+  
+ 
   
   // Aggiungi il nuovo contenuto all'interno del rettangolo bianco
   textFont(fontRubik);
@@ -321,35 +337,30 @@ function draw() {
   noStroke(); // Assicurati che non ci sia contorno
   textAlign(LEFT); // Allinea il testo a sinistra
   
-  stroke(0); // Aggiungi il contorno nero
-  strokeWeight(2); // Imposta lo spessore del contorno
-  fill(255); // Ripristina il colore di riempimento per il testo
-  text('LEGGERE IL GRAFICO', 50, (height - boxHeight) / 2 + 8); // Disegna di nuovo il testo con contorno
+  
   noStroke(); // Assicurati che non ci sia contorno per il testo successivo
   fill(0); // Colore del testo nero
-  textSize(20);
-  text('RIFIUTO SPAZIALE', 50, (height - boxHeight) / 2 + 48); // Posizione a sinistra
+  textSize(18);
+  text('RIFIUTO SPAZIALE', 50, (height - boxHeight) / 2 -190); // Posizione a sinistra
 
   // Rettangolo (come placeholder)
   fill(0);
-  ellipse(50 + 15, (height - boxHeight) / 2 + 70 + 15, 30, 30); // Disegna un cerchio nero
+  ellipse(50 + 15, (height - boxHeight) / 2 -160, 10, 10); // Disegna un cerchio nero
 
   // Stile per il testo descrittivo
   textFont(fontRubik);
   textSize(18);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('PERIGEO', 50, (height - boxHeight) / 2 + 130); // Posizionato a sinistra
+  text('PERIGEO', 50, (height - boxHeight) / 2-95); // Posizionato a sinistra
+
+  image(imgperigeo, 50, (height - boxHeight) / 2 -56, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
 
   textFont(fontInconsolata);
   textSize(14);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('DISTANZA DALLA TERRA', 50, (height - boxHeight) / 2 + 150); // Posizionato a sinistra
-
-  // Rettangolo nero (simula i dati oscurati)
-  fill(0);
-  rect(50, (height - boxHeight) / 2 + 180, 200, 30); // Posizionato a sinistra
+  text('DISTANZA DALLA TERRA', 50, (height - boxHeight) / 2 -70); // Posizionato a sinistra
 
   textFont(fontInconsolata);
   textSize(12);
@@ -358,20 +369,20 @@ function draw() {
   text(
     'Il punto di massima vicinanza del detrito\nalla terra, mentre orbita intorno ad essa',
     50,
-    (height - boxHeight) / 2 + 240 // Aumentata la distanza
+    (height - boxHeight) / 2 +20 // Aumentata la distanza
   );
 
   textFont(fontRubik);
   textSize(18);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('ANNO', 50, (height - boxHeight) / 2 + 290); // Posizionato a sinistra
+  text('ANNO', 50, (height - boxHeight) / 2 + 78); // Posizionato a sinistra
 
   textFont(fontInconsolata);
   textSize(24); // Dimensione del testo per "0000"
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('0000', 50, (height - boxHeight) / 2 + 315); // Posizionato a sinistra
+  text('0000', 50, (height - boxHeight) / 2 + 107); // Posizionato a sinistra
 
   textFont(fontInconsolata);
   textSize(12);
@@ -380,29 +391,26 @@ function draw() {
   text(
     'L’anno in cui l’oggetto è stato lanciato\nnello spazio. Dal 1960 al 2021',
     50,
-    (height - boxHeight) / 2 + 350 // Aumentata la distanza
+    (height - boxHeight) / 2 + 150 // Aumentata la distanza
   );
 
   textFont(fontRubik);
   textSize(18);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('PAESE', 50, (height - boxHeight) / 2 + 400); // Posizionato a sinistra
+  text('PAESE', 50, (height - boxHeight) / 2 + 212); // Posizionato a sinistra
 
   fill(192); // Colore grigio
-  arc(60 + 20, (height - boxHeight) / 2 + 430, 350, 250, 0, PI + QUARTER_PI); // Modificato per essere più ampio
+  arc(60 + 20, (height - boxHeight) / 2 + 240, 350, 255, 0, PI + QUARTER_PI); // Modificato per essere più ampio
 
   // Nuovo testo aggiunto sotto l'ultimo rettangolo nero
   textFont(fontInconsolata);
   textSize(12);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('Il paese responsabile del lancio del detrito', 50, (height - boxHeight) / 2 + 457); // Posizionato sotto il rettangolo nero
+  text('Il paese responsabile del lancio del detrito', 50, (height - boxHeight) / 2 + 275); // Posizionato sotto il rettangolo nero
 }
 
-function easeOutQuad(t) {
-  return t * (2 - t); // Equazione di easing-out quadratica
-}
 
 
 function precalculateFumo() {
@@ -434,8 +442,8 @@ function drawSliderTimeline() {
   fill(0);
   textFont(fontInconsolata);
   textSize(14);
-  text('1960', (width - 700) / 2 - 30, height - 55); // Etichetta 1960
-  text('2020', (width + 700) / 2 + 30, height - 55); // Etichetta 2020
+  text('1960', (width - 700) / 2 - 60, height - 57); // Etichetta 1960
+  text('2020', (width + 700) / 2 + 40, height - 57); // Etichetta 2020
 
   // Disegna la linea principale dello slider solo a destra del cursore
   stroke(192); // Colore grigio
@@ -462,6 +470,28 @@ function drawSliderTimeline() {
     }
   }
 
+  //SLIDER ANIMATION SETUP
+  if (autoScroll && !autoScrollCompleted) {
+    // Incrementa il progresso temporale
+    autoScrollProgress += deltaTime / AUTO_SCROLL_DURATION;
+
+    // Applica easing-out per un rallentamento fluido verso la fine
+    let easedProgress = easeOutQuad(autoScrollProgress);
+
+
+    // Calcola l'anno in base al progresso interpolato
+    selectedYear = Math.round(lerp(1960, 2020, easedProgress)); // Arrotonda il valore
+
+    // Blocca il progresso a 1 per evitare overflow
+    if (autoScrollProgress >= 1) {
+      autoScrollProgress = 1;
+      autoScroll = false; // Ferma l'animazione
+      autoScrollCompleted = true;
+    }
+
+    slider.value(selectedYear); // Aggiorna il valore dello slider
+  }
+
   // Aggiorna `selectedYear` se il mouse è sopra lo slider e viene premuto
   if (
     mouseIsPressed &&
@@ -485,100 +515,22 @@ function drawSliderTimeline() {
   }
 }
 
+function easeOutQuad(t) {
+  return t * (2 - t); // Equazione di easing-out quadratica
+}
 
-
+//ROCKET DRAW
 function drawRocket(x, y) {
   push();
   translate(x, y);
-  rotate(90);  // Ruota il razzo di 90°
   imageMode(CENTER);
   image(rocketImg, 0, 0, rocketWidth, rocketHeight);
   pop();
 }
 
-function loadCountryCodes() {
-  // Verifica se la tabella è stata caricata correttamente
-  if (table.getRowCount() > 0) {
-    // Estrai i codici paese dalla colonna COUNTRY_CODE
-    countryCodes = table.getColumn("COUNTRY_CODE");
 
-    // Rimuovi eventuali duplicati
-    countryCodes = [...new Set(countryCodes)];
 
-    // Conta gli eventi per ciascun paese
-    countCountryEvents();
-
-    console.log(`Codici paese caricati: ${countryCodes.length}`);
-  } else {
-    console.error("Errore nel caricamento del CSV. Controlla il file.");
-  }
-}
-
-function countCountryEvents() {
-  // Conta il numero di eventi per ciascun paese
-  for (let row of table.rows) {
-    let countryCode = row.get("COUNTRY_CODE");
-    if (countryEventCount[countryCode]) {
-      countryEventCount[countryCode]++;
-    } else {
-      countryEventCount[countryCode] = 1;
-    }
-  }
-}
-
-function generateSectors() {
-  // Ordina i codici paese in ordine alfabetico
-  countryCodes.sort(); 
-  
-  sectors = []; // Resetta l'array dei settori
-  let index = 0;
-
-  for (let i = 0; i < countryCodes.length; i++) {
-    let countryCode = countryCodes[index];
-    
-    // Aggiungi un oggetto settore con il codice paese
-    sectors.push({ countryCode });
-
-    // Stampa il codice del paese per debug
-    console.log(`Settore ${i + 1}: ${countryCode}`);
-    
-    // Incrementa l'indice
-    index++;
-  }
-}
-
-function generateDots() {
-  let centerX = width / 2;
-  let centerY = height / 2;  
-  let minRadius = 100;        // Aumentato da 80 a 100 per creare più spazio
-  let maxRadius = 250;       // Distanza massima dal centro
-
-  for (let i = 0; i < 99; i++) {
-    let countryCode = sectors[i].countryCode; 
-    let numEvents = countryEventCount[countryCode] || 0; 
-
-    for (let j = 0; j < numEvents; j++) {
-      let angle1 = map(i, 0, 99, 0, 360);
-      let angle2 = map(i + 1, 0, 99, 0, 360);
-
-      let randomAngle = random(angle1, angle2);
-
-      // Calcola la distanza radiale
-      let randomDist = random(minRadius, maxRadius);
-
-      let x = centerX + randomDist * cos(randomAngle);
-      let y = centerY + randomDist * sin(randomAngle);
-
-      let launchDate = table.getString(j, "LAUNCH_DATE");
-      let launchYear = int(launchDate.substring(0, 4));
-
-      let color = "#000000";
-
-      points.push({ x, y, year: launchYear, color });
-    }
-  }
-}
-
+//CIRCLE SETUP
 function drawCircleWithRays() {
   let centerX = width / 2;
   let centerY = height / 2;
@@ -610,29 +562,28 @@ function drawCircleWithRays() {
   }
 }
 
-function drawDots() {
-  selectedYear = slider.value();
+//SECTORS SETUP
+function generateSectors() {
+  // Ordina i codici paese in ordine alfabetico
+  countryCodes.sort(); 
+  
+  sectors = []; // Resetta l'array dei settori
+  let index = 0;
 
-  for (let point of points) {
-    if (point.year <= selectedYear) { 
-      // Calcola la differenza tra l'anno selezionato e l'anno di lancio
-      let yearsAgo = selectedYear - point.year;
+  for (let i = 0; i < countryCodes.length; i++) {
+    let countryCode = countryCodes[index];
+    
+    // Aggiungi un oggetto settore con il codice paese
+    sectors.push({ countryCode });
 
-      // Mappa la differenza di anni su una scala di grigi (0 = nero, 255 = bianco)
-      let grayValue = map(yearsAgo, 0, 60, 0, 255); // Supponendo una durata massima di 60 anni
-
-      // Assicurati che i valori siano tra 0 (nero) e 255 (bianco)
-      grayValue = constrain(grayValue, 0, 255);
-
-      // Imposta il colore in base alla scala di grigi
-      fill(grayValue);  
-      noStroke();
-
-      // Disegna il pallino
-      ellipse(point.x, point.y, 4, 4);
-    }
+    // Stampa il codice del paese per debug
+    console.log(`Settore ${i + 1}: ${countryCode}`);
+    
+    // Incrementa l'indice
+    index++;
   }
 }
+
 
 function drawHighlightedSector() {
   let centerX = width / 2;
@@ -685,8 +636,68 @@ function drawHighlightedSector() {
   }
 }
 
+//PRECALCULATE DOTS
+function generateDots() {
+  let centerX = width / 2;
+  let centerY = height / 2;  
+  let minRadius = 100;        // Aumentato da 80 a 100 per creare più spazio
+  let maxRadius = 250;       // Distanza massima dal centro
+
+  for (let i = 0; i < 99; i++) {
+    let countryCode = sectors[i].countryCode; 
+    let numEvents = countryEventCount[countryCode] || 0; 
+
+    for (let j = 0; j < numEvents; j++) {
+      let angle1 = map(i, 0, 99, 0, 360);
+      let angle2 = map(i + 1, 0, 99, 0, 360);
+
+      let randomAngle = random(angle1, angle2);
+
+      // Calcola la distanza radiale
+      let randomDist = random(minRadius, maxRadius);
+
+      let x = centerX + randomDist * cos(randomAngle);
+      let y = centerY + randomDist * sin(randomAngle);
+
+      let launchDate = table.getString(j, "LAUNCH_DATE");
+      let launchYear = int(launchDate.substring(0, 4));
+
+      let color = "#000000";
+
+      points.push({ x, y, year: launchYear, color });
+    }
+  }
+}
+
+//DOTS / DEBRIS DRAW
+function drawDots() {
+  selectedYear = slider.value();
+
+  for (let point of points) {
+    if (point.year <= selectedYear) { 
+      // Calcola la differenza tra l'anno selezionato e l'anno di lancio
+      let yearsAgo = selectedYear - point.year;
+
+      // Mappa la differenza di anni su una scala di grigi (0 = nero, 255 = bianco)
+      let grayValue = map(yearsAgo, 0, 60, 0, 255); // Supponendo una durata massima di 60 anni
+
+      // Assicurati che i valori siano tra 0 (nero) e 255 (bianco)
+      grayValue = constrain(grayValue, 0, 255);
+
+      // Imposta il colore in base alla scala di grigi
+      fill(grayValue);  
+      noStroke();
+
+      // Disegna il pallino
+      ellipse(point.x, point.y, 4, 4);
+    }
+  }
+}
+
+
+//NEWS BOX SETUP
 push();
-function drawInfoBox() {
+function drawNewsBox() {
   // Trova tutte le notizie fino all'anno selezionato
   let notizieDaMostrare = [];
   for (let row of notizieTable.rows) {
@@ -700,6 +711,7 @@ function drawInfoBox() {
       });
     }
   }
+  
   
   // Mostra le notizie trovate
   if (notizieDaMostrare.length > 0) {
@@ -795,65 +807,10 @@ function drawInfoBox() {
 }
 pop();
 
-// Aggiungi questa funzione per disegnare il razzo
-function drawRocket(x, y) {
-  push();
-  translate(x, y);
-  imageMode(CENTER);
-  image(rocketImg, 0, 0, rocketWidth, rocketHeight);
-  pop();
-}
 
 
 
-function createHamburgerMenu() {
-  let menuButton = createDiv('');
-  menuButton.class('hamburger-menu');
-  menuButton.position(50, 80);
-  menuButton.mousePressed(toggleMenu);
-  
-  for (let i = 0; i < 3; i++) {
-    let line = createDiv('');
-    line.parent(menuButton);
-    line.class('menu-line');
-  }
-  
-  let dropdownMenu = createDiv('');
-  dropdownMenu.class('dropdown-menu');
-  dropdownMenu.position(50, 130);
-  dropdownMenu.style('display', 'none');
-  
-  if (countries && countries.length > 0) {
-    countries.forEach(country => {
-      let countryItem = createDiv(country);
-      countryItem.parent(dropdownMenu);
-      countryItem.class('country-item');
-      countryItem.style('color', 'black');
-      console.log("Aggiunto paese al menu:", country); // Log per debug
-       });
-     } else {
-    console.log("Nessun paese disponibile"); // Log se non ci sono paesi
-  }
-}
-
-function toggleMenu() {
-  let dropdown = select('.dropdown-menu');
-  if (dropdown.style('display') === 'none') {
-    dropdown.style('display', 'block');
-    setTimeout(() => {
-      dropdown.addClass('show');
-    }, 10);
-  } else {
-    dropdown.removeClass('show');
-    setTimeout(() => {
-      dropdown.style('display', 'none');
-    }, 300);
-  }
-}
-
-
-
-
+//LEGEND DRAW
 function drawLegend() {
   const legendX = 50; // Posizione X della legenda
   const legendY = 340; // Posizione Y iniziale della legenda
@@ -905,7 +862,7 @@ function drawLegend() {
   text("È IL PUNTO DI MASSIMA VICINANZA DEL DETRITO ALLA TERRA, MENTRE ORBITA INTORNO AD ESSA", legendX + 10, legendY + labels.length * spacing + 20 + 50, 130); // Posiziona il testo centrato
 
   // Aggiungi l'immagine "perigeo.png" sotto il testo descrittivo
-  let perigeoImg = loadImage("img/perigeo.png"); // Carica l'immagine dal percorso corretto
+  let perigeoImg = loadImage('../../img/perigeo.png'); // Carica l'immagine dal percorso corretto
   image(perigeoImg, legendX + (150 - imageWidth) / 2, legendY + labels.length * spacing + 20 + 70, imageWidth, imageWidth * (perigeoImg.height / perigeoImg.width)); // Posiziona l'immagine centrata
 
   stroke(0); // Imposta il colore del bordo a nero
@@ -932,4 +889,3 @@ function drawInfoBoxes() {
     rect(baseX, boxY, boxWidth, boxHeight, 8);
   }
 }
-

@@ -1,10 +1,11 @@
-let fontInconsolata;
-let fontRubik;
 const scaleFactor = 0.1;
 
 function preload() {
+// caricamento font
   fontInconsolata = loadFont('../../fonts/Inconsolata.ttf'); 
   fontRubik = loadFont('../../fonts/RubikOne.ttf'); 
+
+// caricamento immagini
   imgele = loadImage('../../img/ele.png');
   imglara = loadImage('../../img/lara.png');
   imgsofi = loadImage('../../img/sofi.png');
@@ -15,12 +16,10 @@ function preload() {
   imgHomeastronauta = loadImage('../../img/homeastronauta.png');
   imgCosaastronauta = loadImage('../../img/cosaastronauta.png');
   imgtitolo = loadImage('../../img/titolo.png');
-  
 }
 
 function setup() {
   createCanvas(windowWidth, 2600);
-
 
   let buttonPositions = [
     { x: width - 430, y: 30 },
@@ -29,7 +28,7 @@ function setup() {
   ];
   createButtons(buttonPositions);
 
-  // Rendi i pulsanti fissi
+// pulsanti fissi
   let buttons = selectAll('button');
   buttons.forEach(button => {
     button.style('position', 'fixed');
@@ -41,10 +40,9 @@ function windowResized() {
   redraw();
 }
 
+// pulsanti
 function createButtons(positions) {
-  let buttonWidth = 100;
   let buttonHeight = 40;
-  let buttonSpacing = 10;
   let buttonLabels = ['GRAFICO', 'COSA SONO', 'CHI SIAMO'];
 
   for (let i = 0; i < buttonLabels.length; i++) {
@@ -105,13 +103,16 @@ function draw() {
   background('#F2F2F2');
   textAlign(CENTER, CENTER);
 
-  let time = millis() * 0.001;
-  let floatAmplitude = 10;
+// Variabili per oscillazione immagini
+  let time = millis() * 0.001; // Tempo
+  let floatAmplitude = 10; // Ampiezza
 
+//immagini
   image(imgHomeastronauta, 1210 + cos(time + 2) * floatAmplitude, 350 + sin(time + 2) * floatAmplitude, imgHomeastronauta.width * 0.15, imgHomeastronauta.height * 0.15);
   image(imgCosaastronauta, 210 + cos(time + 7) * floatAmplitude, 150 + sin(time + 7) * floatAmplitude, imgCosaastronauta.width * 0.15, imgCosaastronauta.height * 0.15);
   image(imgteamluna, 110 + cos(time + 7) * floatAmplitude, 2390 + sin(time + 7) * floatAmplitude, imgteamluna.width * 0.15, imgteamluna.height * 0.15);
 
+// titolo
   textSize(57);
   strokeWeight(7);
   stroke(0);
@@ -119,6 +120,7 @@ function draw() {
   textFont(fontRubik);
   text('CIAO!', width / 2, 460);
 
+// testino
   textSize(16);
   textFont(fontInconsolata);
   noStroke();
@@ -129,6 +131,7 @@ function draw() {
     550
   );
 
+// logo home
   image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
   if (mouseX > 50 && mouseX < -30 + imgtitolo.width * 0.25 && mouseY > 30 && mouseY < 20 + imgtitolo.height * 0.25) {
     cursor(HAND);
@@ -140,7 +143,7 @@ function draw() {
   }
 
 
-  // Griglia con le card
+// griglia card noi
   let startX = (width - (3 * 340 + 2 * 50)) / 2; 
   let startY = 1200; 
   let rectWidth = 340;

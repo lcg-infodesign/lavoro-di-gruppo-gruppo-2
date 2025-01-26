@@ -1,6 +1,6 @@
 let selectedYear = 1960;
 let points = [];
-const colors = ["#00bffc","#1b39ff","#9c76ff","#f400da", ]; // Nuova palette
+const colors = ["#00bffc","#1b39ff","#9c76ff","#000000", ]; // Nuova palette
 const dotOffset = 40; // Offset per creare un anello vuoto attorno al cerchio centrale
 const totalSpicchi = 60; // Numero di spicchi
 const startYear = 1960; // Anno di inizio
@@ -15,6 +15,19 @@ let rocketBodyImage; // Aggiungi questa riga per la variabile dell'immagine del 
 let razzinoImage; // Nuova variabile per l'immagine del razzino
 let smokePositions = []; // Array per memorizzare le posizioni del fumo
 
+// Add these global variables at the top
+let fumoData = []; // Array for storing fixed smoke properties
+let numFumo = 75; // Maximum number of smoke puffs
+let fumoAspectRatio = 1; // Width/height ratio of smoke images
+let autoScroll = true;
+let autoScrollSpeed = 0.5;
+let autoScrollCompleted = false;
+let lastUpdateTime = 0;
+let ANIMATION_DURATION = 5000; // 5 seconds for the full animation
+let slider;
+let rocketImg;
+let rocketWidth;
+let rocketHeight = 40;
 
 function preload() {
   // Carica i font
@@ -22,6 +35,7 @@ function preload() {
   rubikOneFont = loadFont('../../fonts/RubikOne.ttf');
   terraImg = loadImage('../../img/marenero.png'); // Carica l'immagine
   imgtitolo = loadImage('../../img/titolo.png');
+  imgperigeo = loadImage('../../img/perigeo2.png');
 
 
   // Carica il CSV
@@ -68,10 +82,17 @@ function preload() {
     () => console.log("Immagine razzino caricata con successo"), 
     (error) => console.error("Errore nel caricamento dell'immagine razzino:", error)
   ); 
-  smokeImage = loadImage('../../img/fumo.png', // Carica l'immagine del fumo
-    () => console.log("Immagine fumo caricata con successo"), 
-    (error) => console.error("Errore nel caricamento dell'immagine fumo:", error)
-  ); 
+  smokeImage = loadImage('../../img/fumo.png', () => {
+    fumoAspectRatio = smokeImage.width / smokeImage.height;
+    console.log("Immagine fumo caricata con successo");
+    // Precalculate smoke positions after loading
+    precalculateFumo();
+  }, (error) => console.error("Errore nel caricamento dell'immagine fumo:", error));
+
+  rocketImg = loadImage('../../img/razzino.png', img => {
+    let ratio = img.width / img.height;
+    rocketWidth = rocketHeight * ratio;
+  });
 }
 
 function setup() {
@@ -103,6 +124,28 @@ function windowResized() {
   // ridimensiona canvas quando finestra viene ridimensionata
   resizeCanvas(windowWidth, windowHeight);
   redraw(); 
+}
+
+function precalculateFumo() {
+  let centerX = width / 2;
+  let centerY = height;
+  let radius = 320;
+  let arcLength = PI * radius; // Length of the semicircle
+  let step = arcLength / numFumo;
+
+  for (let i = 0; i < numFumo; i++) {
+    let angle = map(i, 0, numFumo, 180, 360);
+    let randomScale = random(0.8, 1.3);
+    let randomRotation = random(-30, 30);
+    let randomOffsetR = random(-5, 5);
+
+    fumoData.push({
+      angle: angle,
+      scale: randomScale,
+      rotation: randomRotation,
+      offsetR: randomOffsetR
+    });
+  }
 }
 
 function createButtons(positions) {
@@ -174,43 +217,86 @@ function createButtons(positions) {
 function draw() {
   background(240);
 
-  // Disegna il riquadro bianco a sinistra con angoli arrotondati
+  // Handle automatic slider advancement
+  if (autoScroll && !autoScrollCompleted) {
+    let currentTime = millis();
+    
+    if (lastUpdateTime === 0) {
+      lastUpdateTime = currentTime;
+    }
+    
+    let elapsed = currentTime - lastUpdateTime;
+    let progress = elapsed / ANIMATION_DURATION;
+    
+    // Apply easing for deceleration
+    let easedProgress = easeOutQuad(progress);
+    
+    // Update the year based on progress
+    selectedYear = Math.round(lerp(1960, 2020, easedProgress));
+    
+    // Check if animation is complete
+    if (progress >= 1) {
+      selectedYear = 2020;
+      autoScroll = false;
+      autoScrollCompleted = true;
+    }
+  }
+
+  let boxWidth = 270; // Larghezza dei rettangoli
+  let boxHeight = 140; // Altezza standard dei rettangoli
+  let firstBoxHeight = boxHeight * 1.5; // Altezza del primo rettangolo aumentata di 1.5 volte
+  let cornerRadius = 10; // Raggio degli angoli arrotondati
+  let startY = (height - (firstBoxHeight + boxHeight * 3 + 30)) / 2 + 50; // Aggiunto 50 per spostare i rettangoli più in basso
+  let startX = 30; // Posizione X dei rettangoli
+  let spacing = 20; // Distanza tra i rettangoli
+
+  // Disegna il primo rettangolo con altezza aumentata
   fill(255); // Colore bianco
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
-  let boxWidth = 225; // Larghezza del riquadro
-  let boxHeight = 590; // Altezza del riquadro (modificata per allungare il rettangolo)
-  let cornerRadius = 10; // Raggio degli angoli arrotondati
-  rect(20, (height - boxHeight) / 2 -20 , boxWidth, boxHeight, cornerRadius); // Posizione modificata
+  rect(startX, startY, boxWidth, firstBoxHeight, cornerRadius); // Disegna il primo rettangolo
 
-  // Aggiungi il testo "LEGGERE IL GRAFICO" in bianco con stroke nero
-  fill(255); // Colore del testo (bianco)
-  stroke(0); // Colore dello stroke (nero)
-  strokeWeight(1); // Spessore dello stroke
-  textSize(22); // Dimensione del testo
+  // Disegna il secondo rettangolo (spostato più in basso)
+  fill(255); // Colore bianco
+  stroke(0); // Bordo nero
+  strokeWeight(2); // Spessore del bordo
+  rect(startX, startY + (boxHeight + spacing) +65, boxWidth, boxHeight, cornerRadius); // Disegna il secondo rettangolo più in basso
+
+  // Calcola la posizione X per gli ultimi due rettangoli
+  let rightX = width - boxWidth - 30; // Posizione X per gli ultimi due rettangoli
+
+  // Disegna il terzo rettangolo
+  fill(255); // Colore bianco
+  stroke(0); // Bordo nero
+  strokeWeight(2); // Spessore del bordo
+  rect(rightX, startY, boxWidth, boxHeight * 1.3, cornerRadius); // Allunga il terzo rettangolo
+
+  // Disegna il quarto rettangolo (alla stessa altezza del secondo)
+  fill(255); // Colore bianco
+  stroke(0); // Bordo nero
+  strokeWeight(2); // Spessore del bordo
+  rect(rightX, startY + (boxHeight + spacing) + 37, boxWidth, boxHeight * 0.8, cornerRadius); // Accorcia il quarto rettangolo
+  
   textFont(rubikOneFont); // Font Rubik
   textAlign(LEFT, TOP); // Allineamento del testo
-  let textX = 30; // Posizione X del testo
-  let textY = (height - boxHeight) / 2 -10; // Posizione Y del testo
-  text("LEGGERE ", textX, textY); // Testo "LEGGERE IL GRAFICO"
-  textY += 20
-  text("IL GRAFICO", textX, textY); // Testo "LEGGERE IL GRAFICO"
+  let textX = 42; // Posizione X del testo
+  let textY = (height - boxHeight) / 2 -198; // Modificato per allineare il testo con il primo rettangolo
+  
 
   // Aggiungi il resto del testo all'interno del rettangolo
   fill(0); // Colore del testo per il resto
   strokeWeight(0); // Nessuno stroke per il resto del testo
   textSize(18); // Dimensione del testo per RIFIUTI SPAZIALI, TIPOLOGIE, DIMENSIONE
   textAlign(LEFT, TOP); // Allineamento del testo
-  textY += 40; // Sposta la posizione Y per il resto del testo
   text("RIFIUTI SPAZIALI", textX, textY); // Testo "RIFIUTI SPAZIALI"
 
-  textY += 20; // Sposta ulteriormente la posizione Y per "TIPOLOGIE"
+  textY += 25; // Sposta ulteriormente la posizione Y per "TIPOLOGIE"
   text("TIPOLOGIE", textX, textY); // Testo "TIPOLOGIE"
 
   // Imposta il font Inconsolata per le voci specifiche
   textFont(inconsolataFont); // Font Inconsolata
   textSize(14); // Dimensione del testo per PAYLOAD, TBA, ROCKET BODY
-  textY += 30; // Sposta la posizione Y per le voci specifiche
+  textY += 35; // Sposta la posizione Y per le voci specifiche
   text("PAYLOAD      To Be Identified  ", textX, textY); // Voce "PAYLOAD"
   // Sostituisci il rettangolo nero con l'immagine payload
   let payloadImageX = textX; // Posizione X dell'immagine
@@ -237,65 +323,37 @@ function draw() {
   image(debrisImage, debrisX+120, debrisY, 60, 60); // Disegna l'immagine al posto del rettangolo nero
   
 
-  textY += 80; // Sposta la posizione Y per il resto del testo (aumentato per più spazio)
+  textY += 96; // Sposta la posizione Y per il resto del testo (aumentato per più spazio)
   textFont(rubikOneFont); // Font Rubik
   textSize(18); // Dimensione del testo per DIMENSIONE
 
   text("DIMENSIONE", textX, textY); // Resto del testo
 
   textFont(inconsolataFont); // Font Inconsolata
-  textSize(14);
+  textSize(12);
   // Aggiungi il nuovo testo richiesto
-  textY += 30; // Sposta la posizione Y per "DIMENSIONE"
-  text("Piccolo     Medio     Grande", textX, textY); // Voce "Piccolo,"
+  textY += 35; // Sposta la posizione Y per "DIMENSIONE"
+  text("Piccolo       Medio       Grande", textX, textY); // Voce "Piccolo,"
   image(tbiImage, textX + 15, textY+ 20, 20, 20);
   image(tbiImage, textX + 80, textY+ 10, 40, 40);
   image(tbiImage, textX + 140, textY+ 5, 60, 60);
 
   textFont(inconsolataFont); // Font Inconsolata
-  textSize(14);
+  textSize(12);
 
-  textY += 50; // A capo
+  textY += 60; // A capo
 
-  text("Intensità della forza radar", textX, textY)
+  text("Forza del segnale radar", textX, textY)
   textY += 40; // A capo
 
   // Ripristina il font Rubik per il resto del testo
   textFont(rubikOneFont); // Font Rubik
   textSize(18); // Dimensione del testo per DIMENSIONE
 
-  text("PERIGEO", textX, textY); // Voce "PERIGEO"
-  
-  textFont(inconsolataFont); // Font Inconsolata
-  textSize(14);
 
-  textY += 20; // A capo
-
-  text("DISTANZA DALLA TERRA", textX, textY); // Voce "DISTANZA DALLA TERRA"
-// Ripristina il font Rubik per il resto del testo
-rect(textX, textY + 20, 50, 40);
-  textY += 40; // A capo
-
-
-textFont(rubikOneFont); // Font Rubik
-textSize(18); // Dimensione del testo per DIMENSIONE
-  textY += 40; // Sposta la posizione Y per "ANNO"
-  text("ANNO", textX, textY); // Testo "ANNO"
-
-  textFont(inconsolataFont); // Font Inconsolata
-  textSize(22);
-  textY += 20
-  text("0000", textX, textY); // Testo "ANNO"
-
-  // Imposta il font Inconsolata per "anno in cui è stato lanciato il detrito"
-  textFont(inconsolataFont); // Font Inconsolata
-  textSize(14); // Dimensione del testo per "anno in cui è stato lanciato il detrito"
-  textY += 30; // Sposta la posizione Y per "anno in cui è stato lanciato il detrito"
-  text("Anno in cui è stato lanciato", textX, textY); // Resto del testo
-  textY += 20; // A capo
-  text("il detrito", textX, textY); // Voce "il detrito"
-
-  image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
+  if (imgtitolo) {
+    image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
+  }
   if (mouseX > 50 && mouseX < -30 + imgtitolo.width * 0.25 && mouseY > 30 && mouseY < 20 + imgtitolo.height * 0.25) {
     cursor(HAND);
     if (mouseIsPressed) {
@@ -323,6 +381,65 @@ textSize(18); // Dimensione del testo per DIMENSIONE
   // Disegna il tooltip qui, dopo tutti gli altri elementi
   if (hoveredPoint) {
     drawTooltip(hoveredPoint);
+  }
+
+  // Aggiungi il testo per il terzo rettangolo (copia speculare)
+  textFont(rubikOneFont); // Font Rubik
+  textAlign(LEFT, TOP); // Allineamento del testo
+  let textXRight = rightX +12 ; // Posizione X del testo a destra
+  let textYRight = (height - boxHeight) / 2 -198; // Modificato per allineare il testo con il terzo rettangolo
+
+  // Aggiungi il resto del testo all'interno del terzo rettangolo
+  fill(0); // Colore del testo per il resto
+  strokeWeight(0); // Nessuno stroke per il resto del testo
+  textSize(18); // Dimensione del testo per RIFIUTI SPAZIALI, TIPOLOGIE, DIMENSIONE
+  textAlign(LEFT, TOP); // Allineamento del testo
+  text("PERIGEO", textXRight, textYRight); // Testo "RIFIUTI SPAZIALI"
+
+
+  // Imposta il font Inconsolata per le voci specifiche
+  textFont(inconsolataFont); // Font Inconsolata
+  textSize(14); // Dimensione del testo per PAYLOAD, TBA, ROCKET BODY
+  textYRight += 32; // Sposta la posizione Y per le voci specifiche
+  text("DISTANZA DALLA TERRA", textXRight, textYRight); // Voce "PAYLOAD"
+// Ripristina il font Rubik per il resto del testo
+  textYRight += 32; // A capo
+//
+
+image(imgperigeo, textXRight, textYRight, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
+textYRight += 57; // A capo
+textSize(12); // Dimensione del testo per PAYLOAD, TBA, ROCKET BODY
+
+text("Il punto di massima vicinanza del detrito \nalla terra, mentre orbita intorno ad essa", textXRight, textYRight); // Voce "DISTANZA DALLA TERRA"
+// Ripristina il font Rubik per il resto del testo
+textY += 52; // A capo
+
+textFont(rubikOneFont); // Font Rubik
+textSize(18); // Dimensione del testo per DIMENSIONE
+  textYRight += 73; // Sposta la posizione Y per "ANNO"
+  text("ANNO", textXRight, textYRight); // Testo "ANNO"
+
+  textFont(inconsolataFont); // Font Inconsolata
+  textSize(22);
+  textYRight += 30
+  text("0000", textXRight, textYRight); // Testo "ANNO"
+
+  // Imposta il font Inconsolata per "anno in cui è stato lanciato il detrito"
+  textFont(inconsolataFont); // Font Inconsolata
+  textSize(12); // Dimensione del testo per "anno in cui è stato lanciato il detrito"
+  textYRight += 37; // Sposta la posizione Y per "anno in cui è stato lanciato il detrito"
+  text("Anno in cui è stato lanciato il detrito", textXRight, textYRight); // Resto del testo
+
+  if (imgtitolo) {
+    image(imgtitolo, 10, 10, imgtitolo.width * 0.25, imgtitolo.height * 0.25);
+  }
+  if (mouseX > 50 && mouseX < -30 + imgtitolo.width * 0.25 && mouseY > 30 && mouseY < 20 + imgtitolo.height * 0.25) {
+    cursor(HAND);
+    if (mouseIsPressed) {
+      window.location.href = '../../index.html';
+    }
+  } else {
+    cursor(ARROW);
   }
 }
 
@@ -381,7 +498,7 @@ function generateDotsForYear(year) {
         case 'DEBRIS':
           dotColor = colors[2];
           break;
-        default:
+        default :
           dotColor = colors[3];
       }
 
@@ -480,7 +597,7 @@ function drawTooltip(point) {
   fill(255);
   stroke(0);
   strokeWeight(1);
-  rect(tooltipX, tooltipY, tooltipW, tooltipH, 5);
+  rect(tooltipX, tooltipY, tooltipW, tooltipH + 10, 5); // Aggiunto padding inferiore di 25 px
 
   noStroke();
   fill(0);
@@ -489,15 +606,15 @@ function drawTooltip(point) {
   textFont(inconsolataFont);
   textStyle(BOLD);
 
-  let leftPadding = 20;
-  let verticalPadding = 1;
+  let leftPadding = 25;
+  let verticalPadding = 2;
   let lineHeight = 20;
   
-  text(`Object ID: ${point.objectId}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight);
-  text(`Launch Site: ${point.site}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 2);
-  text(`Type: ${point.objectType}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 3);
-  text(`Size: ${point.rcsSize}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 4);
-  text(`Apoapsis: ${Math.round(point.apoapsis)} km`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 5);
+  text(`ID oggetto: ${point.objectId}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight);
+  text(`Sito di lancio: ${point.site}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 2);
+  text(`Tipo: ${point.objectType}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 3);
+  text(`Forza segnale: ${point.rcsSize}`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 4);
+  text(`Perigeo: ${Math.round(point.apoapsis)} km`, tooltipX + leftPadding, tooltipY + verticalPadding + lineHeight * 5);
 
   textAlign(CENTER, CENTER);
 }
@@ -523,10 +640,9 @@ function drawRadialSlider() {
   let radius = 320;
   let startAngle = 180;
   let endAngle = 360;
-  let interactionRadius = 50; // Raggio di interazione per il clic
 
   noFill();
-  stroke(0);
+  stroke(192);
   strokeWeight(2);
   arc(centerX, centerY, (radius + 20) * 2, (radius + 20) * 2, startAngle, endAngle);
 
@@ -548,6 +664,24 @@ function drawRadialSlider() {
     text(year, centerX + (radius + 60) * cos(angle), textY);
   }
 
+  // Handle click interaction anywhere on the arc
+  if (mouseIsPressed) {
+    let mouseAngle = atan2(mouseY - centerY, mouseX - centerX);
+    if (mouseAngle < 0) mouseAngle += 360;
+    
+    // Calculate distance from mouse to the arc
+    let mouseDist = dist(mouseX, mouseY, centerX, centerY);
+    let arcDist = abs(mouseDist - (radius + 20));
+    
+    // If mouse is near the arc (within 30 pixels) and within the valid angle range
+    if (arcDist < 30 && mouseAngle >= startAngle && mouseAngle <= endAngle) {
+      selectedYear = floor(map(mouseAngle, startAngle, endAngle, startYear, endYear + 1));
+      selectedYear = constrain(selectedYear, startYear, endYear);
+      autoScrollCompleted = true;
+      autoScroll = false;
+    }
+  }
+
   let sliderAngle = map(selectedYear, startYear, endYear, startAngle, endAngle);
   let sliderX = centerX + (radius + 20) * cos(sliderAngle);
   let sliderY = centerY + (radius + 20) * sin(sliderAngle);
@@ -555,33 +689,33 @@ function drawRadialSlider() {
   // Aggiungi la posizione del fumo all'array
   smokePositions.push({ x: sliderX, y: sliderY });
 
-  // Disegna tutte le immagini del fumo accumulate
-  for (let pos of smokePositions) {
-    image(smokeImage, pos.x - 14, pos.y - 4, smokeImage.width * 0.25, smokeImage.height * 0.25); // Riduci l'immagine del fumo del 75% e sposta a sinistra
-  }
-
-  // Usa l'immagine del razzino invece del cerchio
-  let imgWidth = razzinoImage.width * 0.15; // Riduci la dimensione dell'immagine del 50%
-  let imgHeight = razzinoImage.height * 0.15;
-  push();
-  translate(sliderX, sliderY); // Trasla al centro dell'immagine
-  rotate(radians(sliderAngle - 90)); // Ruota in base all'angolo dello slider, -90 per orientare verso l'alto
-  imageMode(CENTER); // Imposta il modo di immagine al centro
-  image(razzinoImage, 0, 0, imgWidth, imgHeight); // Usa l'immagine del razzino ridimensionata
-  pop();
-
-  // Limita l'interazione solo se il clic è all'interno del raggio di interazione
-  if (mouseIsPressed) {
-    let d = dist(mouseX, mouseY, sliderX, sliderY);
-    if (d < interactionRadius) {
-      let angle = atan2(mouseY - centerY, mouseX - centerX);
-      if (angle < 0) angle += 360;
-      if (angle >= startAngle && angle <= endAngle) {
-        selectedYear = floor(map(angle, startAngle, endAngle, startYear, endYear + 1));
-        selectedYear = constrain(selectedYear, startYear, endYear);
-      }
+  // Draw smoke effects
+  for (let fumo of fumoData) {
+    if (fumo.angle <= sliderAngle) {
+      let fumoX = centerX + (radius + 20 + fumo.offsetR) * cos(fumo.angle);
+      let fumoY = centerY + (radius + 20 + fumo.offsetR) * sin(fumo.angle);
+      
+      push();
+      translate(fumoX, fumoY);
+      rotate(radians(fumo.rotation));
+      imageMode(CENTER);
+      image(smokeImage, 0, 0, 
+        25 * fumo.scale, 
+        (25 / fumoAspectRatio) * fumo.scale
+      );
+      pop();
     }
   }
+
+  // Draw rocket with orbital rotation
+  let imgWidth = razzinoImage.width * 0.15;
+  let imgHeight = razzinoImage.height * 0.15;
+  push();
+  translate(sliderX, sliderY);
+  rotate(radians(sliderAngle));
+  imageMode(CENTER);
+  image(razzinoImage, 0, 0, imgWidth, imgHeight);
+  pop();
 }
 
 function createHamburgerMenu() {
@@ -668,4 +802,117 @@ function toggleMenu() {
       dropdown.style('display', 'none');
     }, 300);
   }
+}
+
+function updateRazzinoPosition(sliderValue) {
+    const curvePoint = getCurvePoint(sliderValue); // Ottieni il punto sulla curva
+    const tangentAngle = getTangentAngle(sliderValue); // Calcola l'angolo tangente
+
+    // Posiziona Razzino
+    razzino.position.set(curvePoint.x, curvePoint.y); // Imposta la posizione del razzino
+    razzino.rotation.z = radians(tangentAngle); // Ruota Razzino per essere tangente
+}
+
+// Funzione per calcolare il punto sulla curva
+function getCurvePoint(value) {
+    let centerX = width / 2;
+    let centerY = height;
+    let radius = 320; // Raggio dell'arco
+    let startAngle = 180; // Angolo di inizio
+    let endAngle = 360; // Angolo di fine
+
+    // Calcola l'angolo corrispondente al valore
+    let angle = map(value, startYear, endYear, startAngle, endAngle);
+    
+    // Calcola le coordinate del punto sulla curva
+    let x = centerX + radius * cos(radians(angle));
+    let y = centerY + radius * sin(radians(angle));
+
+    return { x, y }; // Restituisce un oggetto con le coordinate x e y
+}
+
+// Funzione per calcolare l'angolo della tangente
+function getTangentAngle(value) {
+    let startAngle = 180; // Angolo di inizio
+    let endAngle = 360; // Angolo di fine
+
+    // Calcola l'angolo corrispondente al valore
+    let angle = map(value, startYear, endYear, startAngle, endAngle);
+    console.log("Input Value:", value, "Calculated Angle:", angle); // Log per il debug
+    return angle; // Restituisce l'angolo della tangente
+}
+
+// Easing function for smooth deceleration
+function easeOutQuad(t) {
+  return t * (2 - t);
+}
+
+// Update mousePressed to prevent interaction during animation
+function mousePressed() {
+  if (autoScroll || !autoScrollCompleted) {
+    return false;
+  }
+}
+
+function drawSliderTimeline() {
+  // Mostra l'anno selezionato sopra lo slider
+  stroke(0);
+  strokeWeight(0);
+  fill(0);
+  textFont(inconsolataFont);
+  textSize(20);
+  text(selectedYear, width / 2, height - 100);
+
+  // Disegna le etichette degli anni estremi
+  noStroke();
+  fill(0);
+  textFont(inconsolataFont);
+  textSize(14);
+  text('1960', (width - 700) / 2 - 60, height - 57);
+  text('2020', (width + 700) / 2 + 40, height - 57);
+
+  // Disegna la linea principale dello slider
+  stroke(192);
+  strokeWeight(2);
+  let startX = (width - 700) / 2;
+  let endX = startX + 700;
+  let passedX = map(selectedYear, 1960, 2020, startX, endX);
+  line(passedX, height - 55, endX, height - 55);
+
+  // Disegna i pallini di delimitazione
+  fill(0);
+  ellipse(startX, height - 55, 10, 10);
+  ellipse(endX, height - 55, 10, 10);
+
+  // Aggiorna selectedYear se il mouse è sopra lo slider e viene premuto
+  if (
+    mouseIsPressed &&
+    mouseY > height - 90 &&
+    mouseY < height - 30 &&
+    mouseX > startX &&
+    mouseX < endX
+  ) {
+    autoScrollCompleted = true;
+    autoScroll = false;
+    let mouseXPosition = constrain(mouseX, startX, endX);
+    let mouseIndex = map(mouseXPosition, startX, endX, 0, 60);
+    selectedYear = int(map(mouseIndex, 0, 60, 1960, 2020));
+    slider.value(selectedYear);
+  }
+
+  // Disegna il razzo sopra lo slider
+  let rocketX = map(selectedYear, 1960, 2020, startX, endX);
+  if (rocketX <= endX) {
+    drawRocket(rocketX, height - 55);
+  }
+}
+
+// Make sure you also have the drawRocket function
+function drawRocket(x, y) {
+  push();
+  translate(x, y);
+  rotate(90);  // Ruota il razzo di 90°
+  imageMode(CENTER);
+  image(rocketBodyImage, 0, 0, rocketBodyImage.width * 0.15, rocketBodyImage.height * 0.15);
+  pop();
 }

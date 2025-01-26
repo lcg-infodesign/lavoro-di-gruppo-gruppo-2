@@ -1,13 +1,11 @@
-let fontInconsolata;
-let fontRubik;
-let fontsLoaded = false;
-let imgHome1;
-let imgHome3;
 const scaleFactor = 0.13;
 
 function preload() {
+// caricamento font
   fontInconsolata = loadFont('fonts/Inconsolata.ttf'); 
   fontRubik = loadFont('fonts/RubikOne.ttf'); 
+
+// caricamento immagini
   imgHome1 = loadImage('img/home1.png');
   imgHome3 = loadImage('img/home3.png');
   imgHome2 = loadImage('img/home2.png');
@@ -20,13 +18,14 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth, windowHeight); 
+    
     let buttonPositions = [
         { x: width - 300, y: 30 },
         { x: width - 160, y: 30 }
     ];
     createButtons(buttonPositions);
     
-    // Creazione del pulsante "ESPLORA I DATI" spostata qui
+    // pulsante ESPLORA IL GRAFICO
     let exploreButton = createButton('ESPLORA IL GRAFICO');
     exploreButton.position(width / 2 - 90, height / 2 + 190);
     exploreButton.size(190, 60);
@@ -56,15 +55,13 @@ function setup() {
 }
 
 function windowResized() {
-    // ridimensiona canvas quando finestra viene ridimensionata
     resizeCanvas(windowWidth, windowHeight);
     redraw(); 
   }
-  
+
+  // pulsanti
 function createButtons(positions) {
-    let buttonWidth = 100;
     let buttonHeight = 40;
-    let buttonSpacing = 10;
     let buttonLabels = ['COSA SONO', 'CHI SIAMO'];
     for (let i = 0; i < buttonLabels.length; i++) {
         let button = createButton(buttonLabels[i]);
@@ -107,9 +104,9 @@ function draw() {
   background('#F2F2F2'); 
   textAlign (CENTER, CENTER);
 
-  // Variabili per il movimento delle immagini
-  let time = millis() * 0.001; // Tempo per l'oscillazione
-  let floatAmplitude = 10; // Ampiezza del movimento
+  // Variabili per oscillazione immagini
+  let time = millis() * 0.001; // Tempo
+  let floatAmplitude = 10; // Ampiezza
 
   //immagini
   image(imgHome1, 90 + cos(time) * floatAmplitude, 10 + sin(time) * floatAmplitude, imgHome1.width * scaleFactor, imgHome1.height * scaleFactor);
