@@ -606,6 +606,9 @@ function drawHighlightedSector() {
   if (mouseAngle < 0) mouseAngle += 360;
   let mouseDist = dist(mouseX, mouseY, centerX, centerY);
 
+  // Reset cursor to default
+  cursor(ARROW);
+
   // Rest of the sector highlighting code using sizes.radius and sizes.rayLength
   if (autoScroll && !autoScrollCompleted) {
     let currentSector = Math.floor(map(sectorHighlightProgress, 0, 1, 0, 99));
@@ -634,7 +637,10 @@ function drawHighlightedSector() {
 
       // Controlla se il mouse è in questo settore
       if (mouseAngle >= angle1 && mouseAngle < angle2) {
-        fill(80, 80, 80, 80); // Colore evidenziato
+        // Change cursor to hand when hovering over any sector
+        cursor(HAND);
+
+        fill(80, 80, 80, 80);
         noStroke();
         arc(centerX, centerY, (sizes.radius + sizes.rayLength) * 2, (sizes.radius + sizes.rayLength) * 2, angle1, angle2, PIE);
 
