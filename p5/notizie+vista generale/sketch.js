@@ -610,14 +610,10 @@ function drawHighlightedSector() {
         let countryName = sectors[i].countryCode; // Nome del paese
 
         // Disegna il nome del paese al centro in alto
-        textSize(20);
+        textSize(25);
         textFont(fontRubik)
         textStyle(BOLD);
         textAlign(CENTER, CENTER);
-        stroke(0);
-        strokeWeight(1);
-        fill(255);
-        text(countryName, width / 2 - 2, 100 + 2); // Posiziona il testo al centro in alto
         noStroke();
         fill(0);
         text(countryName, width / 2, 100); // Posiziona il testo al centro in alto
