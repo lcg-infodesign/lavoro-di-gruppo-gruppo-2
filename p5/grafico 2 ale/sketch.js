@@ -244,8 +244,8 @@ function draw() {
   }
 
   let boxWidth = 270; // Larghezza dei rettangoli
-  let boxHeight = 140; // Altezza standard dei rettangoli
-  let firstBoxHeight = boxHeight * 1.5; // Altezza del primo rettangolo aumentata di 1.5 volte
+  let boxHeight = 150; // Altezza standard dei rettangoli (aumentata)
+  let firstBoxHeight = 210; // Altezza del primo rettangolo aumentata (aumentata)
   let cornerRadius = 10; // Raggio degli angoli arrotondati
   let startY = (height - (firstBoxHeight + boxHeight * 3 + 30)) / 2 + 50; // Aggiunto 50 per spostare i rettangoli più in basso
   let startX = 30; // Posizione X dei rettangoli
@@ -255,33 +255,35 @@ function draw() {
   fill(255); // Colore bianco
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
-  rect(startX, startY, boxWidth, firstBoxHeight, cornerRadius); // Disegna il primo rettangolo
+  rect(startX, startY, boxWidth, firstBoxHeight+9, cornerRadius); // Disegna il primo rettangolo
 
   // Disegna il secondo rettangolo (spostato più in basso)
   fill(255); // Colore bianco
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
-  rect(startX, startY + (boxHeight + spacing) +65, boxWidth, boxHeight, cornerRadius); // Disegna il secondo rettangolo più in basso
+  rect(startX, startY + (boxHeight + spacing) +65, boxWidth, boxHeight-7, cornerRadius); // Disegna il secondo rettangolo più in basso
 
   // Calcola la posizione X per gli ultimi due rettangoli
   let rightX = width - boxWidth - 30; // Posizione X per gli ultimi due rettangoli
+
+  let increasedWidth = boxWidth + 13; // Aumenta la larghezza di 20 pixel
 
   // Disegna il terzo rettangolo
   fill(255); // Colore bianco
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
-  rect(rightX, startY, boxWidth, boxHeight * 1.3, cornerRadius); // Allunga il terzo rettangolo
+  rect(rightX, startY, increasedWidth, boxHeight * 1.3, cornerRadius); // Allunga il terzo rettangolo
 
   // Disegna il quarto rettangolo (alla stessa altezza del secondo)
   fill(255); // Colore bianco
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
-  rect(rightX, startY + (boxHeight + spacing) + 37, boxWidth, boxHeight * 0.8, cornerRadius); // Accorcia il quarto rettangolo
+  rect(rightX, startY +4+ (boxHeight + spacing) + 37, increasedWidth, boxHeight * 0.8, cornerRadius); // Accorcia il quarto rettangolo
   
   textFont(rubikOneFont); // Font Rubik
   textAlign(LEFT, TOP); // Allineamento del testo
-  let textX = 42; // Posizione X del testo
-  let textY = (height - boxHeight) / 2 -198; // Modificato per allineare il testo con il primo rettangolo
+  let textX = 48; // Posizione X del testo
+  let textY = (height - boxHeight) / 2 -200; // Modificato per allineare il testo con il primo rettangolo
   
 
   // Aggiungi il resto del testo all'interno del rettangolo
@@ -324,7 +326,7 @@ function draw() {
   image(debrisImage, debrisX+120, debrisY, 60, 60); // Disegna l'immagine al posto del rettangolo nero
   
 
-  textY += 96; // Sposta la posizione Y per il resto del testo (aumentato per più spazio)
+  textY += 103; // Sposta la posizione Y per il resto del testo (aumentato per più spazio)
   textFont(rubikOneFont); // Font Rubik
   textSize(18); // Dimensione del testo per DIMENSIONE
 
@@ -387,7 +389,7 @@ function draw() {
   // Aggiungi il testo per il terzo rettangolo (copia speculare)
   textFont(rubikOneFont); // Font Rubik
   textAlign(LEFT, TOP); // Allineamento del testo
-  let textXRight = rightX +12 ; // Posizione X del testo a destra
+  let textXRight = rightX + 18; // Posizione X del testo a destra
   let textYRight = (height - boxHeight) / 2 -198; // Modificato per allineare il testo con il terzo rettangolo
 
   // Aggiungi il resto del testo all'interno del terzo rettangolo
@@ -408,7 +410,7 @@ function draw() {
 //
 
 image(imgperigeo, textXRight, textYRight, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
-textYRight += 57; // A capo
+textYRight += 64; // A capo
 textSize(12); // Dimensione del testo per PAYLOAD, TBA, ROCKET BODY
 
 text("Il punto di massima vicinanza del detrito \nalla terra, mentre orbita intorno ad essa", textXRight, textYRight); // Voce "DISTANZA DALLA TERRA"
@@ -417,7 +419,7 @@ textY += 52; // A capo
 
 textFont(rubikOneFont); // Font Rubik
 textSize(18); // Dimensione del testo per DIMENSIONE
-  textYRight += 73; // Sposta la posizione Y per "ANNO"
+  textYRight += 82; // Sposta la posizione Y per "ANNO"
   text("ANNO", textXRight, textYRight); // Testo "ANNO"
 
   textFont(inconsolataFont); // Font Inconsolata
