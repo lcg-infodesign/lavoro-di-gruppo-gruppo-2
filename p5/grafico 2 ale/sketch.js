@@ -28,6 +28,7 @@ let slider;
 let rocketImg;
 let rocketWidth;
 let rocketHeight = 40;
+let rotationAngle = 0; // Add this variable to track the rotation angle
 
 function preload() {
   // Carica i font
@@ -451,13 +452,15 @@ function drawCircleWithRays() {
 
   push();
   imageMode(CENTER);
-  // Disegna solo la metà superiore dell'immagine
+  // Apply rotation to the Earth image
+  translate(centerX, centerY);
+  rotate(rotationAngle);
   let imgSize = radius * 2;
-  image(terraImg, centerX, centerY, imgSize, imgSize);
-  
-  // Disegna solo il contorno del semicerchio
-  
+  image(terraImg, 0, 0, imgSize, imgSize);
   pop();
+
+  // Increment the rotation angle for continuous rotation
+  rotationAngle += 0.2; // Adjust the speed of rotation as needed
 }
 
 function generateDotsForYear(year) {
