@@ -776,7 +776,18 @@ function drawRadialSlider() {
   let imgHeight = razzinoImage.height * 0.15;
   push();
   translate(sliderX, sliderY);
-  rotate(radians(sliderAngle));
+  if (sliderAngle == startAngle) {
+    rotate(radians(sliderAngle) - 90);
+  } else if (sliderAngle == endAngle) {
+    rotate(radians(sliderAngle) + 90);
+  } else {
+    // Calcola l'angolo di rotazione graduale tra posizione iniziale e finale
+    let startRotation = radians(startAngle) - 90;
+    let endRotation = radians(endAngle) + 90;
+    let progress = (sliderAngle - startAngle) / (endAngle - startAngle);
+    let currentRotation = lerp(startRotation, endRotation, progress);
+    rotate(currentRotation);
+  }
   imageMode(CENTER);
   image(razzinoImage, 0, 0, imgWidth, imgHeight);
   pop();
