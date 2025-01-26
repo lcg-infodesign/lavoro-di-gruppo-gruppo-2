@@ -616,8 +616,15 @@ function drawHighlightedSector() {
         textFont(fontRubik)
         textStyle(BOLD);
         textAlign(CENTER, CENTER);
+        stroke(0);
+        strokeWeight(1);
+        fill(255);
+        text(countryName, width / 2 - 2, 100 + 2); // Posiziona il testo al centro in alto
+        noStroke();
         fill(0);
         text(countryName, width / 2, 100); // Posiziona il testo al centro in alto
+        
+
 
         // Aggiungi il reindirizzamento se il paese è Stati Uniti
         if (countryName === "STATI UNITI") { // Assicurati che il codice paese sia corretto
