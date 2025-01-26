@@ -287,7 +287,7 @@ function draw() {
   let boxWidth = 300; // Larghezza del riquadro
   let boxHeight = 120; // Altezza di ciascun rettangolo
   let firstBoxHeight = boxHeight * (2 / 3); // Altezza del primo rettangolo a 2/3
-  let secondBoxHeight = boxHeight * (4 / 3); // Altezza del secondo rettangolo aumentata di 1/3
+  let secondBoxHeight = boxHeight * (4 / 3) + 20; // Aumentato di 20 pixel
   let cornerRadius = 10; // Raggio degli angoli arrotondati
   let spacing = 15; // Spazio tra i rettangoli
   let totalHeight = firstBoxHeight + secondBoxHeight + boxHeight * 2 + spacing * 4; // Altezza totale per 4 rettangoli e spazi
@@ -339,26 +339,26 @@ function draw() {
   noStroke(); // Assicurati che non ci sia contorno per il testo successivo
   fill(0); // Colore del testo nero
   textSize(18);
-  text('RIFIUTO SPAZIALE', 50, (height - boxHeight) / 2 -190); // Posizione a sinistra
+  text('RIFIUTO SPAZIALE', 56, (height - boxHeight) / 2 -193); // Spostato in basso
 
   // Rettangolo (come placeholder)
   fill(0);
-  ellipse(50 + 15, (height - boxHeight) / 2 -160, 10, 10); // Disegna un cerchio nero
+  ellipse(56 + 15, (height - boxHeight) / 2 - 160, 10, 10); // Spostato in basso
 
   // Stile per il testo descrittivo
   textFont(fontRubik);
   textSize(18);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('PERIGEO', 50, (height - boxHeight) / 2-95); // Posizionato a sinistra
+  text('PERIGEO', 56, (height - boxHeight) / 2 - 100); // Spostato in basso
 
-  image(imgperigeo, 50, (height - boxHeight) / 2 -56, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
+  image(imgperigeo, 56, (height - boxHeight) / 2 -50, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
 
   textFont(fontInconsolata);
   textSize(14);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('DISTANZA DALLA TERRA', 50, (height - boxHeight) / 2 -70); // Posizionato a sinistra
+  text('DISTANZA DALLA TERRA', 56, (height - boxHeight) / 2 - 72 ); // Spostato in basso
 
   textFont(fontInconsolata);
   textSize(12);
@@ -366,21 +366,21 @@ function draw() {
   noStroke(); // Assicurati che non ci sia contorno
   text(
     'Il punto di massima vicinanza del detrito\nalla terra, mentre orbita intorno ad essa',
-    50,
-    (height - boxHeight) / 2 +20 // Aumentata la distanza
+    56,
+    (height - boxHeight) / 2 + 25  // Spostato in basso
   );
 
   textFont(fontRubik);
   textSize(18);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('ANNO', 50, (height - boxHeight) / 2 + 78); // Posizionato a sinistra
+  text('ANNO', 56, (height - boxHeight) / 2 + 78 + 17); // Spostato in basso
 
   textFont(fontInconsolata);
   textSize(24); // Dimensione del testo per "0000"
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('0000', 50, (height - boxHeight) / 2 + 107); // Posizionato a sinistra
+  text('0000', 56, (height - boxHeight) / 2 + 122); // Spostato in basso
 
   textFont(fontInconsolata);
   textSize(12);
@@ -388,25 +388,25 @@ function draw() {
   noStroke(); // Assicurati che non ci sia contorno
   text(
     'L’anno in cui l’oggetto è stato lanciato\nnello spazio. Dal 1960 al 2021',
-    50,
-    (height - boxHeight) / 2 + 150 // Aumentata la distanza
+    56,
+    (height - boxHeight) / 2 + 162  // Spostato in basso
   );
 
   textFont(fontRubik);
   textSize(18);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('PAESE', 50, (height - boxHeight) / 2 + 212); // Posizionato a sinistra
+  text('PAESE', 56, (height - boxHeight) / 2 + 228); // Spostato a destra
 
   fill(192); // Colore grigio
-  arc(60 + 20, (height - boxHeight) / 2 + 240, 350, 255, 0, PI + QUARTER_PI); // Modificato per essere più ampio
+  arc(66 + 20, (height - boxHeight) / 2 + 255, 350, 255, 0, PI + QUARTER_PI); // Spostato a destra
 
   // Nuovo testo aggiunto sotto l'ultimo rettangolo nero
   textFont(fontInconsolata);
   textSize(12);
   fill(0);
   noStroke(); // Assicurati che non ci sia contorno
-  text('Il paese responsabile del lancio del detrito', 50, (height - boxHeight) / 2 + 275); // Posizionato sotto il rettangolo nero
+  text('Il paese responsabile del lancio del detrito', 56, (height - boxHeight) / 2 + 289); // Spostato a destra
 }
 
 
