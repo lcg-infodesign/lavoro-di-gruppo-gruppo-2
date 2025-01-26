@@ -327,8 +327,6 @@ function draw() {
   drawNewsBox();
 
   
- 
-  
   // Aggiungi il nuovo contenuto all'interno del rettangolo bianco
   textFont(fontRubik);
   textSize(22);
