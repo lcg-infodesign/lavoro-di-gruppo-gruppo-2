@@ -1082,7 +1082,7 @@ function createHamburgerMenu() {
           window.location.href = '../grafico STATI IN EST/SUD AFRICA/index.html'; 
         }
         if (country === 'STATI UNITI') {
-          window.location.href = '../grafico SINGAPORE/index.html'; 
+          window.location.href = '../grafico STATI UNITI/index.html'; 
         }
         if (country === 'STATI UNITI/BRASILE') {
           window.location.href = '../grafico STATI UNITI/BRASILE/index.html'; 

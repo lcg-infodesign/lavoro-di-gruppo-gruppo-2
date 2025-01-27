@@ -659,7 +659,7 @@ function drawHighlightedSector() {
         // Aggiungi il reindirizzamento se il paese è Stati Uniti
         if (countryName === "STATI UNITI") { // Assicurati che il codice paese sia corretto
           if (mouseIsPressed) {
-            window.location.href = '../grafico 2 ale/index.html'; // Reindirizza alla pagina
+            window.location.href = '../grafico STATI UNITI/index.html'; // Reindirizza alla pagina
           }
         }
         // Aggiungi il reindirizzamento se il paese è Stati Uniti
