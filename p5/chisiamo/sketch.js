@@ -154,12 +154,12 @@ function draw() {
   let images = [imgale, imglara, imgjaco, imgsofi, imgele, imgfra];
   let labels = ['Alessandro\nBacci', 'Lara\nFrigeni', 'Jacopo\nLeonardi', 'Sofia\nRaimondo', 'Eleonora\nVilla', 'Francesco\nZanchetta'];
   let descriptions = [
-    'codice grafico paese',
-    'grafica\nstruttura del sito\nillustrazioni\ncodice pagine accessorie',
-    'codice grafico paese',
-    'ricerche database',
-    'ricerca notizie\ncodice grafico generale',
-    'codice grafico generale',
+    'Codice grafico degli Stati\nNavigazione interna tra gli Stati\nDebugging',
+    'Grafica\nStruttura del sito\nIllustrazioni\nCodice pagine accessorie',
+    'Supporto Codice grafico degli Stati',
+    'Ricerche database\nIllustrazioni\nRead.me',
+    'Responsabile notizie\nCodice grafico generale',
+    'Codice grafico generale\nInterattività grafici\nDebugging',
   ];
 
   textSize(57);
