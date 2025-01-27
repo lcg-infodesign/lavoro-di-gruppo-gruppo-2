@@ -156,9 +156,9 @@ function draw() {
   let descriptions = [
     'Codice grafico degli Stati\nNavigazione interna tra gli Stati\nDebugging',
     'Grafica\nStruttura del sito\nIllustrazioni\nCodice pagine accessorie',
-    'Supporto Codice grafico degli Stati',
+    'Supporto codice grafico degli Stati\nDebugging',
     'Ricerche database\nIllustrazioni\nRead.me',
-    'Responsabile notizie\nCodice grafico generale',
+    'Ricerca e codice notizie\nCodice grafico generale',
     'Codice grafico generale\nInterattività grafici\nDebugging',
   ];
 
