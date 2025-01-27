@@ -877,21 +877,21 @@ function drawLegend() {
   ];
 
   noStroke();
-  fill(255); // Colore di riempimento bianco per il riquadro
-  // Modificato per includere il testo
+  fill(255); // Colore di riempimento 
+  
   rect(legendX - 10, legendY - 10, imageWidth + 10 + 150, labels.length * spacing + 20 + 120); // Disegna il riquadro
 
   noStroke();
   textAlign(LEFT, CENTER);
-  textFont(fontRubik); // Assicurati di usare il font corretto
+  textFont(fontRubik); 
   textSize(15);
-  textStyle(BOLD); // Imposta il testo in grassetto
+  textStyle(BOLD); 
   fill(0);
 
   // Itera tra le immagini e disegna la legenda
   for (let i = 0; i < labels.length; i++) {
     let img = labels[i].img;
-    let labelText = labels[i].text.toUpperCase(); // Converti il testo in maiuscolo
+    let labelText = labels[i].text.toUpperCase(); 
 
     if (img) {
       // Disegna il testo
@@ -900,40 +900,37 @@ function drawLegend() {
       // Calcola l'altezza mantenendo le proporzioni
       let imgHeight = imageWidth / (img.width / img.height);
 
-      // Disegna l'immagine centrata sotto il testo
+      //immagine centrata sotto il testo
       image(img, legendX + (150 - imageWidth) / 2, legendY + i * spacing + 20, imageWidth, imgHeight); // Posiziona l'immagine centrata sotto il testo
     }
   }
 
-  // Aggiungi il testo "DISTANZA DALLA TERRA" sotto il pallino
-  textSize(12); // Dimensione del testo per la nuova scritta
-  textStyle(NORMAL); // Assicurati che il testo non sia in bold
-  text("DISTANZA DALLA TERRA", legendX + (150 - textWidth("DISTANZA DALLA TERRA")) / 2, legendY + labels.length * spacing + 20 + 10); // Posiziona il testo centrato
+  
+  textSize(12); // Dimensione 
+  textStyle(NORMAL); // 
+  text("DISTANZA DALLA TERRA", legendX + (150 - textWidth("DISTANZA DALLA TERRA")) / 2, legendY + labels.length * spacing + 20 + 10); //  testo centrato
 
+  
+  textFont(fontInconsolata); // Inconsolata
+  textSize(10); // Dimensione 
+  textStyle(NORMAL); 
+  text("È IL PUNTO DI MASSIMA VICINANZA DEL DETRITO ALLA TERRA, MENTRE ORBITA INTORNO AD ESSA", legendX + 10, legendY + labels.length * spacing + 20 + 50, 130); //  testo centrato
 
-  // Aggiungi il testo descrittivo sotto "PERIGEO"
-  textFont(fontInconsolata); // Cambia il font a Inconsolata
-  textSize(10); // Dimensione del testo per la descrizione
-  textStyle(NORMAL); // Assicurati che il testo non sia in bold
-  text("È IL PUNTO DI MASSIMA VICINANZA DEL DETRITO ALLA TERRA, MENTRE ORBITA INTORNO AD ESSA", legendX + 10, legendY + labels.length * spacing + 20 + 50, 130); // Posiziona il testo centrato
-
-  // Aggiungi l'immagine "perigeo.png" sotto il testo descrittivo
   let perigeoImg = loadImage('../../img/perigeo.png'); // Carica l'immagine dal percorso corretto
-  image(perigeoImg, legendX + (150 - imageWidth) / 2, legendY + labels.length * spacing + 20 + 70, imageWidth, imageWidth * (perigeoImg.height / perigeoImg.width)); // Posiziona l'immagine centrata
+  image(perigeoImg, legendX + (150 - imageWidth) / 2, legendY + labels.length * spacing + 20 + 70, imageWidth, imageWidth * (perigeoImg.height / perigeoImg.width)); // immagine centrata
 
-  stroke(0); // Imposta il colore del bordo a nero
-  noFill(); // Non riempire il rettangolo
-  // Modificato per includere il testo
+  stroke(0); // bordo nero
+  noFill(); // 
+ 
   rect(legendX - 10, legendY - 10, imageWidth + 10 + 150, labels.length * spacing + 20 + 120); // Disegna il bordo
 }
 
-// Aggiungi questa nuova funzione per disegnare le finestrelle
+// finestrelle
 function drawInfoBoxes() {
   let boxWidth = 150; // Larghezza delle finestrelle
   let boxHeight = 100; // Altezza delle finestrelle
   let baseX = 20; // Posizione X delle finestrelle
-  let baseY = height - 200; // Posizione Y iniziale delle finestrelle (spostato più in basso)
-  let padding = 10; // Padding interno
+  let baseY = height - 200; // Posizione Y iniziale delle finestrelle 
 
   for (let i = 0; i < 3; i++) {
     let boxY = baseY + i * (boxHeight + padding); // Calcola la posizione Y per ogni finestra
