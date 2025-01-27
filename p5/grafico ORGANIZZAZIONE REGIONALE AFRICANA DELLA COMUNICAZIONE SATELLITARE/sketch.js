@@ -267,13 +267,9 @@ function draw() {
     let elapsed = currentTime - lastUpdateTime;
     let progress = elapsed / ANIMATION_DURATION;
     
-    // Apply easing for deceleration
     let easedProgress = easeOutQuad(progress);
-    
-    // Update the year based on progress
     selectedYear = Math.round(lerp(1960, 2020, easedProgress));
     
-    // Check if animation is complete
     if (progress >= 1) {
       selectedYear = 2020;
       autoScroll = false;
@@ -281,43 +277,44 @@ function draw() {
     }
   }
 
-  let boxWidth = 270; // Larghezza dei rettangoli
-  let boxHeight = 150; // Altezza standard dei rettangoli 
-  let firstBoxHeight = 210; // Altezza del primo rettangolo 
-  let cornerRadius = 10; // Raggio degli angoli arrotondati
-  let startY = (height - (firstBoxHeight + boxHeight * 3 + 30)) / 2 + 50; //
-  let startX = 30; // Posizione X dei rettangoli
-  let spacing = 20; // Distanza tra i rettangoli
+  let boxWidth = 270;
+  let boxHeight = 150;
+  let firstBoxHeight = 210;
+  let cornerRadius = 10;
+  let rectStartY = (height - (firstBoxHeight + boxHeight * 3 + 30)) / 2 + 50; // renamed from startY
+  let startX = 30;
+  let spacing = 20;
 
+  // Draw rectangles
+  fill(255);
+  stroke(0);
+  strokeWeight(2);
+  rect(startX, rectStartY, boxWidth, firstBoxHeight+9, cornerRadius);
+  rect(startX, rectStartY + (boxHeight + spacing) +65, boxWidth, boxHeight-7, cornerRadius);
   
-  fill(255); // Colore bianco
-  stroke(0); // Bordo nero
-  strokeWeight(2); // Spessore del bordo
-  rect(startX, startY, boxWidth, firstBoxHeight+9, cornerRadius); //  il primo rettangolo
-
+  let rightX = width - boxWidth - 40;
+  let increasedWidth = boxWidth + 13;
+  rect(rightX, rectStartY, increasedWidth, boxHeight * 1.3, cornerRadius);
+  rect(rightX, rectStartY +4+ (boxHeight + spacing) + 37, increasedWidth, boxHeight * 0.8, cornerRadius);
   
-  fill(255); // Colore bianco
-  stroke(0); // Bordo nero
-  strokeWeight(2); // Spessore del bordo
-  rect(startX, startY + (boxHeight + spacing) +65, boxWidth, boxHeight-7, cornerRadius); // il secondo rettangolo 
-
+  // Draw title - moved up in the draw order and adjusted Y position
+  push();
+  fill(0);
+  textSize(50);
+  textFont(rubikOneFont);
+  strokeWeight(0);
+  textAlign(CENTER, CENTER);
   
-  let rightX = width - boxWidth - 40; // Posizione X per gli ultimi due rettangoli
-
-  let increasedWidth = boxWidth + 13; 
-
-
-  fill(255); // Colore bianco
-  stroke(0); // Bordo nero
-  strokeWeight(2); // Spessore del bordo
-  rect(rightX, startY, increasedWidth, boxHeight * 1.3, cornerRadius); 
-
+  let title = "ORGANIZZAZIONE REGIONALE\nAFRICANA DELLA\nCOMUNICAZIONE SATELLITARE";
+  let lineHeight = 60;
+  let lines = title.split('\n');
+  let titleStartY = 140; // Changed from 180 to 100 to move title up
   
-  fill(255); // Colore bianco
-  stroke(0); // Bordo nero
-  strokeWeight(2); // Spessore del bordo
-  rect(rightX, startY +4+ (boxHeight + spacing) + 37, increasedWidth, boxHeight * 0.8, cornerRadius); 
-  
+  for(let i = 0; i < lines.length; i++) {
+    text(lines[i], width/2, titleStartY + (i * lineHeight));
+  }
+  pop();
+
   textFont(rubikOneFont); // Font Rubik
   textAlign(LEFT, TOP); // Allineamento del testo
   let textX = 48; // Posizione X del testo
@@ -396,15 +393,6 @@ function draw() {
   } else {
     cursor(ARROW);
   }
-
-  push();
-  fill(0);
-  textSize(50);
-  textFont(rubikOneFont);
-  strokeWeight(0);
-  textAlign(CENTER, CENTER); // allineamento centrato
-  text("ORGANIZZAZIONE REGIONALE AFRICANA DELLA COMUNICAZIONE SATELLITARE", width / 2, 250); // Centra il titolo
-  pop();
 
   drawCircleWithRays();
   drawDots();
@@ -778,9 +766,9 @@ function drawRadialSlider() {
 }
 
 function createHamburgerMenu() {
-  let menuButton = createButton('Cambia Paese'); //bottone
+  let menuButton = createButton('Cambia Paese');
   menuButton.class('hamburger-menu');
-  menuButton.position(width / 2 - 105, 300); // il bottone va centrato orizzontalmente (105px è la metà della larghezza del menu)
+  menuButton.position(width / 2 - 105, 350); // Changed from 300 to 350 to move button down
   menuButton.style('font-size', '16px'); 
   menuButton.style('background-color', 'white'); 
   menuButton.style('border', '2px solid black'); 
@@ -793,7 +781,7 @@ function createHamburgerMenu() {
   
   let dropdownMenu = createDiv('');
   dropdownMenu.class('dropdown-menu');
-  dropdownMenu.position(width / 2 - 105, 350); 
+  dropdownMenu.position(width / 2 - 105, 400); // Changed from 350 to 400 to move dropdown down
   dropdownMenu.style('display', 'none');
   dropdownMenu.style('width', '200px'); 
   dropdownMenu.style('height', 'auto'); 
