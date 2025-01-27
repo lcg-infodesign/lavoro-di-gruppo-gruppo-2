@@ -686,6 +686,273 @@ function drawHighlightedSector() {
             case "ARGENTINA":
               window.location.href = '../grafico ARGENTINA/index.html';
               break;
+            case "ASCENTION ISLAND":
+              window.location.href = '../grafico ASCENTION ISLAND/index.html';
+              break;
+            case "AUSTRALIA":
+              window.location.href = '../grafico AUSTRALIA/index.html';
+              break;
+            case "AZERBAIGIAN":
+              window.location.href = '../grafico AZERBAIGIAN/index.html';
+              break;
+            case "BANGLADESH":
+              window.location.href = '../grafico BANGLADESH/index.html';
+              break;
+            case "BELGIO":
+              window.location.href = '../grafico BELGIO/index.html';
+              break;
+            case "BERMUDA":
+              window.location.href = '../grafico BERMUDA/index.html';
+              break;
+            case "BIELORUSSIA":
+              window.location.href = '../grafico BIELORUSSIA/index.html';
+              break;
+            case "BOLIVIA":
+              window.location.href = '../grafico BOLIVIA/index.html';
+              break;
+            case "BRASILE":
+              window.location.href = '../grafico BRASILE/index.html';
+              break;
+            case "BULGARIA":
+              window.location.href = '../grafico BULGARIA/index.html';
+              break;
+            case "CANADA":
+              window.location.href = '../grafico CANADA/index.html';
+              break;
+            case "CILE":
+              window.location.href = '../grafico CILE/index.html';
+              break;
+            case "CINA":
+              window.location.href = '../grafico CINA/index.html';
+              break;
+            case "COLOMBIA":
+              window.location.href = '../grafico COLOMBIA/index.html';
+              break;
+            case "COREA DEL NORD":
+              window.location.href = '../grafico COREA DEL NORD/index.html';
+              break;
+            case "COREA DEL SUD":
+              window.location.href = '../grafico COREA DEL SUD/index.html';
+              break;
+            case "DANIMARCA":
+              window.location.href = '../grafico DANIMARCA/index.html';
+              break;
+            case "ECUADOR":
+              window.location.href = '../grafico ECUADOR/index.html';
+              break;
+            case "EGITTO":
+              window.location.href = '../grafico EGITTO/index.html';
+              break;
+            case "EMIRATI ARABI UNITI":
+              window.location.href = '../grafico EMIRATI ARABI UNITI/index.html';
+              break;
+            case "ESTONIA":
+              window.location.href = '../grafico ESTONIA/index.html';
+              break;
+            case "EUROPA E MEDIO ORIENTE":
+              window.location.href = '../grafico EUROPA E MEDIO ORIENTE/index.html';
+              break;
+            case "EUTELSAT":
+              window.location.href = '../grafico EUTELSAT/index.html';
+              break;
+            case "EX USSR":
+              window.location.href = '../grafico EX USSR/index.html';
+              break;
+            case "FILIPPINE":
+              window.location.href = '../grafico FILIPPINE/index.html';
+              break;
+            case "FINLANDIA":
+              window.location.href = '../grafico FINLANDIA/index.html';
+              break;
+            case "FRIT":
+              window.location.href = '../grafico FRIT/index.html';
+              break;
+            case "GERMANIA":
+              window.location.href = '../grafico GERMANIA/index.html';
+              break;
+            case "GIAPPONE":
+              window.location.href = '../grafico GIAPPONE/index.html';
+              break;
+            case "GIORDANIA":
+              window.location.href = '../grafico GIORDANIA/index.html';
+              break;
+            case "GLOBALSTAR":
+              window.location.href = '../grafico GLOBALSTAR/index.html';
+              break;
+            case "GRECIA":
+              window.location.href = '../grafico GRECIA/index.html';
+              break;
+            case "INDIA":
+              window.location.href = '../grafico INDIA/index.html';
+              break;
+            case "INMARSAT":
+              window.location.href = '../grafico INMARSAT/index.html';
+              break;
+            case "INTELSAT":
+              window.location.href = '../grafico INTELSAT/index.html';
+              break;
+            case "IRAN":
+              window.location.href = '../grafico IRAN/index.html';
+              break;
+            case "IRAQ":
+              window.location.href = '../grafico IRAQ/index.html';
+              break;
+            case "ISRAELE":
+              window.location.href = '../grafico ISRAELE/index.html';
+              break;
+            case "KAZAKISTAN":
+              window.location.href = '../grafico KAZAKISTAN/index.html';
+              break;
+            case "KUWAIT":
+              window.location.href = '../grafico KUWAIT/index.html';
+              break;
+            case "LAOS":
+              window.location.href = '../grafico LAOS/index.html';
+              break;
+            case "LITUANIA":
+              window.location.href = '../grafico LITUANIA/index.html';
+              break;
+            case "LUSSEMBURGO":
+              window.location.href = '../grafico LUSSEMBURGO/index.html';
+              break;
+            case "MALA":
+              window.location.href = '../grafico MALA/index.html';
+              break;
+            case "MALESIA":
+              window.location.href = '../grafico MALESIA/index.html';
+              break;
+            case "MAROCCO":
+              window.location.href = '../grafico MAROCCO/index.html';
+              break;
+            case "MAURITIUS":
+              window.location.href = '../grafico MAURITIUS/index.html';
+              break;
+            case "MESSICO":
+              window.location.href = '../grafico MESSICO/index.html';
+              break;
+            case "MYANMAR":
+              window.location.href = '../grafico MYANMAR/index.html';
+              break;
+            case "NIGERIA":
+              window.location.href = '../grafico NIGERIA/index.html';
+              break;
+            case "NORVEGIA":
+              window.location.href = '../grafico NORVEGIA/index.html';
+              break;
+            case "NUOVA ZELANDA":
+              window.location.href = '../grafico NUOVA ZELANDA/index.html';
+              break;
+            case "O3B":
+              window.location.href = '../grafico O3B/index.html';
+              break;
+            case "ORGANIZZAZIONE REGIONALE AFRICANA DELLA COMUNICAZIONE SATELLITARE":
+              window.location.href = '../grafico ORGANIZZAZIONE REGIONALE AFRICANA DELLA COMUNICAZIONE SATELLITARE/index.html';
+              break;
+            case "ORGANIZZAZIONI INTERNAZIONALI":
+              window.location.href = '../grafico ORGANIZZAZIONI INTERNAZIONALI/index.html';
+              break;
+            case "PAESI BASSI":
+              window.location.href = '../grafico PAESI BASSI/index.html';
+              break;
+            case "PAKISTAN":
+              window.location.href = '../grafico PAKISTAN/index.html';
+              break;
+            case "PARAGUAY":
+              window.location.href = '../grafico PARAGUAY/index.html';
+              break;
+            case "PERÙ":
+              window.location.href = '../grafico PERÙ/index.html';
+              break;
+            case "POLONIA":
+              window.location.href = '../grafico POLONIA/index.html';
+              break;
+            case "QATAR":
+              window.location.href = '../grafico QATAR/index.html';
+              break;
+            case "REGNO UNITO":
+              window.location.href = '../grafico REGNO UNITO/index.html';
+              break;
+            case "REPUBBLICA CECA":
+              window.location.href = '../grafico REPUBBLICA CECA/index.html';
+              break;
+            case "REPUBBLICA CINESE":
+              window.location.href = '../grafico REPUBBLICA CINESE/index.html';
+              break;
+            case "REPUBBLICA CINO-BRASILIANA":
+              window.location.href = '../grafico REPUBBLICA CINO-BRASILIANA/index.html';
+              break;
+            case "RUANDA":
+              window.location.href = '../grafico RUANDA/index.html';
+              break;
+            case "SCONOSCIUTO":
+              window.location.href = '../grafico SCONOSCIUTO/index.html';
+              break;
+            case "SEA LAUNCH DEMO":
+              window.location.href = '../grafico SEA LAUNCH DEMO/index.html';
+              break;
+            case "SEYCHELLES":
+              window.location.href = '../grafico SEYCHELLES/index.html';
+              break;
+            case "SINGAPORE":
+              window.location.href = '../grafico SINGAPORE/index.html';
+              break;
+            case "SINGAPORE/TAIWAN":
+              window.location.href = '../grafico SINGAPORE/TAIWAN/index.html';
+              break;
+            case "SLOVENIA":
+              window.location.href = '../grafico SLOVENIA/index.html';
+              break;
+            case "SPAGNA":
+              window.location.href = '../grafico SPAGNA/index.html';
+              break;
+            case "STATI IN EST/SUD AFRICA":
+              window.location.href = '../grafico STATI IN EST/SUD AFRICA/index.html';
+              break;
+            case "STATI UNITI/BRASILE":
+              window.location.href = '../grafico STATI UNITI/BRASILE/index.html';
+              break;
+            case "STAZIONE SPAZIALE INTERNAZIONALE":
+              window.location.href = '../grafico STAZIONE SPAZIALE INTERNAZIONALE/index.html';
+              break;
+            case "SUD AFRICA":
+              window.location.href = '../grafico SUD AFRICA/index.html';
+              break;
+            case "SUDAN":
+              window.location.href = '../grafico SUDAN/index.html';
+              break;
+            case "SVEZIA":
+              window.location.href = '../grafico SVEZIA/index.html';
+              break;
+            case "SVIZZERA":
+              window.location.href = '../grafico SVIZZERA/index.html';
+              break;
+            case "THAILANDIA":
+              window.location.href = '../grafico THAILANDIA/index.html';
+              break;
+            case "TUNISIA":
+              window.location.href = '../grafico TUNISIA/index.html';
+              break;
+            case "TURCHIA":
+              window.location.href = '../grafico TURCHIA/index.html';
+              break;
+            case "TURKMENISTAN":
+              window.location.href = '../grafico TURKMENISTAN/index.html';
+              break;
+            case "UCRAINA":
+              window.location.href = '../grafico UCRAINA/index.html';
+              break;
+            case "UNGHERIA":
+              window.location.href = '../grafico UNGHERIA/index.html';
+              break;
+            case "URUGUAY":
+              window.location.href = '../grafico URUGUAY/index.html';
+              break;
+            case "VENEZUELA":
+              window.location.href = '../grafico VENEZUELA/index.html';
+              break;
+            case "VIETNAM":
+              window.location.href = '../grafico VIETNAM/index.html';
+              break;            
             // Aggiungi qui altri paesi se necessario
             default:
               console.log(`Nessun reindirizzamento definito per ${countryName}`);
