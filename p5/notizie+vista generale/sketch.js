@@ -426,12 +426,14 @@ function precalculateFumo() {
 // DISEGNO DELLA TIMELINE CON SLIDER
 function drawSliderTimeline() {
   // Visualizzazione dell'anno selezionato
+  textSize(32);
+  textFont(fontRubik);
+  strokeWeight(4);
   stroke(0);
-  strokeWeight(0);
-  fill(0);
-  textFont(fontInconsolata);
-  textSize(20);
+  fill(255);
+  textAlign(CENTER, CENTER);
   text(selectedYear, width / 2, height - 100);
+
 
   // Etichette degli anni agli estremi della timeline
   noStroke();
