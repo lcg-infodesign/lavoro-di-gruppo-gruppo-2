@@ -560,8 +560,8 @@ function drawCircleWithRays() {
   rotationAngle += 0.2;
 
   // Draw rays
-  for (let i = 0; i < 99; i++) {
-    let angle = map(i, 0, 99, 0, 360);
+  for (let i = 0; i < 98; i++) {
+    let angle = map(i, 0, 98, 0, 360);
     let x1 = centerX + sizes.radius * cos(angle);
     let y1 = centerY + sizes.radius * sin(angle);
     let x2 = centerX + (sizes.radius + sizes.rayLength) * cos(angle);
@@ -611,9 +611,9 @@ function drawHighlightedSector() {
 
   // Rest of the sector highlighting code using sizes.radius and sizes.rayLength
   if (autoScroll && !autoScrollCompleted) {
-    let currentSector = Math.floor(map(sectorHighlightProgress, 0, 1, 0, 99));
-    let angle1 = map(currentSector, 0, 99, 0, 360);
-    let angle2 = map(currentSector + 1, 0, 99, 0, 360);
+    let currentSector = Math.floor(map(sectorHighlightProgress, 0, 1, 0, 98));
+    let angle1 = map(currentSector, 0, 98, 0, 360);
+    let angle2 = map(currentSector + 1, 0, 98, 0, 360);
 
     fill(80, 80, 80, 80);
     noStroke();
@@ -631,9 +631,9 @@ function drawHighlightedSector() {
   }
 
   if (mouseDist > sizes.radius + dotOffset && mouseDist < sizes.radius + sizes.rayLength) {
-    for (let i = 0; i < 99; i++) {
-      let angle1 = map(i, 0, 99, 0, 360);
-      let angle2 = map(i + 1, 0, 99, 0, 360);
+    for (let i = 0; i < 98; i++) {
+      let angle1 = map(i, 0, 98, 0, 360);
+      let angle2 = map(i + 1, 0, 98, 0, 360);
 
       // Controlla se il mouse è in questo settore
       if (mouseAngle >= angle1 && mouseAngle < angle2) {
@@ -984,13 +984,13 @@ function generateDots() {
     }
   }
 
-  for (let i = 0; i < 99; i++) {
+  for (let i = 0; i < 98; i++) {
     let countryCode = sectors[i].countryCode; 
     let numEvents = countryEventCount[countryCode] || 0; 
 
     for (let j = 0; j < numEvents; j++) {
-      let angle1 = map(i, 0, 99, 0, 360);
-      let angle2 = map(i + 1, 0, 99, 0, 360);
+      let angle1 = map(i, 0, 98, 0, 360);
+      let angle2 = map(i + 1, 0, 98, 0, 360);
 
       // Ensure the angle is within the sector's boundaries
       let randomAngle = random(angle1, angle2);
