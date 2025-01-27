@@ -656,16 +656,33 @@ function drawHighlightedSector() {
         fill(0);
         text(countryName, width / 2, 100); // Posiziona il testo al centro in alto
 
-        // Aggiungi il reindirizzamento se il paese è Stati Uniti
-        if (countryName === "STATI UNITI") { // Assicurati che il codice paese sia corretto
-          if (mouseIsPressed) {
-            window.location.href = '../grafico STATI UNITI/index.html'; // Reindirizza alla pagina
-          }
-        }
-        // Aggiungi il reindirizzamento se il paese è Stati Uniti
-        if (countryName === "FRANCIA") { // Assicurati che il codice paese sia corretto
-          if (mouseIsPressed) {
-            window.location.href = '../grafico Francia/index.html'; // Reindirizza alla pagina
+        // Aggiungi reindirizzamenti per tutti i paesi
+        if (mouseIsPressed) {
+          switch (countryName) {
+            case "STATI UNITI":
+              window.location.href = '../grafico STATI UNITI/index.html';
+              break;
+            case "FRANCIA":
+              window.location.href = '../grafico Francia/index.html';
+              break;
+            case "ITALIA":
+              window.location.href = '../grafico ITALIA/index.html';
+              break;
+            case "GERMANIA":
+              window.location.href = '../grafico Germania/index.html';
+              break;
+            case "SPAGNA":
+              window.location.href = '../grafico Spagna/index.html';
+              break;
+            case "CINA":
+              window.location.href = '../grafico Cina/index.html';
+              break;
+            case "RUSSIA":
+              window.location.href = '../grafico Russia/index.html';
+              break;
+            // Aggiungi qui altri paesi se necessario
+            default:
+              console.log(`Nessun reindirizzamento definito per ${countryName}`);
           }
         }
       }
