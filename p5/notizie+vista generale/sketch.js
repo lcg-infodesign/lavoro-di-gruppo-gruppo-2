@@ -677,6 +677,15 @@ function drawHighlightedSector() {
             case "ALLEANZA ASIATICA":
               window.location.href = '../grafico ALLEANZA ASIATICA/index.html';
               break;
+            case "ANGOLA":
+              window.location.href = '../grafico ANGOLA/index.html';
+              break;
+            case "ARABIA SAUDITA":
+              window.location.href = '../grafico ARABIA SAUDITA/index.html';
+              break;
+            case "ARGENTINA":
+              window.location.href = '../grafico ARGENTINA/index.html';
+              break;
             // Aggiungi qui altri paesi se necessario
             default:
               console.log(`Nessun reindirizzamento definito per ${countryName}`);
