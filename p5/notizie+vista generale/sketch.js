@@ -280,29 +280,29 @@ function draw() {
   background(240);
 
   //INFO BOX SETUP
-  fill(255); // Colore bianco
-  stroke(0); // Bordo nero
-  strokeWeight(2); // Spessore del bordo
-  let boxWidth = 300; // Larghezza del riquadro
-  let boxHeight = 120; // Altezza di ciascun rettangolo
-  let firstBoxHeight = boxHeight * (2 / 3); // Altezza del primo rettangolo a 2/3
-  let secondBoxHeight = boxHeight * (4 / 3) + 20; // Aumentato di 20 pixel
+  fill(255); 
+  stroke(0); 
+  strokeWeight(2); 
+  let boxWidth = 300; 
+  let boxHeight = 120; 
+  let firstBoxHeight = boxHeight * (2 / 3); 
+  let secondBoxHeight = boxHeight * (4 / 3) + 20; 
   let cornerRadius = 10; // Raggio degli angoli arrotondati
   let spacing = 15; // Spazio tra i rettangoli
   let totalHeight = firstBoxHeight + secondBoxHeight + boxHeight * 2 + spacing * 4; // Altezza totale per 4 rettangoli e spazi
-  let startY = (height - totalHeight) / 2; // Posizione Y iniziale per centrare
+  let startY = (height - totalHeight) / 2; // Posizione Y 
 
-  // Disegna il primo rettangolo con altezza ridotta
+  // primo rettangolo 
   rect(40, startY, boxWidth, firstBoxHeight, cornerRadius); 
 
-  // Disegna il secondo rettangolo con altezza aumentata
+  //secondo rettangolo
   rect(40, startY + firstBoxHeight + spacing, boxWidth, secondBoxHeight, cornerRadius);
 
-  // Disegna i restanti 2 rettangoli mantenendo la stessa distanza
+  // terzo e quarto rettangolo
   for (let i = 2; i < 3; i++) {
     rect(40, startY + firstBoxHeight + secondBoxHeight + spacing * 2 + (i - 2) * (boxHeight + spacing), boxWidth, boxHeight, cornerRadius);
   }
-  // Modifica l'altezza del quarto rettangolo
+  //altezza del quarto rettangolo
   rect(40, startY + firstBoxHeight + secondBoxHeight + spacing * 2 + (3 - 2) * (boxHeight + spacing), boxWidth, boxHeight * 0.9, cornerRadius); // Ridotto a 90% dell'altezza originale
 
   //TITLE HOME BUTTON
@@ -326,65 +326,63 @@ function draw() {
   drawNewsBox();
 
   
-  // Aggiungi il nuovo contenuto all'interno del rettangolo bianco
   textFont(fontRubik);
   textSize(22);
 
   fill(255);
-  noStroke(); // Assicurati che non ci sia contorno
-  textAlign(LEFT); // Allinea il testo a sinistra
+  noStroke(); 
+  textAlign(LEFT); // testo allineato a sinistra
   
   
-  noStroke(); // Assicurati che non ci sia contorno per il testo successivo
-  fill(0); // Colore del testo nero
+  noStroke(); 
+  fill(0); 
   textSize(18);
-  text('RIFIUTO SPAZIALE', 56, (height - boxHeight) / 2 -193); // Spostato in basso
+  text('RIFIUTO SPAZIALE', 56, (height - boxHeight) / 2 -193); 
 
-  // Rettangolo (come placeholder)
+  // Rettangolo 
   fill(0);
-  ellipse(56 + 15, (height - boxHeight) / 2 - 160, 10, 10); // Spostato in basso
+  ellipse(56 + 15, (height - boxHeight) / 2 - 160, 10, 10); 
 
-  // Stile per il testo descrittivo
+  
   textFont(fontRubik);
   textSize(18);
   fill(0);
-  noStroke(); // Assicurati che non ci sia contorno
-  text('PERIGEO', 56, (height - boxHeight) / 2 - 100); // Spostato in basso
-
+  noStroke(); 
+  text('PERIGEO', 56, (height - boxHeight) / 2 - 100); 
   image(imgperigeo, 56, (height - boxHeight) / 2 -50, imgperigeo.width * 0.17, imgperigeo.height * 0.17);
 
   textFont(fontInconsolata);
   textSize(14);
   fill(0);
-  noStroke(); // Assicurati che non ci sia contorno
-  text('DISTANZA DALLA TERRA', 56, (height - boxHeight) / 2 - 72 ); // Spostato in basso
+  noStroke(); 
+  text('DISTANZA DALLA TERRA', 56, (height - boxHeight) / 2 - 72 ); 
 
   textFont(fontInconsolata);
   textSize(12);
   fill(0);
-  noStroke(); // Assicurati che non ci sia contorno
+  noStroke(); 
   text(
     'Il punto di massima vicinanza del detrito\nalla terra, mentre orbita intorno ad essa',
     56,
-    (height - boxHeight) / 2 + 25  // Spostato in basso
+    (height - boxHeight) / 2 + 25  
   );
 
   textFont(fontRubik);
   textSize(18);
   fill(0);
-  noStroke(); // Assicurati che non ci sia contorno
-  text('ANNO', 56, (height - boxHeight) / 2 + 78 + 17); // Spostato in basso
+  noStroke(); 
+  text('ANNO', 56, (height - boxHeight) / 2 + 78 + 17); 
 
   textFont(fontInconsolata);
-  textSize(24); // Dimensione del testo per "0000"
+  textSize(24); 
   fill(0);
-  noStroke(); // Assicurati che non ci sia contorno
-  text('0000', 56, (height - boxHeight) / 2 + 122); // Spostato in basso
+  noStroke(); 
+  text('0000', 56, (height - boxHeight) / 2 + 122); 
 
   textFont(fontInconsolata);
   textSize(12);
   fill(0);
-  noStroke(); // Assicurati che non ci sia contorno
+  noStroke(); 
   text(
     "L'anno in cui l'oggetto è stato lanciato\nnello spazio. Dal 1960 al 2021",
     56,
@@ -397,7 +395,7 @@ function draw() {
   noStroke(); 
   text('PAESE', 56, (height - boxHeight) / 2 + 228); 
 
-  fill(192); // Colore grigio
+  fill(192); 
   arc(66 + 20, (height - boxHeight) / 2 + 255, 350, 255, 0, PI + QUARTER_PI); 
 
   
