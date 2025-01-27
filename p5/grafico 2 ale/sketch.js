@@ -1,29 +1,28 @@
 let selectedYear = 1960;
 let points = [];
-const colors = ["#00bffc","#1b39ff","#9c76ff","#000000", ]; // Nuova palette
-const dotOffset = 40; // Offset per creare un anello vuoto attorno al cerchio centrale
+const colors = ["#00bffc","#1b39ff","#9c76ff","#000000", ]; 
+const dotOffset = 40;
 const totalSpicchi = 60; // Numero di spicchi
 const startYear = 1960; // Anno di inizio
-const endYear = 2020; // Anno di fine (correlato al numero di spicchi)
+const endYear = 2020; // Anno di fine
 let satelliteData; 
 let hoveredPoint = null;
 let inconsolataFont, rubikOneFont; // Variabili per i font
-let terraImg; // Nuova variabile per l'immagine
+let terraImg; //  variabile per l'immagine
 let countries = []; // Array per memorizzare i paesi unici
 let menuOpen = false; // Variabile per tracciare lo stato del menu
 let rocketBodyImage; // Aggiungi questa riga per la variabile dell'immagine del rocket body
-let razzinoImage; // Nuova variabile per l'immagine del razzino
+let razzinoImage; // variabile per l'immagine del razzino
 let smokePositions = []; // Array per memorizzare le posizioni del fumo
 
-// Add these global variables at the top
-let fumoData = []; // Array for storing fixed smoke properties
-let numFumo = 75; // Maximum number of smoke puffs
-let fumoAspectRatio = 1; // Width/height ratio of smoke images
+let fumoData = []; 
+let numFumo = 75; 
+let fumoAspectRatio = 1; 
 let autoScroll = true;
 let autoScrollSpeed = 0.5;
 let autoScrollCompleted = false;
 let lastUpdateTime = 0;
-let ANIMATION_DURATION = 5000; // 5 seconds for the full animation
+let ANIMATION_DURATION = 5000; 
 let slider;
 let rocketImg;
 let rocketWidth;
@@ -39,19 +38,19 @@ function preload() {
   // Carica i font
   inconsolataFont = loadFont('../../fonts/Inconsolata.ttf');
   rubikOneFont = loadFont('../../fonts/RubikOne.ttf');
-  terraImg = loadImage('../../img/marenero.png'); // Carica l'immagine
+  terraImg = loadImage('../../img/marenero.png');
   imgtitolo = loadImage('../../img/titolo.png');
   imgperigeo = loadImage('../../img/perigeo2.png');
 
 
-  // Carica il CSV
+  
   satelliteData = loadTable('../../space_decay.csv', 'csv', 'header', 
     () => {
       console.log("CSV caricato con successo");
       console.log("Numero di righe:", satelliteData.getRowCount()); // Log per il numero di righe
       console.log("Colonne:", satelliteData.columns); // Log per le colonne
 
-      // Estrai i paesi unici
+      
       let uniqueCountries = new Set();
       for (let row of satelliteData.rows) {
         let country = row.get('COUNTRY_CODE');
@@ -71,19 +70,19 @@ function preload() {
   payloadImage = loadImage('../../img/payload.png', 
     () => console.log("Immagine payload caricata con successo"), 
     (error) => console.error("Errore nel caricamento dell'immagine payload:", error)
-  ); // Carica l'immagine del payload
+  ); //  l'immagine del payload
   debrisImage = loadImage('../../img/debris.png', 
     () => console.log("Immagine debris caricata con successo"), 
     (error) => console.error("Errore nel caricamento dell'immagine debris:", error)
-  ); // Carica l'immagine dei debris
+  ); //  l'immagine dei debris
   tbiImage = loadImage('../../img/tbi.png', 
     () => console.log("Immagine TBI caricata con successo"), 
     (error) => console.error("Errore nel caricamento dell'immagine TBI:", error)
-  ); // Carica l'immagine TBI
-  rocketBodyImage = loadImage('../../img/rocket body.png', // Assicurati di usare il nome corretto
+  ); //  l'immagine TBI
+  rocketBodyImage = loadImage('../../img/rocket body.png', 
     () => console.log("Immagine rocket body caricata con successo"), 
     (error) => console.error("Errore nel caricamento dell'immagine rocket body:", error)
-  ); // Carica l'immagine del rocket body
+  ); //  l'immagine del rocket body
   razzinoImage = loadImage('../../img/razzino.png', // Carica l'immagine del razzino
     () => console.log("Immagine razzino caricata con successo"), 
     (error) => console.error("Errore nel caricamento dell'immagine razzino:", error)
@@ -91,7 +90,7 @@ function preload() {
   smokeImage = loadImage('../../img/fumo.png', () => {
     fumoAspectRatio = smokeImage.width / smokeImage.height;
     console.log("Immagine fumo caricata con successo");
-    // Precalculate smoke positions after loading
+    
     precalculateFumo();
   }, (error) => console.error("Errore nel caricamento dell'immagine fumo:", error));
 
@@ -100,7 +99,7 @@ function preload() {
     rocketWidth = rocketHeight * ratio;
   });
 
-  //LOAD SOUND
+ 
   sound = loadSound('../../space.mp3');
 }
 
@@ -128,23 +127,22 @@ buttons.forEach(button => {
   }
   createHamburgerMenu();
 
-  //PLAY SOUND BUTTON SETUP
-  toggleButton = createButton('Play Sound'); // Starts with the play icon
-  toggleButton.position(30, height - 55);
+ 
+  toggleButton = createButton('Play Sound'); // bottone per il suono
   toggleButton.mousePressed(toggleAudio);
   sound.setVolume(0.2);
   styleButton(toggleButton);
 }
 
 function styleButton(button) {
-  button.style('font-family', 'Inconsolata'); // Use Inconsolata font
+  button.style('font-family', 'Inconsolata'); // Inconsolata font
   button.style('font-size', '12px');
   button.style('padding', '5px 10px');
-  button.style('border', '2px solid black'); // Black border
-  button.style('border-radius', '8px'); // Rounded corners
-  button.style('background-color', 'white'); // White background
-  button.style('color', 'black'); // Black text
-  button.style('cursor', 'pointer'); // Pointer cursor
+  button.style('border', '2px solid black'); 
+  button.style('border-radius', '8px'); 
+  button.style('background-color', 'white'); 
+  button.style('color', 'black'); 
+  button.style('cursor', 'pointer'); 
   button.style('text-align', 'center');
 }
 
@@ -152,11 +150,11 @@ function styleButton(button) {
 function toggleAudio() {
   if (isPlaying) {
     sound.stop();
-    toggleButton.html('Play Sound'); // Update to play icon
+    toggleButton.html('Play Sound'); 
     isPlaying = false;
   } else {
     sound.play();
-    toggleButton.html('Stop Sound'); // Update to stop icon
+    toggleButton.html('Stop Sound'); 
     isPlaying = true;
   }
 }
@@ -171,7 +169,7 @@ function precalculateFumo() {
   let centerX = width / 2;
   let centerY = height;
   let radius = 320;
-  let arcLength = PI * radius; // Length of the semicircle
+  let arcLength = PI * radius; // semicerchio su cui si trova il fumo
   let step = arcLength / numFumo;
 
   for (let i = 0; i < numFumo; i++) {
@@ -291,30 +289,30 @@ function draw() {
   let startX = 30; // Posizione X dei rettangoli
   let spacing = 20; // Distanza tra i rettangoli
 
-  // Disegna il primo rettangolo 
+  
   fill(255); // Colore bianco
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
-  rect(startX, startY, boxWidth, firstBoxHeight+9, cornerRadius); // Disegna il primo rettangolo
+  rect(startX, startY, boxWidth, firstBoxHeight+9, cornerRadius); //  il primo rettangolo
 
-  // Disegna il secondo rettangolo 
+  
   fill(255); // Colore bianco
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
-  rect(startX, startY + (boxHeight + spacing) +65, boxWidth, boxHeight-7, cornerRadius); // Disegna il secondo rettangolo 
+  rect(startX, startY + (boxHeight + spacing) +65, boxWidth, boxHeight-7, cornerRadius); // il secondo rettangolo 
 
-  // Update the calculation for rightX
+  
   let rightX = width - boxWidth - 40; // Posizione X per gli ultimi due rettangoli
 
   let increasedWidth = boxWidth + 13; 
 
-  // Disegna il terzo rettangolo
+
   fill(255); // Colore bianco
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
-  rect(rightX, startY, increasedWidth, boxHeight * 1.3, cornerRadius); // Allunga il terzo rettangolo
+  rect(rightX, startY, increasedWidth, boxHeight * 1.3, cornerRadius); 
 
-  // Disegna il quarto rettangolo (alla stessa altezza del secondo)
+  
   fill(255); // Colore bianco
   stroke(0); // Bordo nero
   strokeWeight(2); // Spessore del bordo
@@ -323,10 +321,10 @@ function draw() {
   textFont(rubikOneFont); // Font Rubik
   textAlign(LEFT, TOP); // Allineamento del testo
   let textX = 48; // Posizione X del testo
-  let textY = (height - boxHeight) / 2 -200; // Modificato per allineare il testo con il primo rettangolo
+  let textY = (height - boxHeight) / 2 -200; 
   
   
-  fill(0); // Colore 
+  fill(0); 
   strokeWeight(0); // Nessuno stroke per il resto del testo
   textSize(18); // Dimensione del testo per RIFIUTI SPAZIALI, TIPOLOGIE, DIMENSIONE
   textAlign(LEFT, TOP); // Allineamento del testo
@@ -335,7 +333,7 @@ function draw() {
   textY += 25; //  posizione Y per "TIPOLOGIE"
   text("TIPOLOGIE", textX, textY); // Testo "TIPOLOGIE"
 
-  // Imposta il font Inconsolata per le voci specifiche
+  
   textFont(inconsolataFont); // Font Inconsolata
   textSize(14); // Dimensione del testo per PAYLOAD, TBA, ROCKET BODY
   textY += 35; //posizione Y per le voci specifiche
@@ -653,7 +651,7 @@ function drawTooltip(point) {
   let verticalPadding = 2;
   let lineHeight = 20;
   
-  // Check if periapsis exists and is a number
+  
   let periapsisValue = point.periapsis;
   if (periapsisValue === undefined || isNaN(periapsisValue)) {
     periapsisValue = 'N/A';
@@ -669,18 +667,18 @@ function drawTooltip(point) {
 
   textAlign(CENTER, CENTER);
 }
-// ... existing code ...
+
 
 function drawSelectedYear() {
   let centerX = width / 2;
   let centerY = height;
 
-  // Nuovo stile per l'anno selezionato
+  //stile per l'anno selezionato
   textSize(32);
-  textFont(rubikOneFont);  // Cambiato da inconsolataFont a rubikOneFont
-  strokeWeight(4);         // Aggiunto stroke weight
-  stroke(0);              // Aggiunto stroke nero
-  fill(255);             // Cambiato fill a bianco
+  textFont(rubikOneFont);  
+  strokeWeight(4);         
+  stroke(0);             
+  fill(255);            
   textAlign(CENTER, CENTER);
   text(selectedYear, centerX, centerY - 55); // Mostra l'anno selezionato
 }
@@ -715,16 +713,16 @@ function drawRadialSlider() {
     text(year, centerX + (radius + 60) * cos(angle), textY);
   }
 
-  // Handle click interaction anywhere on the arc
+  
   if (mouseIsPressed) {
     let mouseAngle = atan2(mouseY - centerY, mouseX - centerX);
     if (mouseAngle < 0) mouseAngle += 360;
     
-    // Calculate distance from mouse to the arc
+    
     let mouseDist = dist(mouseX, mouseY, centerX, centerY);
     let arcDist = abs(mouseDist - (radius + 20));
     
-    // If mouse is near the arc (within 30 pixels) and within the valid angle range
+    
     if (arcDist < 30 && mouseAngle >= startAngle && mouseAngle <= endAngle) {
       selectedYear = floor(map(mouseAngle, startAngle, endAngle, startYear, endYear + 1));
       selectedYear = constrain(selectedYear, startYear, endYear);
@@ -737,10 +735,10 @@ function drawRadialSlider() {
   let sliderX = centerX + (radius + 20) * cos(sliderAngle);
   let sliderY = centerY + (radius + 20) * sin(sliderAngle);
 
-  // Aggiungi la posizione del fumo all'array
+ 
   smokePositions.push({ x: sliderX, y: sliderY });
 
-  // Draw smoke effects
+ 
   for (let fumo of fumoData) {
     if (fumo.angle <= sliderAngle) {
       let fumoX = centerX + (radius + 20 + fumo.offsetR) * cos(fumo.angle);
@@ -768,7 +766,7 @@ function drawRadialSlider() {
   } else if (sliderAngle == endAngle) {
     rotate(radians(sliderAngle) + 90);
   } else {
-    // Calcola l'angolo di rotazione graduale tra posizione iniziale e finale
+    //  l'angolo di rotazione graduale tra posizione iniziale e finale
     let startRotation = radians(startAngle) - 90;
     let endRotation = radians(endAngle) + 90;
     let progress = (sliderAngle - startAngle) / (endAngle - startAngle);
@@ -781,35 +779,35 @@ function drawRadialSlider() {
 }
 
 function createHamburgerMenu() {
-  let menuButton = createButton('Cambia Paese'); // Nuovo bottone
+  let menuButton = createButton('Cambia Paese'); //bottone
   menuButton.class('hamburger-menu');
-  menuButton.position(width / 2 - 105, 300); // Centra il bottone orizzontalmente (105px è la metà della larghezza del menu)
-  menuButton.style('font-size', '16px'); // Dimensione del bottone
-  menuButton.style('background-color', 'white'); // Sfondo bianco
-  menuButton.style('border', '2px solid black'); // Bordo nero
-  menuButton.style('font-family', 'RubikOne'); // Font RubikOne per il bottone
-  menuButton.style('padding', '10px 20px'); // Padding per il bottone
-  menuButton.style('width', '220px'); // Imposta la larghezza del bottone per corrispondere al menu
+  menuButton.position(width / 2 - 105, 300); // il bottone va centrato orizzontalmente (105px è la metà della larghezza del menu)
+  menuButton.style('font-size', '16px'); 
+  menuButton.style('background-color', 'white'); 
+  menuButton.style('border', '2px solid black'); 
+  menuButton.style('font-family', 'RubikOne'); 
+  menuButton.style('padding', '10px 20px'); 
+  menuButton.style('width', '220px'); 
   menuButton.mousePressed(() => {
     toggleMenu();
   });
   
   let dropdownMenu = createDiv('');
   dropdownMenu.class('dropdown-menu');
-  dropdownMenu.position(width / 2 - 105, 350); // Sposta il menu a sinistra di 5px
+  dropdownMenu.position(width / 2 - 105, 350); 
   dropdownMenu.style('display', 'none');
-  dropdownMenu.style('width', '200px'); // Aumenta la larghezza del menu
-  dropdownMenu.style('height', 'auto'); // Altezza automatica per adattarsi al contenuto
-  dropdownMenu.style('background-color', 'white'); // Sfondo bianco per il menu
-  dropdownMenu.style('border-radius', '10px'); // Angoli arrotondati
-  dropdownMenu.style('padding', '10px'); // Padding per il contenuto del menu
-  dropdownMenu.style('border', '2px solid black'); // Aggiungi bordo nero al menu
+  dropdownMenu.style('width', '200px'); 
+  dropdownMenu.style('height', 'auto'); 
+  dropdownMenu.style('background-color', 'white');
+  dropdownMenu.style('border-radius', '10px');
+  dropdownMenu.style('padding', '10px'); 
+  dropdownMenu.style('border', '2px solid black'); 
 
-  // Aggiungi stili per lo slider
-  dropdownMenu.style('overflow-y', 'auto'); // Abilita lo slider verticale
-  dropdownMenu.style('overflow-x', 'hidden'); // Nascondi lo slider orizzontale
-  dropdownMenu.style('background-color', 'white'); // Sfondo dello slider
-  dropdownMenu.style('color', 'black'); // Colore del testo
+  //stile slider menù a tendina
+  dropdownMenu.style('overflow-y', 'auto'); 
+  dropdownMenu.style('overflow-x', 'hidden'); 
+  dropdownMenu.style('background-color', 'white');
+  dropdownMenu.style('color', 'black'); 
 
   // Aggiungi stili per la barra dello slider
   let style = document.createElement('style');
@@ -839,9 +837,299 @@ function createHamburgerMenu() {
       // Aggiungi un evento di clic per ogni paese
       countryItem.mousePressed(() => {
         if (country === 'FRANCIA') {
-          window.location.href = '../grafico Francia/index.html'; // Modifica il percorso per la Francia
+          window.location.href = '../grafico Francia/index.html'; 
         }
-        // Aggiungi qui altre condizioni per altri paesi se necessario
+        if (country === 'ABCASIA (GEORGIA)') {
+          window.location.href = '../grafico Abcasia/index.html'; 
+        }
+        if (country === 'ALGERIA') {
+          window.location.href = '../grafico ALGERIA/index.html'; 
+        }
+        if (country === 'ALLEANZA ASIATICA') {
+          window.location.href = '../grafico ALLEANZA ASIATICA/index.html'; 
+        }
+        if (country === 'ANGOLA') {
+          window.location.href = '../grafico ANGOLA/index.html'; 
+        }
+        if (country === 'ARABIA SAUDITA') {
+          window.location.href = '../grafico ARABIA SAUDITA/index.html'; 
+        }
+        if (country === 'ARGENTINA') {
+          window.location.href = '../grafico ARGENTINA/index.html'; 
+        }
+        if (country === 'ASCENTION ISLAND') {
+          window.location.href = '../grafico ASCENTION ISLAND/index.html'; 
+        }
+        if (country === 'AUSTRALIA') {
+          window.location.href = '../grafico AUSTRALIA/index.html'; 
+        }
+        if (country === 'AZERBAIGIAN') {
+          window.location.href = '../grafico AZERBAIGIAN/index.html'; 
+        }
+        if (country === 'BANGLADESH') {
+          window.location.href = '../grafico BANGLADESH/index.html'; 
+        }
+        if (country === 'BELGIO') {
+          window.location.href = '../grafico BELGIO/index.html'; 
+        }
+        if (country === 'BERMUDA') {
+          window.location.href = '../grafico BERMUDA/index.html'; 
+        }
+        if (country === 'BIELORUSSIA') {
+          window.location.href = '../grafico BIELORUSSIA/index.html'; 
+        }
+        if (country === 'BOLIVIA') {
+          window.location.href = '../grafico BOLIVIA/index.html'; 
+        }
+        if (country === 'BRASILE') {
+          window.location.href = '../grafico BRASILE/index.html'; 
+        }
+        if (country === 'BULGARIA') {
+          window.location.href = '../grafico BULGARIA/index.html'; 
+        }
+        if (country === 'CANADA') {
+          window.location.href = '../grafico CANADA/index.html'; 
+        }
+        if (country === 'CILE') {
+          window.location.href = '../grafico CILE/index.html'; 
+        }
+        if (country === 'CINA') {
+          window.location.href = '../grafico CINA/index.html'; 
+        }
+        if (country === 'COLOMBIA') {
+          window.location.href = '../grafico COLOMBIA/index.html'; 
+        }
+        if (country === 'COREA DEL NORD') {
+          window.location.href = '../grafico COREA DEL NORD/index.html'; 
+        }
+        if (country === 'COREA DEL SUD') {
+          window.location.href = '../grafico COREA DEL SUD/index.html'; 
+        }
+        if (country === 'DANIMARCA') {
+          window.location.href = '../grafico DANIMARCA/index.html'; 
+        }
+        if (country === 'ECUADOR') {
+          window.location.href = '../grafico ECUADOR/index.html'; 
+        }
+        if (country === 'EGITTO') {
+          window.location.href = '../grafico EGITTO/index.html'; 
+        }
+        if (country === 'EMIRATI ARABI UNITI') {
+          window.location.href = '../grafico EMIRATI ARABI UNITI/index.html'; 
+        }
+        if (country === 'ESTONIA') {
+          window.location.href = '../grafico ESTONIA/index.html'; 
+        }
+        if (country === 'EUROPA E MEDIO ORIENTE') {
+          window.location.href = '../grafico EUROPA E MEDIO ORIENTE/index.html'; 
+        }
+        if (country === 'EUTELSAT') {
+          window.location.href = '../grafico EUTELSAT/index.html'; 
+        }
+        if (country === 'EX USSR') {
+          window.location.href = '../grafico EX USSR/index.html'; 
+        }
+        if (country === 'FILIPPINE') {
+          window.location.href = '../grafico FILIPPINE/index.html'; 
+        }
+        if (country === 'FINLANDIA') {
+          window.location.href = '../grafico FINLANDIA/index.html'; 
+        }
+        if (country === 'FRIT') {
+          window.location.href = '../grafico FRIT/index.html'; 
+        }
+        if (country === 'GERMANIA') {
+          window.location.href = '../grafico GERMANIA/index.html'; 
+        }
+        if (country === 'GIAPPONE') {
+          window.location.href = '../grafico GIAPPONE/index.html'; 
+        }
+        if (country === 'GIORDANIA') {
+          window.location.href = '../grafico GIORDANIA/index.html'; 
+        }
+        if (country === 'GLOBALSTAR') {
+          window.location.href = '../grafico GLOBALSTAR/index.html'; 
+        }
+        if (country === 'GRECIA') {
+          window.location.href = '../grafico GRECIA/index.html'; 
+        }
+        if (country === 'INDIA') {
+          window.location.href = '../grafico INDIA/index.html'; 
+        }
+        if (country === 'INMARSAT') {
+          window.location.href = '../grafico INMARSAT/index.html'; 
+        }
+        if (country === 'INTELSAT') {
+          window.location.href = '../grafico INTELSAT/index.html'; 
+        }
+        if (country === 'IRAN') {
+          window.location.href = '../grafico IRAN/index.html'; 
+        }
+        if (country === 'IRAQ') {
+          window.location.href = '../grafico IRAQ/index.html'; 
+        }
+        if (country === 'ISRAELE') {
+          window.location.href = '../grafico ISRAELE/index.html'; 
+        }
+        if (country === 'ITALIA') {
+          window.location.href = '../grafico ITALIA/index.html'; 
+        }
+        if (country === 'KAZAKISTAN') {
+          window.location.href = '../grafico KAZAKISTAN/index.html'; 
+        }
+        if (country === 'KUWAIT') {
+          window.location.href = '../grafico KUWAIT/index.html'; 
+        }
+        if (country === 'LAOS') {
+          window.location.href = '../grafico LAOS/index.html'; 
+        }
+        if (country === 'LITUANIA') {
+          window.location.href = '../grafico LITUANIA/index.html'; 
+        }
+        if (country === 'LUSSEMBURGO') {
+          window.location.href = '../grafico LUSSEMBURGO/index.html'; 
+        }
+        if (country === 'MALA') {
+          window.location.href = '../grafico MALA/index.html'; 
+        }
+        if (country === 'MALESIA') {
+          window.location.href = '../grafico MALESIA/index.html'; 
+        }
+        if (country === 'MAROCCO') {
+          window.location.href = '../grafico MAROCCO/index.html'; 
+        }
+        if (country === 'MAURITIUS') {
+          window.location.href = '../grafico MAURITIUS/index.html'; 
+        }
+        if (country === 'MESSICO') {
+          window.location.href = '../grafico MESSICO/index.html'; 
+        }
+        if (country === 'MYANMAR') {
+          window.location.href = '../grafico MYANMAR/index.html'; 
+        }
+        if (country === 'NIGERIA') {
+          window.location.href = '../grafico NIGERIA/index.html'; 
+        }
+        if (country === 'NORVEGIA') {
+          window.location.href = '../grafico NORVEGIA/index.html'; 
+        }
+        if (country === 'NUOVA ZELANDA') {
+          window.location.href = '../grafico NUOVA ZELANDA/index.html'; 
+        }
+        if (country === 'O3B') {
+          window.location.href = '../grafico O3B/index.html'; 
+        }
+        if (country === 'ORGANIZZAZIONE REGIONALE AFRICANA DELLA COMUNICAZIONE SATELLITARE') {
+          window.location.href = '../grafico ORGANIZZAZIONE REGIONALE AFRICANA DELLA COMUNICAZIONE SATELLITARE/index.html'; 
+        }
+        if (country === 'ORGANIZZAZIONI INTERNAZIONALI') {
+          window.location.href = '../grafico ORGANIZZAZIONI INTERNAZIONALI/index.html'; 
+        }
+        if (country === 'PAESI BASSI') {
+          window.location.href = '../grafico PAESI BASSI/index.html'; 
+        }
+        if (country === 'PAKISTAN') {
+          window.location.href = '../grafico PAKISTAN/index.html'; 
+        }
+        if (country === 'PARAGUAY') {
+          window.location.href = '../grafico PARAGUAY/index.html'; 
+        }
+        if (country === 'PERÙ') {
+          window.location.href = '../grafico PERÙ/index.html'; 
+        }
+        if (country === 'POLONIA') {
+          window.location.href = '../grafico POLONIA/index.html'; 
+        }
+        if (country === 'QATAR') {
+          window.location.href = '../grafico QATAR/index.html'; 
+        }
+        if (country === 'REGNO UNITO') {
+          window.location.href = '../grafico REGNO UNITO/index.html'; 
+        }
+        if (country === 'REPUBBLICA CECA') {
+          window.location.href = '../grafico REPUBBLICA CECA/index.html'; 
+        }
+        if (country === 'REPUBBLICA CINESE') {
+          window.location.href = '../grafico REPUBBLICA CINESE/index.html'; 
+        }
+        if (country === 'REPUBBLICA POPOLARE CINO-BRASILIANA') {
+          window.location.href = '../grafico REPUBBLICA POPOLARE CINO-BRASILIANA/index.html'; 
+        }
+        if (country === 'RUANDA') {
+          window.location.href = '../grafico RUANDA/index.html'; 
+        }
+        if (country === 'SCONOSCIUTO') {
+          window.location.href = '../grafico SCONOSCIUTO/index.html'; 
+        }
+        if (country === 'SEA LAUNCH DEMO') {
+          window.location.href = '../grafico SEA LAUNCH DEMO/index.html'; 
+        }
+        if (country === 'SEYCHELLES') {
+          window.location.href = '../grafico SEYCHELLES/index.html'; 
+        }
+        if (country === 'SINGAPORE') {
+          window.location.href = '../grafico SINGAPORE/index.html'; 
+        }
+        if (country === 'SINGAPORE/TAIWAN') {
+          window.location.href = '../grafico SINGAPORE/TAIWAN/index.html'; 
+        }
+        if (country === 'SLOVENIA') {
+          window.location.href = '../grafico SLOVENIA/index.html'; 
+        }
+        if (country === 'SPAGNA') {
+          window.location.href = '../grafico SPAGNA/index.html'; 
+        }
+        if (country === 'STATI IN EST/SUD AFRICA') {
+          window.location.href = '../grafico STATI IN EST/SUD AFRICA/index.html'; 
+        }
+        if (country === 'STATI UNITI') {
+          window.location.href = '../grafico SINGAPORE/index.html'; 
+        }
+        if (country === 'STATI UNITI/BRASILE') {
+          window.location.href = '../grafico STATI UNITI/BRASILE/index.html'; 
+        }
+        if (country === 'STAZIONE SPAZIALE INTERNAZIONALE') {
+          window.location.href = '../grafico STAZIONE SPAZIALE INTERNAZIONALE/index.html'; 
+        }
+        if (country === 'SUD AFRICA') {
+          window.location.href = '../grafico SUD AFRICA/index.html'; 
+        }
+        if (country === 'SUDAN') {
+          window.location.href = '../grafico SUDAN/index.html'; 
+        }
+        if (country === 'SVEZIA') {
+          window.location.href = '../grafico SVEZIA/index.html'; 
+        }
+        if (country === 'SVIZZERA') {
+          window.location.href = '../grafico SVIZZERA/index.html'; 
+        }
+        if (country === 'THAILANDIA') {
+          window.location.href = '../grafico THAILANDIA/index.html'; 
+        }
+        if (country === 'TUNISIA') {
+          window.location.href = '../grafico TUNISIA/index.html'; 
+        }
+        if (country === 'TURCHIA') {
+          window.location.href = '../grafico TURCHIA/index.html'; 
+        }
+        if (country === 'TURKMENISTAN') {
+          window.location.href = '../grafico TURKMENISTAN/index.html'; 
+        }
+        if (country === 'UCRAINA') {
+          window.location.href = '../grafico UCRAINA/index.html'; 
+        }
+        if (country === 'UNGHERIA') {
+          window.location.href = '../grafico UNGHERIA/index.html'; 
+        }
+        if (country === 'URUGUAY') {
+          window.location.href = '../grafico URUGUAY/index.html'; 
+        }
+        if (country === 'VENEZUELA') {
+          window.location.href = '../grafico VENEZUELA/index.html'; 
+        }
+        if (country === 'VIETNAM') {
+          window.location.href = '../grafico VIETNAM/index.html'; 
+        }
       });
       
       console.log("Aggiunto paese al menu:", country); // Log per debug
@@ -867,8 +1155,8 @@ function toggleMenu() {
 }
 
 function updateRazzinoPosition(sliderValue) {
-    const curvePoint = getCurvePoint(sliderValue); // Ottieni il punto sulla curva
-    const tangentAngle = getTangentAngle(sliderValue); // Calcola l'angolo tangente
+    const curvePoint = getCurvePoint(sliderValue); //  il punto sulla curva
+    const tangentAngle = getTangentAngle(sliderValue); // l'angolo tangente
 
     // Posiziona Razzino
     razzino.position.set(curvePoint.x, curvePoint.y); // Imposta la posizione del razzino
@@ -904,12 +1192,12 @@ function getTangentAngle(value) {
     return angle; // Restituisce l'angolo della tangente
 }
 
-// Easing function for smooth deceleration
+
 function easeOutQuad(t) {
   return t * (2 - t);
 }
 
-// Update mousePressed to prevent interaction during animation
+
 function mousePressed() {
   if (autoScroll || !autoScrollCompleted) {
     return false;
@@ -917,7 +1205,7 @@ function mousePressed() {
 }
 
 function drawSliderTimeline() {
-  // Mostra l'anno selezionato sopra lo slider
+  //  l'anno selezionato sopra lo slider
   stroke(0);
   strokeWeight(0);
   fill(0);
@@ -925,7 +1213,7 @@ function drawSliderTimeline() {
   textSize(20);
   text(selectedYear, width / 2, height - 100);
 
-  // Disegna le etichette degli anni estremi
+  //  le etichette degli anni estremi
   noStroke();
   fill(0);
   textFont(inconsolataFont);
@@ -933,7 +1221,7 @@ function drawSliderTimeline() {
   text('1960', (width - 700) / 2 - 60, height - 57);
   text('2020', (width + 700) / 2 + 40, height - 57);
 
-  // Disegna la linea principale dello slider
+  // la linea principale dello slider
   stroke(192);
   strokeWeight(2);
   let startX = (width - 700) / 2;
@@ -941,12 +1229,12 @@ function drawSliderTimeline() {
   let passedX = map(selectedYear, 1960, 2020, startX, endX);
   line(passedX, height - 55, endX, height - 55);
 
-  // Disegna i pallini di delimitazione
+  // i pallini di delimitazione
   fill(0);
   ellipse(startX, height - 55, 10, 10);
   ellipse(endX, height - 55, 10, 10);
 
-  // Aggiorna selectedYear se il mouse è sopra lo slider e viene premuto
+  // selectedYear se il mouse è sopra lo slider e viene premuto
   if (
     mouseIsPressed &&
     mouseY > height - 90 &&
@@ -969,7 +1257,7 @@ function drawSliderTimeline() {
   }
 }
 
-// Make sure you also have the drawRocket function
+
 function drawRocket(x, y) {
   push();
   translate(x, y);
