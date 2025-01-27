@@ -157,7 +157,7 @@ function draw() {
     'Codice grafico degli Stati\nNavigazione interna tra gli Stati\nDebugging',
     'Grafica\nStruttura del sito\nIllustrazioni\nCodice pagine accessorie',
     'Supporto codice grafico degli Stati\nDebugging',
-    'Ricerche database\nIllustrazioni\nRead.me',
+    'Ricerche database\nIllustrazioni terra\nRead.me',
     'Ricerca e codice notizie\nCodice grafico generale',
     'Codice grafico generale\nInterattività grafici\nDebugging',
   ];
