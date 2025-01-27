@@ -129,6 +129,7 @@ buttons.forEach(button => {
 
  
   toggleButton = createButton('Play Sound'); // bottone per il suono
+  toggleButton.position(30, height - 55);
   toggleButton.mousePressed(toggleAudio);
   sound.setVolume(0.2);
   styleButton(toggleButton);
